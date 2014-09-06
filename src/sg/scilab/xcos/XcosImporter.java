@@ -27,6 +27,7 @@ import java.io.IOException;
 import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
 import javax.xml.parsers.ParserConfigurationException;
+
 import org.eclipse.jface.action.CoolBarManager;
 import org.eclipse.jface.action.MenuManager;
 import org.eclipse.jface.action.StatusLineManager;
@@ -41,6 +42,7 @@ import org.eclipse.swt.widgets.Shell;
 import org.eclipse.swt.widgets.TreeItem;
 import org.eclipse.jface.action.Action;
 import org.w3c.dom.Document;
+import org.w3c.dom.NamedNodeMap;
 import org.w3c.dom.Node;
 import org.xml.sax.SAXException;
 import org.eclipse.swt.widgets.Tree;
@@ -67,10 +69,11 @@ public class XcosImporter extends ApplicationWindow {
 	 */
 	@Override
 	protected Control createContents(Composite parent) {
+		setStatus("Ready to Import!");
 		Composite container = new Composite(parent, SWT.NONE);
 		{
 			tree = new Tree(container, SWT.BORDER);
-			tree.setBounds(0, 0, 434, 346);
+			tree.setBounds(0, 0, 634, 450);
 		}
 		
 		/*
@@ -113,6 +116,7 @@ public class XcosImporter extends ApplicationWindow {
 						// TODO Auto-generated catch block
 						e.printStackTrace();
 					}
+					getStatusLineManager().setMessage("Diagram Imported");
 				} 
 			};
 		}
@@ -193,7 +197,7 @@ public class XcosImporter extends ApplicationWindow {
 	 */
 	@Override
 	protected Point getInitialSize() {
-		return new Point(450, 457);
+		return new Point(650, 500);
 	}
 	
 	/**
@@ -222,9 +226,19 @@ public class XcosImporter extends ApplicationWindow {
 	private static void XMLtoTree(TreeItem treeItem, Node node) {
 		
 		if((node.getNodeType() == 1) | (node.getNodeType() == 9)){
-			TreeItem tItem = new TreeItem(treeItem, 0);
-			tItem.setText(node.getNodeName());
 			
+			//System.out.println(node.getTextContent());
+			
+			NamedNodeMap attributes = node.getAttributes();
+			String strAttributes = "";
+			for (int i = 0; i < attributes.getLength(); i++) {
+		        Node theAttribute = attributes.item(i);
+		        //System.out.println(theAttribute.getNodeName() + "=" + theAttribute.getNodeValue());
+		        strAttributes += theAttribute.getNodeName() + "=" + theAttribute.getNodeValue() + " ";
+		      }
+			
+			TreeItem tItem = new TreeItem(treeItem, 0);
+			tItem.setText(node.getNodeName() + " " + strAttributes);
 			for(int i = 0; i<node.getChildNodes().getLength();i++) {
 				XMLtoTree(tItem, node.getChildNodes().item(i));
 			}
