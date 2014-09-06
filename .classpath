@@ -14,5 +14,7 @@
 	<classpathentry kind="lib" path="C:/works/tools/eclipse/plugins/org.eclipse.ui.workbench_3.106.0.v20140530-0732.jar" sourcepath="C:/works/tools/eclipse/plugins/org.eclipse.ui.workbench_3.106.0.v20140530-0732.jar"/>
 	<classpathentry kind="lib" path="C:/works/tools/eclipse/plugins/com.ibm.icu_52.1.0.v201404241930.jar" sourcepath="C:/works/tools/eclipse/plugins/com.ibm.icu_52.1.0.v201404241930.jar"/>
 	<classpathentry kind="lib" path="C:/works/tools/eclipse/plugins/org.eclipse.ui.forms_3.6.100.v20140422-1825.jar" sourcepath="C:/works/tools/eclipse/plugins/org.eclipse.ui.forms_3.6.100.v20140422-1825.jar"/>
+	<classpathentry kind="lib" path="C:/Program Files/scilab-5.5.0/modules/javasci/jar/org.scilab.modules.javasci.jar"/>
+	<classpathentry kind="lib" path="C:/Program Files/scilab-5.5.0/modules/types/jar/org.scilab.modules.types.jar"/>
 	<classpathentry kind="output" path="bin"/>
 </classpath>
