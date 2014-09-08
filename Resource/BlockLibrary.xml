@@ -1,0 +1,4 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no" ?>
+<sg:XcosLib sg:desc="" xmlns:sg="http://www.stargate-tr.com/codegen">
+	<sg:BlockLib>
+		<sg:Block gaName="sum" xcName="summation"></sg:Block></sg:BlockLib></sg:XcosLib>

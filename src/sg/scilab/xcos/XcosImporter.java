@@ -21,12 +21,11 @@
 
 package sg.scilab.xcos;
 
-import java.io.File;
 import java.io.IOException;
 
-import javax.xml.parsers.DocumentBuilder;
-import javax.xml.parsers.DocumentBuilderFactory;
 import javax.xml.parsers.ParserConfigurationException;
+import javax.xml.transform.TransformerException;
+import javax.xml.xpath.XPathExpressionException;
 
 import org.eclipse.jface.action.CoolBarManager;
 import org.eclipse.jface.action.MenuManager;
@@ -39,18 +38,17 @@ import org.eclipse.swt.widgets.Control;
 import org.eclipse.swt.widgets.Display;
 import org.eclipse.swt.widgets.FileDialog;
 import org.eclipse.swt.widgets.Shell;
-import org.eclipse.swt.widgets.TreeItem;
 import org.eclipse.jface.action.Action;
-import org.w3c.dom.Document;
-import org.w3c.dom.NamedNodeMap;
-import org.w3c.dom.Node;
 import org.xml.sax.SAXException;
 import org.eclipse.swt.widgets.Tree;
+
+import sg.scilab.xcos.codegen.XcostoGA;
 
 public class XcosImporter extends ApplicationWindow {
 	private Action actionOpenFile;
 	private Action actionExit;
-	private static Tree tree;
+	private static Tree treeIn;
+	private static Tree treeOut;
 
 	/**
 	 * Create the application window,
@@ -72,8 +70,12 @@ public class XcosImporter extends ApplicationWindow {
 		setStatus("Ready to Import!");
 		Composite container = new Composite(parent, SWT.NONE);
 		{
-			tree = new Tree(container, SWT.BORDER);
-			tree.setBounds(0, 0, 634, 450);
+			treeIn = new Tree(container, SWT.BORDER);
+			treeIn.setBounds(2, 0, 306, 450);
+		}
+		{
+			treeOut = new Tree(container, SWT.BORDER);
+			treeOut.setBounds(310, 0, 322, 450);
 		}
 		
 		/*
@@ -104,19 +106,20 @@ public class XcosImporter extends ApplicationWindow {
 				@Override 			
 				public void run() {
 					FileDialog dialog = new FileDialog(getShell(), SWT.OPEN);
+					
 					try {
-						DocLoad(dialog.open());
-					} catch (SAXException e) {
-						// TODO Auto-generated catch block
-						e.printStackTrace();
-					} catch (IOException e) {
-						// TODO Auto-generated catch block
-						e.printStackTrace();
-					} catch (ParserConfigurationException e) {
+					XcostoGA Converter = new XcostoGA(dialog.open());
+					Converter.XMLtoTree(treeIn, XcostoGA.docXcos);
+					Converter.ImportXcos();
+					Converter.XMLtoTree(treeOut, XcostoGA.docGA);
+
+					} catch (SAXException | IOException
+							| ParserConfigurationException | XPathExpressionException | TransformerException e) {
 						// TODO Auto-generated catch block
 						e.printStackTrace();
 					}
-					getStatusLineManager().setMessage("Diagram Imported");
+
+					setStatus("Diagram Imported");
 				} 
 			};
 		}
@@ -200,52 +203,12 @@ public class XcosImporter extends ApplicationWindow {
 		return new Point(650, 500);
 	}
 	
-	/**
-	 * XML Document loader.
-	 * @param DocName
-	 */
-	private static void DocLoad(String DocName)
-			throws SAXException, IOException, ParserConfigurationException {
-		
-		// Use DOM API to get full XML document
-		DocumentBuilderFactory docBuilderFactory = DocumentBuilderFactory.newInstance();
-		DocumentBuilder docBuilder = docBuilderFactory.newDocumentBuilder();
-		Document doc = docBuilder.parse (new File(DocName));
-		tree.removeAll();
-		TreeItem treeItem = new TreeItem(tree, 0);
-		treeItem.setText("root");
-		XMLtoTree(treeItem, doc.getFirstChild());
+	protected Tree getTreeIn() {
+		return treeIn;
 	}
-	
-	/**
-	 * XML to Tree.
-	 * @param treeItem
-	 * @param node
-	 * 
-	 */
-	private static void XMLtoTree(TreeItem treeItem, Node node) {
-		
-		if((node.getNodeType() == 1) | (node.getNodeType() == 9)){
-			
-			//System.out.println(node.getTextContent());
-			
-			NamedNodeMap attributes = node.getAttributes();
-			String strAttributes = "";
-			for (int i = 0; i < attributes.getLength(); i++) {
-		        Node theAttribute = attributes.item(i);
-		        //System.out.println(theAttribute.getNodeName() + "=" + theAttribute.getNodeValue());
-		        strAttributes += theAttribute.getNodeName() + "=" + theAttribute.getNodeValue() + " ";
-		      }
-			
-			TreeItem tItem = new TreeItem(treeItem, 0);
-			tItem.setText(node.getNodeName() + " " + strAttributes);
-			for(int i = 0; i<node.getChildNodes().getLength();i++) {
-				XMLtoTree(tItem, node.getChildNodes().item(i));
-			}
-		}
-	}
-	protected Tree getTree() {
-		return tree;
+
+	protected Tree getTreeOut() {
+		return treeOut;
 	}
 }
 
