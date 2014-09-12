@@ -22,6 +22,7 @@
 package sg.scilab.xcos;
 
 import java.io.IOException;
+import java.lang.reflect.InvocationTargetException;
 
 import javax.xml.parsers.ParserConfigurationException;
 import javax.xml.transform.TransformerException;
@@ -39,6 +40,7 @@ import org.eclipse.swt.widgets.Display;
 import org.eclipse.swt.widgets.FileDialog;
 import org.eclipse.swt.widgets.Shell;
 import org.eclipse.jface.action.Action;
+import org.w3c.dom.DOMException;
 import org.xml.sax.SAXException;
 import org.eclipse.swt.widgets.Tree;
 
@@ -114,7 +116,7 @@ public class XcosImporter extends ApplicationWindow {
 					Converter.XMLtoTree(treeOut, XcostoGA.docGA);
 
 					} catch (SAXException | IOException
-							| ParserConfigurationException | XPathExpressionException | TransformerException e) {
+							| ParserConfigurationException | XPathExpressionException | TransformerException | DOMException | SecurityException | IllegalArgumentException | NoSuchMethodException | IllegalAccessException | InvocationTargetException | InstantiationException e) {
 						// TODO Auto-generated catch block
 						e.printStackTrace();
 					}

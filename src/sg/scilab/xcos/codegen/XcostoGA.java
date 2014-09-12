@@ -23,6 +23,8 @@ package sg.scilab.xcos.codegen;
 
 import java.io.File;
 import java.io.IOException;
+import java.lang.reflect.InvocationTargetException;
+import java.lang.reflect.Method;
 
 import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
@@ -56,18 +58,28 @@ public class XcostoGA {
 	
 	public static Document docXcos;
 	public static Document docGA;
+	//public static Document docLib;
 	
 	public XcostoGA(String dName) throws SAXException, IOException, ParserConfigurationException, TransformerException {
 		docXcos = DocLoad(dName);
 		
 		DocumentBuilderFactory docBuilderFactory = DocumentBuilderFactory.newInstance();
 		DocumentBuilder docBuilder = docBuilderFactory.newDocumentBuilder();
+		docBuilderFactory.setNamespaceAware(true);
+		
+		// Initialize input file
 		docGA = docBuilder.newDocument();
-		docGA.appendChild(docGA.createElement("SystemBlock"));
-		docGA.getFirstChild().appendChild(docGA.createElement("blocks"));
-		docGA.setXmlVersion("1.0");
+
+		// Initialize output file
+		//docGA.appendChild(docGA.createElement("SystemBlock"));
+		//docGA.getFirstChild().appendChild(docGA.createElement("blocks"));
+		//docGA.setXmlVersion("1.0");
+
+		// Initialize library file
+		//docLib = docBuilder.parse(new File("Resource/BlockLibrary.xml"));
 	}
 	
+	@SuppressWarnings("unused")
 	private void PrintXML(Document docIn) throws TransformerException {
         //for output to file, console
         TransformerFactory transformerFactory = TransformerFactory.newInstance();
@@ -119,68 +131,48 @@ public class XcostoGA {
 	}
 	
 
-	public void ImportXcos() throws XPathExpressionException, TransformerException, DOMException, ParserConfigurationException {
-		XPathFactory factory = XPathFactory.newInstance();
-		XPath xpath = factory.newXPath();
-		XPathExpression expression = xpath.compile("/XcosDiagram/mxGraphModel/root/"
-														+ "*[local-name()='BasicBlock'"
-														+ " or local-name()='SuperBlock']");
+	private String getParentID(Document docIn) throws XPathExpressionException {
 		
-		NodeList resultNL = (NodeList) expression.evaluate(docXcos, XPathConstants.NODESET);
+		XPathExpression exp = XPathFactory.newInstance().newXPath()
+									.compile("/node()/mxGraphModel/root/mxCell[string-length(@parent)!=0]");
 		
-		for (int i = 0; i < resultNL.getLength(); i++) {
-			//System.out.println("NODE[" + i + "]: " + resultNL.item(i).getNodeName());
-			
-			switch(resultNL.item(i).getNodeName()) {
-				case "BasicBlock":
-					docGA.getFirstChild().getFirstChild()
-							.appendChild(docGA.createElement(resultNL.item(i).getNodeName()));
-					break;
-					
-				case "SuperBlock":
-					docGA.getFirstChild().getFirstChild()
-							.appendChild(docGA.importNode(ParseSuperBlock(resultNL.item(i)), true));
-					break;
-					
-					default:
-						System.out.println("NODE[" + i + "]: " + resultNL.item(i).getNodeName());
-			}
-		}
+		//System.out.println(((NodeList) exp.evaluate(docIn, XPathConstants.NODESET)).getLength());
+		return ((NodeList) exp.evaluate(docIn, XPathConstants.NODESET)).item(0).getAttributes().getNamedItem("id").getNodeValue();
+	}
+	
+	public void ImportXcos() throws XPathExpressionException, NoSuchMethodException, SecurityException, IllegalAccessException, IllegalArgumentException, InvocationTargetException, ParserConfigurationException, TransformerException, DOMException, InstantiationException {
+		docGA.appendChild(docGA.importNode(ParseSuperBlock(getParentID(docXcos)), true));
 		//PrintXML(docGA);
 	}
 	
-	private Node ParseSuperBlock(Node nodeIn) throws XPathExpressionException, ParserConfigurationException, TransformerException {
-		XPathFactory factory = XPathFactory.newInstance();
-		XPath xpath = factory.newXPath();
-		XPathExpression expression = xpath.compile("/SuperBlock/SuperBlockDiagram/mxGraphModel/root/"
-														+ "*[local-name()='BasicBlock'"
-														+ " or local-name()='SuperBlock']");
+	private Node ParseSuperBlock(String parentID) throws XPathExpressionException, ParserConfigurationException, TransformerException, NoSuchMethodException, SecurityException, IllegalAccessException, IllegalArgumentException, InvocationTargetException, InstantiationException {
+		XPathExpression expBLK = XPathFactory.newInstance().newXPath().compile("//*[local-name()='BasicBlock' or local-name()='SuperBlock']"
+																					+ "[@parent='" + parentID + "']");
 		
-		DocumentBuilderFactory docBuilderFactory = DocumentBuilderFactory.newInstance();
-		DocumentBuilder docBuilder = docBuilderFactory.newDocumentBuilder();
-		Document nodeOut = docBuilder.newDocument();
+		XcosBlockTran blockToXML = new XcosBlockTran(docXcos);
+		
+		Document nodeOut = DocumentBuilderFactory.newInstance().newDocumentBuilder().newDocument();
 		nodeOut.appendChild(nodeOut.createElement("SystemBlock"));
 		nodeOut.getFirstChild().appendChild(nodeOut.createElement("blocks"));
 		
-		Document docIn = docBuilder.newDocument();
-		docIn.appendChild(docIn.importNode(nodeIn, true));
-		
-		NodeList resultNL = (NodeList) expression.evaluate(docIn, XPathConstants.NODESET);	
+		NodeList resultNL = (NodeList) expBLK.evaluate(docXcos, XPathConstants.NODESET);	
 		for (int i = 0; i < resultNL.getLength(); i++) {
 
 			switch(resultNL.item(i).getNodeName()) {
 				case "BasicBlock":
-					nodeOut.getFirstChild().getFirstChild()
-						.appendChild(nodeOut.createElement(resultNL.item(i).getNodeName()));
+					Node retNode = blockToXML.ParseBasicBlock(resultNL.item(i).getAttributes().getNamedItem("id").getNodeValue());
+					nodeOut.getFirstChild().getFirstChild().appendChild(nodeOut.importNode(retNode, true));
+					System.out.println(retNode.getAttributes().getNamedItem("type").getNodeValue());
 					break;
 					
 				case "SuperBlock":
-					nodeOut.getFirstChild().getFirstChild()
-							.appendChild(nodeOut.importNode(ParseSuperBlock(resultNL.item(i)), true));
+					Document docSB = DocumentBuilderFactory.newInstance().newDocumentBuilder().newDocument();
+					docSB.appendChild(docSB.importNode(resultNL.item(i).getFirstChild(), true));
+					nodeOut.getFirstChild().getFirstChild().appendChild(nodeOut.importNode(ParseSuperBlock(getParentID(docSB)), true));
 					break;
 					
-					default:
-						System.out.println("NODE[" + i + "]: " + resultNL.item(i).getNodeName());
+				default:
+					System.out.println("NODE[" + i + "]: " + resultNL.item(i).getNodeName());
 			}
 		}
 		return nodeOut.getFirstChild();
