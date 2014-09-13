@@ -45,6 +45,7 @@ import org.eclipse.swt.widgets.Tree;
 import org.eclipse.swt.widgets.TreeItem;
 import org.w3c.dom.DOMException;
 import org.w3c.dom.Document;
+import org.w3c.dom.Element;
 import org.w3c.dom.NamedNodeMap;
 import org.w3c.dom.Node;
 import org.w3c.dom.NodeList;
@@ -130,52 +131,12 @@ public class XcostoGA {
 		}
 	}
 	
-
-	private String getParentID(Document docIn) throws XPathExpressionException {
-		
-		XPathExpression exp = XPathFactory.newInstance().newXPath()
-									.compile("/node()/mxGraphModel/root/mxCell[string-length(@parent)!=0]");
-		
-		//System.out.println(((NodeList) exp.evaluate(docIn, XPathConstants.NODESET)).getLength());
-		return ((NodeList) exp.evaluate(docIn, XPathConstants.NODESET)).item(0).getAttributes().getNamedItem("id").getNodeValue();
-	}
-	
 	public void ImportXcos() throws XPathExpressionException, NoSuchMethodException, SecurityException, IllegalAccessException, IllegalArgumentException, InvocationTargetException, ParserConfigurationException, TransformerException, DOMException, InstantiationException {
-		docGA.appendChild(docGA.importNode(ParseSuperBlock(getParentID(docXcos)), true));
+		
+		XcosBlockTran Xcos2GA = new XcosBlockTran(docXcos);
+		
+		docGA.appendChild(docGA.importNode(Xcos2GA.ParseXcosDiagram(), true));
 		//PrintXML(docGA);
-	}
-	
-	private Node ParseSuperBlock(String parentID) throws XPathExpressionException, ParserConfigurationException, TransformerException, NoSuchMethodException, SecurityException, IllegalAccessException, IllegalArgumentException, InvocationTargetException, InstantiationException {
-		XPathExpression expBLK = XPathFactory.newInstance().newXPath().compile("//*[local-name()='BasicBlock' or local-name()='SuperBlock']"
-																					+ "[@parent='" + parentID + "']");
-		
-		XcosBlockTran blockToXML = new XcosBlockTran(docXcos);
-		
-		Document nodeOut = DocumentBuilderFactory.newInstance().newDocumentBuilder().newDocument();
-		nodeOut.appendChild(nodeOut.createElement("SystemBlock"));
-		nodeOut.getFirstChild().appendChild(nodeOut.createElement("blocks"));
-		
-		NodeList resultNL = (NodeList) expBLK.evaluate(docXcos, XPathConstants.NODESET);	
-		for (int i = 0; i < resultNL.getLength(); i++) {
-
-			switch(resultNL.item(i).getNodeName()) {
-				case "BasicBlock":
-					Node retNode = blockToXML.ParseBasicBlock(resultNL.item(i).getAttributes().getNamedItem("id").getNodeValue());
-					nodeOut.getFirstChild().getFirstChild().appendChild(nodeOut.importNode(retNode, true));
-					System.out.println(retNode.getAttributes().getNamedItem("type").getNodeValue());
-					break;
-					
-				case "SuperBlock":
-					Document docSB = DocumentBuilderFactory.newInstance().newDocumentBuilder().newDocument();
-					docSB.appendChild(docSB.importNode(resultNL.item(i).getFirstChild(), true));
-					nodeOut.getFirstChild().getFirstChild().appendChild(nodeOut.importNode(ParseSuperBlock(getParentID(docSB)), true));
-					break;
-					
-				default:
-					System.out.println("NODE[" + i + "]: " + resultNL.item(i).getNodeName());
-			}
-		}
-		return nodeOut.getFirstChild();
 	}
 }
 

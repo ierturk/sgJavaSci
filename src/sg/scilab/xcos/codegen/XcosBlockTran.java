@@ -28,6 +28,7 @@ import java.util.Map;
 
 import javax.xml.parsers.DocumentBuilderFactory;
 import javax.xml.parsers.ParserConfigurationException;
+import javax.xml.transform.TransformerException;
 import javax.xml.xpath.XPathConstants;
 import javax.xml.xpath.XPathExpression;
 import javax.xml.xpath.XPathExpressionException;
@@ -44,20 +45,71 @@ import org.w3c.dom.NodeList;
  * @author ierturk
  *
  */
-public class XcosBlockTran {
+public class XcosBlockTran extends Helpers {
 	
-	private static Document docIn;
-	//private static Map<String,String> BlockLib = new HashMap<String, String>();
+	//public static Document docIn;
+	//public int idCnt = 0;
+
+	//private static Helpers helpXML;
 
 	public XcosBlockTran(Document In) {
 		// TODO Auto-generated constructor stub
-		docIn = In;
-		
-		//BlockLib.put("GAINBLK", "Gain");
-		//BlockLib.put("SUMMATION", "Sum");
+		super(In);
 	}
 	
-	public Node ParseBasicBlock(String blockID) throws ParserConfigurationException, XPathExpressionException, SecurityException, IllegalAccessException, InstantiationException, IllegalArgumentException, InvocationTargetException, DOMException, NoSuchMethodException {
+	public Element ParseXcosDiagram() throws XPathExpressionException, NoSuchMethodException, SecurityException, IllegalAccessException, IllegalArgumentException, InvocationTargetException, InstantiationException, ParserConfigurationException, TransformerException {
+		
+		return ParseSuperBlock(
+								((NodeList) XPathFactory.newInstance().newXPath()
+										.compile("/node()/mxGraphModel/root/mxCell[string-length(@parent)!=0]")
+										.evaluate(docIn, XPathConstants.NODESET))
+										.item(0).getAttributes().getNamedItem("id").getNodeValue()
+							);
+		}
+	
+	private Element ParseSuperBlock(String parentID) throws XPathExpressionException, ParserConfigurationException, TransformerException, NoSuchMethodException, SecurityException, IllegalAccessException, IllegalArgumentException, InvocationTargetException, InstantiationException {
+		XPathExpression expBLK = XPathFactory.newInstance().newXPath().compile("//*[local-name()='BasicBlock' or local-name()='SuperBlock']"
+																					+ "[@parent='" + parentID + "']");
+		
+		Element elementOut = docIn.createElement("SystemBlock");
+		elementOut.setAttribute("type", "SubSystem");
+		elementOut.setAttribute("name", "NoName");
+		elementOut.setAttribute("isVirtual", "false");
+		elementOut.setAttribute("id", Integer.toString(++idCnt));
+		elementOut.setAttribute("directFeedThrough", "true");
+		
+		Element elementTemp = docIn.createElement("blocks");
+		elementTemp.setAttribute("type", "gaxml:collection");
+		elementOut.appendChild(elementTemp);
+		
+		NodeList resultNL = (NodeList) expBLK.evaluate(docIn, XPathConstants.NODESET);
+		for (int i = 0; i < resultNL.getLength(); i++) {
+
+			switch(resultNL.item(i).getNodeName()) {
+				case "BasicBlock":
+					elementOut.getFirstChild().appendChild(docIn.importNode(ParseBasicBlock(resultNL.item(i).getAttributes().getNamedItem("id").getNodeValue()), true));
+					break;
+					
+				case "SuperBlock":
+					elementOut.getFirstChild().appendChild(docIn.importNode(ParseSuperBlock(
+																								((NodeList) XPathFactory.newInstance().newXPath()
+																										.compile("//SuperBlock[@id='"
+																												+ resultNL.item(i).getAttributes().getNamedItem("id").getNodeValue()
+																												+ "']"
+																												+ "/SuperBlockDiagram/mxGraphModel/root/mxCell[string-length(@parent)!=0]")
+																										.evaluate(docIn, XPathConstants.NODESET))
+																										.item(0).getAttributes().getNamedItem("id").getNodeValue()
+																							), true));
+					break;
+					
+				default:
+					System.out.println("NODE[" + i + "]: " + resultNL.item(i).getNodeName());
+			}
+		}
+		return elementOut;
+	}
+	
+	private Element ParseBasicBlock(String blockID) throws ParserConfigurationException, XPathExpressionException, SecurityException, IllegalAccessException, InstantiationException, IllegalArgumentException, InvocationTargetException, DOMException, NoSuchMethodException {
 		
 		XPathExpression expBLK = XPathFactory.newInstance().newXPath().compile("//*[local-name()='BasicBlock']" + "[@id='" + blockID + "']");
 		NodeList blockNL = (NodeList) expBLK.evaluate(docIn, XPathConstants.NODESET);
@@ -65,33 +117,35 @@ public class XcosBlockTran {
 		Method parser;
 		XcosBlockTran testClass = new XcosBlockTran(docIn);
 		
-		//System.out.println(BlockLib.get("GAINBLK"));
-		
 		try {
-			parser = testClass.getClass().getMethod(blockNL.item(0).getAttributes().getNamedItem("interfaceFunctionName").getNodeValue() + "_tran", String.class);
-			Node nodeOut = (Node) parser.invoke(testClass, blockID);
-			return nodeOut;
+			parser = testClass.getClass().getDeclaredMethod(blockNL.item(0).getAttributes().getNamedItem("interfaceFunctionName").getNodeValue() + "_tran", String.class);
+			parser.setAccessible(true);
+			//elementOut.appendChild(docIn.importNode((Element) parser.invoke(testClass, blockID), true));
+			Element elementOut = (Element) parser.invoke(testClass, blockID);
+			elementOut.appendChild(docIn.importNode(ParseOutDataPort(blockID), true));
+			elementOut.appendChild(docIn.importNode(ParseGeometry(blockID), true));
+			return elementOut;
 		} catch (NoSuchMethodException | NullPointerException e) {
 			// TODO Auto-generated catch block
 			//e.printStackTrace();
 		}
 
-		parser = testClass.getClass().getMethod("UnSupported", String.class);
-		Node nodeOut = (Node) parser.invoke(testClass, blockNL.item(0).getAttributes().getNamedItem("interfaceFunctionName").getNodeValue());
-		return nodeOut;
+		parser = testClass.getClass().getDeclaredMethod("UnSupported", String.class);
+		parser.setAccessible(true);
+		Element elementOut = (Element) parser.invoke(testClass, blockNL.item(0).getAttributes().getNamedItem("interfaceFunctionName").getNodeValue());
+		return elementOut;
 
 	}
 
-
-	public Node UnSupported(String blockType) throws ParserConfigurationException {		
-		Document nodeOut = DocumentBuilderFactory.newInstance().newDocumentBuilder().newDocument();
-		Element typeE = nodeOut.createElement("UnSupportedBlock");
-		typeE.setAttribute("type", blockType);
-		nodeOut.appendChild(typeE);
-		return (Node) nodeOut.getFirstChild();
+	@SuppressWarnings("unused")
+	private Element UnSupported(String blockType) throws ParserConfigurationException {		
+		Element elementOut = docIn.createElement("UnSupportedBlock");
+		elementOut.setAttribute("type", blockType);
+		return elementOut;
 	}
 	
-	public Node GAINBLK_tran(String blockID) throws ParserConfigurationException {		
+	@SuppressWarnings("unused")
+	private Node GAINBLK_tran(String blockID) throws ParserConfigurationException {		
 		Document nodeOut = DocumentBuilderFactory.newInstance().newDocumentBuilder().newDocument();
 		Element typeE = nodeOut.createElement("CombinatorialBlock");
 		typeE.setAttribute("type", "Gain");
@@ -99,7 +153,8 @@ public class XcosBlockTran {
 		return (Node) nodeOut.getFirstChild();
 	}
 
-	public Node SUMMATION_tran(String blockID) throws ParserConfigurationException {		
+	@SuppressWarnings("unused")
+	private Node SUMMATION_tran(String blockID) throws ParserConfigurationException {		
 		Document nodeOut = DocumentBuilderFactory.newInstance().newDocumentBuilder().newDocument();
 		Element typeE = nodeOut.createElement("CombinatorialBlock");
 		typeE.setAttribute("type", "Sum");
@@ -107,6 +162,18 @@ public class XcosBlockTran {
 		return (Node) nodeOut.getFirstChild();
 	}
 	
+	@SuppressWarnings("unused")
+	private Element CONST_m_tran(String blockID) throws ParserConfigurationException, DOMException, XPathExpressionException {		
+		Element elementOut = docIn.createElement("SourceBlock");
+		elementOut.setAttribute("type", "Constant");
+		elementOut.setAttribute("name", "NoName");
+		elementOut.setAttribute("isVirtual", "false");
+		elementOut.setAttribute("id", Integer.toString(++idCnt));
+		elementOut.setAttribute("directFeedThrough", "true");
+		elementOut.setAttribute("sampletime", "-1");
+		
+		return elementOut;
+	}	
 }
 
 /*** COPYRIGHT 2014 StarGate Inc <http://www.stargate-tr.com> *****END OF FILE****/
