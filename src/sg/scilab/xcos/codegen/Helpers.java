@@ -21,6 +21,8 @@
 
 package sg.scilab.xcos.codegen;
 
+import java.util.Map;
+
 import javax.xml.parsers.DocumentBuilderFactory;
 import javax.xml.parsers.ParserConfigurationException;
 import javax.xml.xpath.XPathConstants;
@@ -70,6 +72,27 @@ public class Helpers {
 		return elementOut;
 	}
 	
+	public Element ParseInDataPort(String blockID) throws ParserConfigurationException, DOMException, XPathExpressionException {
+
+		Element elementOut = null;
+
+		NodeList outPortNL = (NodeList) XPathFactory.newInstance().newXPath()
+											.compile("//ExplicitInputPort[@parent='" + blockID + "']")
+											.evaluate(docIn, XPathConstants.NODESET);
+		
+		for (int i = 0; i < outPortNL.getLength(); i++) {
+			elementOut = docIn.createElement("inDataPorts");
+			elementOut.setAttribute("type", "gaxml:collection");
+			
+			Element elementTemp = docIn.createElement("InDataPort");
+			elementTemp.setAttribute("id", Integer.toString(++idCnt));
+			elementTemp.setAttribute("portNumber", outPortNL.item(i).getAttributes().getNamedItem("ordering").getNodeValue());
+			elementOut.appendChild(elementTemp);		
+		}
+
+		return elementOut;
+	}
+	
 	public Element ParseGeometry(String blockID) throws ParserConfigurationException, DOMException, XPathExpressionException {
 		
 		NamedNodeMap geoNM = ((NodeList) XPathFactory.newInstance().newXPath()
@@ -86,6 +109,25 @@ public class Helpers {
 		elementTemp.setAttribute("positionY", geoNM.getNamedItem("y").getNodeValue());
 		elementOut.appendChild(elementTemp);		
 
+		return elementOut;
+	}
+	
+	public Element ParseParameters(Map<Object, Object> ParamList) {
+/*
+		NamedNodeMap geoNM = ((NodeList) XPathFactory.newInstance().newXPath()
+								.compile("//*[local-name()='BasicBlock']" + "[@id='" + blockID + "']/mxGeometry")
+								.evaluate(docIn, XPathConstants.NODESET)).item(0).getAttributes();
+*/
+		Element elementOut = docIn.createElement("parameters");
+		elementOut.setAttribute("type", "gaxml:collection");
+/*		
+		Element elementTemp = docIn.createElement("DiagramInfo");
+		elementTemp.setAttribute("sizeX", geoNM.getNamedItem("width").getNodeValue());
+		elementTemp.setAttribute("sizeY", geoNM.getNamedItem("height").getNodeValue());
+		elementTemp.setAttribute("positionX", geoNM.getNamedItem("x").getNodeValue());
+		elementTemp.setAttribute("positionY", geoNM.getNamedItem("y").getNodeValue());
+		elementOut.appendChild(elementTemp);		
+*/
 		return elementOut;
 	}
 

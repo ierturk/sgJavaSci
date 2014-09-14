@@ -120,10 +120,29 @@ public class XcosBlockTran extends Helpers {
 		try {
 			parser = testClass.getClass().getDeclaredMethod(blockNL.item(0).getAttributes().getNamedItem("interfaceFunctionName").getNodeValue() + "_tran", String.class);
 			parser.setAccessible(true);
-			//elementOut.appendChild(docIn.importNode((Element) parser.invoke(testClass, blockID), true));
 			Element elementOut = (Element) parser.invoke(testClass, blockID);
-			elementOut.appendChild(docIn.importNode(ParseOutDataPort(blockID), true));
-			elementOut.appendChild(docIn.importNode(ParseGeometry(blockID), true));
+			
+			try {
+				elementOut.appendChild(docIn.importNode(ParseInDataPort(blockID), true));	
+			} catch (NullPointerException e) {
+				// TODO Auto-generated catch block
+				//e.printStackTrace();
+			}
+			
+			try {
+				elementOut.appendChild(docIn.importNode(ParseOutDataPort(blockID), true));
+			} catch (NullPointerException e) {
+				// TODO Auto-generated catch block
+				//e.printStackTrace();
+			}
+			
+			try {
+				elementOut.appendChild(docIn.importNode(ParseGeometry(blockID), true));
+			} catch (NullPointerException e) {
+				// TODO Auto-generated catch block
+				//e.printStackTrace();
+			}
+			
 			return elementOut;
 		} catch (NoSuchMethodException | NullPointerException e) {
 			// TODO Auto-generated catch block
@@ -145,24 +164,6 @@ public class XcosBlockTran extends Helpers {
 	}
 	
 	@SuppressWarnings("unused")
-	private Node GAINBLK_tran(String blockID) throws ParserConfigurationException {		
-		Document nodeOut = DocumentBuilderFactory.newInstance().newDocumentBuilder().newDocument();
-		Element typeE = nodeOut.createElement("CombinatorialBlock");
-		typeE.setAttribute("type", "Gain");
-		nodeOut.appendChild(typeE);
-		return (Node) nodeOut.getFirstChild();
-	}
-
-	@SuppressWarnings("unused")
-	private Node SUMMATION_tran(String blockID) throws ParserConfigurationException {		
-		Document nodeOut = DocumentBuilderFactory.newInstance().newDocumentBuilder().newDocument();
-		Element typeE = nodeOut.createElement("CombinatorialBlock");
-		typeE.setAttribute("type", "Sum");
-		nodeOut.appendChild(typeE);
-		return (Node) nodeOut.getFirstChild();
-	}
-	
-	@SuppressWarnings("unused")
 	private Element CONST_m_tran(String blockID) throws ParserConfigurationException, DOMException, XPathExpressionException {		
 		Element elementOut = docIn.createElement("SourceBlock");
 		elementOut.setAttribute("type", "Constant");
@@ -172,8 +173,45 @@ public class XcosBlockTran extends Helpers {
 		elementOut.setAttribute("directFeedThrough", "true");
 		elementOut.setAttribute("sampletime", "-1");
 		
+
+		Map<Object, Object> parameters = new HashMap<Object, Object>();
+
+		try {
+			parameters.put("Value", Double.parseDouble(((NodeList) XPathFactory.newInstance().newXPath()
+									.compile("//*[local-name()='BasicBlock']" + "[@id='" + blockID + "']"
+												+ "/Array[@as='objectsParameters']/ScilabDouble/data")
+									.evaluate(docIn, XPathConstants.NODESET))
+									.item(0).getAttributes().getNamedItem("realPart").getNodeValue()));
+		} catch (NullPointerException e) {
+			// TODO Auto-generated catch block
+			//e.printStackTrace();
+			parameters.put("Value", Double.parseDouble(((NodeList) XPathFactory.newInstance().newXPath()
+								.compile("//*[local-name()='BasicBlock']" + "[@id='" + blockID + "']"
+											+ "/ScilabDouble[@as='realParameters']/data")
+								.evaluate(docIn, XPathConstants.NODESET))
+								.item(0).getAttributes().getNamedItem("realPart").getNodeValue()));
+		}
+		
+		parameters.put("OutDataTypeMode", "Inherit from ''Constant value'");
+		parameters.put("VectorParams1D", "off");
+		
+		elementOut.appendChild(docIn.importNode(ParseParameters(parameters), true));
+
 		return elementOut;
-	}	
+	}
+	
+	@SuppressWarnings("unused")
+	private Element DOLLAR_m_tran(String blockID) throws ParserConfigurationException, DOMException, XPathExpressionException {		
+		Element elementOut = docIn.createElement("SequentialBlock");
+		elementOut.setAttribute("type", "UnitDelay");
+		elementOut.setAttribute("name", "NoName");
+		elementOut.setAttribute("isVirtual", "false");
+		elementOut.setAttribute("id", Integer.toString(++idCnt));
+		elementOut.setAttribute("directFeedThrough", "true");
+		elementOut.setAttribute("sampletime", "-1");
+		
+		return elementOut;
+	}
 }
 
 /*** COPYRIGHT 2014 StarGate Inc <http://www.stargate-tr.com> *****END OF FILE****/
