@@ -21,6 +21,7 @@
 
 package sg.scilab.xcos.codegen;
 
+import java.util.ArrayList;
 import java.util.Map;
 
 import javax.xml.parsers.DocumentBuilderFactory;
@@ -112,22 +113,87 @@ public class Helpers {
 		return elementOut;
 	}
 	
-	public Element ParseParameters(Map<Object, Object> ParamList) {
-/*
-		NamedNodeMap geoNM = ((NodeList) XPathFactory.newInstance().newXPath()
-								.compile("//*[local-name()='BasicBlock']" + "[@id='" + blockID + "']/mxGeometry")
-								.evaluate(docIn, XPathConstants.NODESET)).item(0).getAttributes();
-*/
+	public Element ParseParameters(ArrayList<ArrayList<Object>> paramArray) {
 		Element elementOut = docIn.createElement("parameters");
 		elementOut.setAttribute("type", "gaxml:collection");
-/*		
-		Element elementTemp = docIn.createElement("DiagramInfo");
-		elementTemp.setAttribute("sizeX", geoNM.getNamedItem("width").getNodeValue());
-		elementTemp.setAttribute("sizeY", geoNM.getNamedItem("height").getNodeValue());
-		elementTemp.setAttribute("positionX", geoNM.getNamedItem("x").getNodeValue());
-		elementTemp.setAttribute("positionY", geoNM.getNamedItem("y").getNodeValue());
-		elementOut.appendChild(elementTemp);		
-*/
+		
+	    for(ArrayList<Object> pList : paramArray){
+	        //System.out.println(pList.get(0) + " -- " + pList.get(1) + " -- " + pList.get(2));
+			//elementOut.appendChild(docIn.importNode(ParseParameters(ParamArray), true));
+	        
+	        switch (pList.get(1).toString()) {
+				case "true":
+					//System.out.println(1);
+					elementOut.appendChild(docIn.importNode(ParseValueParam(pList), true));
+					break;
+					
+				case "false":
+					//System.out.println(0);
+					elementOut.appendChild(docIn.importNode(ParseStringParam(pList), true));
+					break;
+					
+				default:
+					break;
+			}
+
+	    }
+
+		return elementOut;
+	}
+	
+	public Element ParseValueParam(ArrayList<Object> paramList) {
+		Element elementOut = docIn.createElement("BlockParameter");
+		elementOut.setAttribute("name", (String) paramList.get(0));
+		elementOut.setAttribute("id", Integer.toString(++idCnt));
+		
+		Element elementTemp = docIn.createElement("value");
+		elementTemp.setAttribute("type", "gaxml:collection");
+		elementOut.appendChild(elementTemp);
+		
+		elementTemp = docIn.createElement("ExpressionValue");
+		elementTemp.setAttribute("id", Integer.toString(++idCnt));
+		elementOut.getFirstChild().appendChild(elementTemp);
+		
+		elementTemp = docIn.createElement("value");
+		elementTemp.setAttribute("type", "gaxml:collection");
+		elementOut.getFirstChild().getFirstChild().appendChild(elementTemp);
+		
+		Double value = Double.parseDouble((String) paramList.get(2));
+		//System.out.println( "This is list item 3 : " + value);
+		elementTemp = docIn.createElement("RealExpression");
+		elementTemp.setAttribute("id", Integer.toString(++idCnt));	
+		elementTemp.setAttribute("litValue", Double.toString(value.floatValue()));
+		elementTemp.setAttribute("integerPart", Integer.toString(value.intValue()));
+		elementTemp.setAttribute("scientificValue", "false");
+		elementTemp.setAttribute("fractionalPart", Double.toString((Math.abs(value - value.intValue()))));
+		elementTemp.setAttribute("exponent", Integer.toString(0));	
+		elementOut.getFirstChild().getFirstChild().getFirstChild().appendChild(elementTemp);
+		
+		elementTemp = docIn.createElement("dataType");
+		elementTemp.setAttribute("type", "gaxml:collection");
+		elementOut.getFirstChild().getFirstChild().getFirstChild().getFirstChild().appendChild(elementTemp);
+		
+		elementTemp = docIn.createElement("TRealDouble");
+		elementTemp.setAttribute("id", Integer.toString(++idCnt));
+		elementOut.getFirstChild().getFirstChild().getFirstChild().getFirstChild().getFirstChild().appendChild(elementTemp);
+		
+		return elementOut;
+	}
+	
+	public Element ParseStringParam(ArrayList<Object> paramList) {
+		Element elementOut = docIn.createElement("BlockParameter");
+		elementOut.setAttribute("name", (String) paramList.get(0));
+		elementOut.setAttribute("id", Integer.toString(++idCnt));
+		
+		Element elementTemp = docIn.createElement("value");
+		elementTemp.setAttribute("type", "gaxml:collection");
+		elementOut.appendChild(elementTemp);
+		
+		elementTemp = docIn.createElement("StringValue");
+		elementTemp.setAttribute("id", Integer.toString(++idCnt));
+		elementTemp.setAttribute("value", (String) paramList.get(2));
+		elementOut.getFirstChild().appendChild(elementTemp);
+		
 		return elementOut;
 	}
 
