@@ -178,9 +178,6 @@ public class XcosBlockTran extends Helpers {
 		ArrayList<ArrayList<Object>> ParamArray = new ArrayList<ArrayList<Object>>();
 		ArrayList<Object> ParamList = new ArrayList<Object>();
 
-		//Map<Object, Object> parameters = new HashMap<Object, Object>();
-
-		//ParamList.clear();
 		ParamList.add("Value");
 		ParamList.add(true);
 		try {
@@ -227,6 +224,30 @@ public class XcosBlockTran extends Helpers {
 		elementOut.setAttribute("id", Integer.toString(++idCnt));
 		elementOut.setAttribute("directFeedThrough", "true");
 		elementOut.setAttribute("sampletime", "-1");
+		
+		ArrayList<ArrayList<Object>> ParamArray = new ArrayList<ArrayList<Object>>();
+		ArrayList<Object> ParamList = new ArrayList<Object>();
+
+		ParamList.add("InitialValue");
+		ParamList.add(true);
+		try {
+			ParamList.add(((NodeList) XPathFactory.newInstance().newXPath()
+										.compile("//*[local-name()='BasicBlock']" + "[@id='" + blockID + "']"
+												+ "/Array[@as='oDState']/ScilabDouble/data")
+										.evaluate(docIn, XPathConstants.NODESET))
+										.item(0).getAttributes().getNamedItem("realPart").getNodeValue());		
+		} catch (NullPointerException e) {
+			// TODO Auto-generated catch block
+			//e.printStackTrace();
+			ParamList.add(((NodeList) XPathFactory.newInstance().newXPath()
+										.compile("//*[local-name()='BasicBlock']" + "[@id='" + blockID + "']"
+													+ "/ScilabDouble[@as='dState']/data")
+										.evaluate(docIn, XPathConstants.NODESET))
+										.item(0).getAttributes().getNamedItem("realPart").getNodeValue());
+		}
+		
+		ParamArray.add(ParamList);		
+		elementOut.appendChild(docIn.importNode(ParseParameters(ParamArray), true));
 		
 		return elementOut;
 	}
