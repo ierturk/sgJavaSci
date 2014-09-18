@@ -58,13 +58,38 @@ public class Helpers {
 	
 	public Element ParseXcosDiagram() throws XPathExpressionException, NoSuchMethodException, SecurityException, IllegalAccessException, IllegalArgumentException, InvocationTargetException, InstantiationException, ParserConfigurationException, TransformerException {
 		
-		return ParseBlocks(
-								((NodeList) XPathFactory.newInstance().newXPath()
-										.compile("/node()/mxCell[@as='defaultParent']")
-										.evaluate(docIn, XPathConstants.NODESET))
-										.item(0).getAttributes().getNamedItem("id").getNodeValue()
-							);
-		}
+		Element elementOut = docIn.createElement("GASystemModel");
+		elementOut.setAttribute("type", "gaxml:model");
+		elementOut.setAttribute("modelVersion", "6.3");
+		elementOut.setAttribute("modelType", "GASystemModel");
+		elementOut.setAttribute("modelName", "NoName");
+		elementOut.setAttribute("lastSavedOn", "2014-9-12 5:2:27.000001");
+		elementOut.setAttribute("lastSavedBy", "sgJavaSci-0.1");
+		elementOut.setAttribute("lastSavedBy", "sgJavaSci-0.1");
+		elementOut.setAttribute("xmlns:gaxml", "http://www.geneauto.org/GAXML");
+		elementOut.setAttribute("xmlns:gadt", "http://www.geneauto.org/GADataType");
+		elementOut.setAttribute("xmlns", "http://www.geneauto.org/GASystemModel");
+		
+		Element elementTmp = docIn.createElement("TransformationHistory");
+		elementTmp.setAttribute("type", "gaxml:history");
+
+		Element elementTmp0 = docIn.createElement("Transformation");
+		elementTmp0.setAttribute("writeTime", "2014-9-12 5:2:27.000001");
+		elementTmp0.setAttribute("toolName", "sgJavaSci");
+		elementTmp0.setAttribute("readTime", "2014-9-12 5:2:27.000001");
+		elementTmp.appendChild(elementTmp0);
+		elementOut.appendChild(elementTmp);
+		
+		String parentID = ((NodeList) XPathFactory.newInstance().newXPath()
+												.compile("/node()/mxCell[@as='defaultParent']")
+												.evaluate(docIn, XPathConstants.NODESET))
+												.item(0).getAttributes().getNamedItem("id").getNodeValue();
+
+		elementOut.appendChild(docIn.importNode(ParseBlocks(parentID), true));
+		elementOut.appendChild(docIn.importNode(ParseSignals(parentID), true));
+		
+		return elementOut;
+	}
 
 	
 	private Element ParseBlocks(String parentID) throws XPathExpressionException, NoSuchMethodException, SecurityException, IllegalAccessException, IllegalArgumentException, InvocationTargetException, DOMException, ParserConfigurationException, InstantiationException, TransformerException{
@@ -81,7 +106,6 @@ public class Helpers {
 		Method Translator;
 		XcosBlockTran TranClass = new XcosBlockTran(docIn);
 		String blockID;
-		String blockIFN;
 		Element elementTmp;
 		
 		for (int i = 0; i < blockNL.getLength(); i++) {

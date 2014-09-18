@@ -90,12 +90,12 @@ public class XcostoGA {
         DOMSource source = new DOMSource(docGA);
 
         //write to console or file
-        StreamResult console = new StreamResult(System.out);
-        //StreamResult file = new StreamResult(new File(".xml"));
+        //StreamResult console = new StreamResult(System.out);
+        StreamResult file = new StreamResult(new File("C:\\Users\\ierturk\\Desktop\\GA.xml"));
 
         //write data
-        transformer.transform(source, console);
-        //transformer.transform(source, file);
+        //transformer.transform(source, console);
+        transformer.transform(source, file);
         //System.out.println("DONE");
 	}
 	
@@ -136,7 +136,7 @@ public class XcostoGA {
 		XcosBlockTran Xcos2GA = new XcosBlockTran(docXcos);
 		
 		docGA.appendChild(docGA.importNode(Xcos2GA.ParseXcosDiagram(), true));
-		//PrintXML(docGA);
+		PrintXML(docGA);
 	}
 }
 
