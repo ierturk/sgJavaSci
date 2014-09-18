@@ -49,119 +49,17 @@ import org.w3c.dom.NodeList;
  */
 public class XcosBlockTran extends Helpers {
 	
-	//public static Document docIn;
-	//public int idCnt = 0;
-
-	//private static Helpers helpXML;
-
 	public XcosBlockTran(Document In) {
 		// TODO Auto-generated constructor stub
 		super(In);
 	}
 	
-	public Element ParseXcosDiagram() throws XPathExpressionException, NoSuchMethodException, SecurityException, IllegalAccessException, IllegalArgumentException, InvocationTargetException, InstantiationException, ParserConfigurationException, TransformerException {
-		
-		return ParseSuperBlock(
-								((NodeList) XPathFactory.newInstance().newXPath()
-										.compile("/node()/mxGraphModel/root/mxCell[string-length(@parent)!=0]")
-										.evaluate(docIn, XPathConstants.NODESET))
-										.item(0).getAttributes().getNamedItem("id").getNodeValue()
-							);
-		}
 	
-	private Element ParseSuperBlock(String parentID) throws XPathExpressionException, ParserConfigurationException, TransformerException, NoSuchMethodException, SecurityException, IllegalAccessException, IllegalArgumentException, InvocationTargetException, InstantiationException {
-		XPathExpression expBLK = XPathFactory.newInstance().newXPath().compile("//*[local-name()='BasicBlock' or local-name()='SuperBlock']"
-																					+ "[@parent='" + parentID + "']");
-		
-		Element elementOut = docIn.createElement("SystemBlock");
-		elementOut.setAttribute("type", "SubSystem");
-		elementOut.setAttribute("name", "NoName");
-		elementOut.setAttribute("isVirtual", "false");
-		elementOut.setAttribute("id", Integer.toString(++idCnt));
-		elementOut.setAttribute("directFeedThrough", "true");
-		
-		Element elementTemp = docIn.createElement("blocks");
-		elementTemp.setAttribute("type", "gaxml:collection");
-		elementOut.appendChild(elementTemp);
-		
-		NodeList resultNL = (NodeList) expBLK.evaluate(docIn, XPathConstants.NODESET);
-		for (int i = 0; i < resultNL.getLength(); i++) {
-
-			switch(resultNL.item(i).getNodeName()) {
-				case "BasicBlock":
-					elementOut.getFirstChild().appendChild(docIn.importNode(ParseBasicBlock(resultNL.item(i).getAttributes().getNamedItem("id").getNodeValue()), true));
-					break;
-					
-				case "SuperBlock":
-					elementOut.getFirstChild().appendChild(docIn.importNode(ParseSuperBlock(
-																								((NodeList) XPathFactory.newInstance().newXPath()
-																										.compile("//SuperBlock[@id='"
-																												+ resultNL.item(i).getAttributes().getNamedItem("id").getNodeValue()
-																												+ "']"
-																												+ "/SuperBlockDiagram/mxGraphModel/root/mxCell[string-length(@parent)!=0]")
-																										.evaluate(docIn, XPathConstants.NODESET))
-																										.item(0).getAttributes().getNamedItem("id").getNodeValue()
-																							), true));
-					break;
-					
-				default:
-					System.out.println("NODE[" + i + "]: " + resultNL.item(i).getNodeName());
-			}
-		}
-		return elementOut;
-	}
-	
-	private Element ParseBasicBlock(String blockID) throws ParserConfigurationException, XPathExpressionException, SecurityException, IllegalAccessException, InstantiationException, IllegalArgumentException, InvocationTargetException, DOMException, NoSuchMethodException {
-		
-		XPathExpression expBLK = XPathFactory.newInstance().newXPath().compile("//*[local-name()='BasicBlock']" + "[@id='" + blockID + "']");
-		NodeList blockNL = (NodeList) expBLK.evaluate(docIn, XPathConstants.NODESET);
-		
-		Method parser;
-		XcosBlockTran testClass = new XcosBlockTran(docIn);
-		
-		try {
-			parser = testClass.getClass().getDeclaredMethod(blockNL.item(0).getAttributes().getNamedItem("interfaceFunctionName").getNodeValue() + "_tran", String.class);
-			parser.setAccessible(true);
-			Element elementOut = (Element) parser.invoke(testClass, blockID);
-			
-			try {
-				elementOut.appendChild(docIn.importNode(ParseInDataPort(blockID), true));	
-			} catch (NullPointerException e) {
-				// TODO Auto-generated catch block
-				//e.printStackTrace();
-			}
-			
-			try {
-				elementOut.appendChild(docIn.importNode(ParseOutDataPort(blockID), true));
-			} catch (NullPointerException e) {
-				// TODO Auto-generated catch block
-				//e.printStackTrace();
-			}
-			
-			try {
-				elementOut.appendChild(docIn.importNode(ParseGeometry(blockID), true));
-			} catch (NullPointerException e) {
-				// TODO Auto-generated catch block
-				//e.printStackTrace();
-			}
-			
-			return elementOut;
-		} catch (NoSuchMethodException | NullPointerException e) {
-			// TODO Auto-generated catch block
-			//e.printStackTrace();
-		}
-
-		parser = testClass.getClass().getDeclaredMethod("UnSupported", String.class);
-		parser.setAccessible(true);
-		Element elementOut = (Element) parser.invoke(testClass, blockNL.item(0).getAttributes().getNamedItem("interfaceFunctionName").getNodeValue());
-		return elementOut;
-
-	}
-
 	@SuppressWarnings("unused")
-	private Element UnSupported(String blockType) throws ParserConfigurationException {		
+	private Element UnSupported(String blockType) throws ParserConfigurationException {
 		Element elementOut = docIn.createElement("UnSupportedBlock");
 		elementOut.setAttribute("type", blockType);
+		System.out.println("\tUnSupportedBlock: " + blockType);
 		return elementOut;
 	}
 	
@@ -235,7 +133,7 @@ public class XcosBlockTran extends Helpers {
 										.compile("//*[local-name()='BasicBlock']" + "[@id='" + blockID + "']"
 												+ "/Array[@as='oDState']/ScilabDouble/data")
 										.evaluate(docIn, XPathConstants.NODESET))
-										.item(0).getAttributes().getNamedItem("realPart").getNodeValue());		
+										.item(0).getAttributes().getNamedItem("realPart").getNodeValue());	
 		} catch (NullPointerException e) {
 			// TODO Auto-generated catch block
 			//e.printStackTrace();
@@ -248,6 +146,22 @@ public class XcosBlockTran extends Helpers {
 		
 		ParamArray.add(ParamList);		
 		elementOut.appendChild(docIn.importNode(ParseParameters(ParamArray), true));
+		
+		return elementOut;
+	}
+	
+	@SuppressWarnings("unused")
+	private Element IFTHEL_f_tran(String blockID) throws ParserConfigurationException, DOMException, XPathExpressionException {		
+		Element elementOut = docIn.createElement("CombinatorialBlock");
+		elementOut.setAttribute("type", "If");
+		elementOut.setAttribute("name", "NoName");
+		elementOut.setAttribute("isVirtual", "false");
+		elementOut.setAttribute("id", Integer.toString(++idCnt));
+		elementOut.setAttribute("directFeedThrough", "true");
+		elementOut.setAttribute("sampletime", "-1");
+		
+		ArrayList<ArrayList<Object>> ParamArray = new ArrayList<ArrayList<Object>>();
+		ArrayList<Object> ParamList = new ArrayList<Object>();
 		
 		return elementOut;
 	}

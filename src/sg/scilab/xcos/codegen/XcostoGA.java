@@ -120,11 +120,11 @@ public class XcostoGA {
 			String strAttributes = "";
 			for (int i = 0; i < attributes.getLength(); i++) {
 		        Node theAttribute = attributes.item(i);
-		        strAttributes += theAttribute.getNodeName() + "=" + theAttribute.getNodeValue() + " ";
+		        strAttributes += theAttribute.getNodeName() + "=\"" + theAttribute.getNodeValue() + "\" ";
 		      }
 			
 			TreeItem tItem = new TreeItem(treeItem, 0);
-			tItem.setText(node.getNodeName() + " " + strAttributes);
+			tItem.setText(node.getNodeName() + " " + strAttributes /*+ " text: " + node.getTextContent()*/);
 			for(int i = 0; i<node.getChildNodes().getLength();i++) {
 				XMLtoTree(tItem, node.getChildNodes().item(i));
 			}
