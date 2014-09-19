@@ -24,7 +24,10 @@ package sg.scilab.xcos.codegen;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.Map;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 import javax.xml.parsers.DocumentBuilderFactory;
 import javax.xml.parsers.ParserConfigurationException;
@@ -58,12 +61,14 @@ public class Helpers {
 	
 	public Element ParseXcosDiagram() throws XPathExpressionException, NoSuchMethodException, SecurityException, IllegalAccessException, IllegalArgumentException, InvocationTargetException, InstantiationException, ParserConfigurationException, TransformerException {
 		
+		String timestamp = new java.text.SimpleDateFormat("yyyy-MM-dd HH:mm:ss.S").format(new Date());
+		
 		Element elementOut = docIn.createElement("GASystemModel");
 		elementOut.setAttribute("type", "gaxml:model");
 		elementOut.setAttribute("modelVersion", "6.3");
 		elementOut.setAttribute("modelType", "GASystemModel");
 		elementOut.setAttribute("modelName", "NoName");
-		elementOut.setAttribute("lastSavedOn", "2014-9-12 5:2:27.000001");
+		elementOut.setAttribute("lastSavedOn", timestamp);
 		elementOut.setAttribute("lastSavedBy", "sgJavaSci-0.1");
 		elementOut.setAttribute("lastSavedBy", "sgJavaSci-0.1");
 		elementOut.setAttribute("xmlns:gaxml", "http://www.geneauto.org/GAXML");
@@ -74,9 +79,9 @@ public class Helpers {
 		elementTmp.setAttribute("type", "gaxml:history");
 
 		Element elementTmp0 = docIn.createElement("Transformation");
-		elementTmp0.setAttribute("writeTime", "2014-9-12 5:2:27.000001");
+		elementTmp0.setAttribute("writeTime", timestamp);
 		elementTmp0.setAttribute("toolName", "sgJavaSci");
-		elementTmp0.setAttribute("readTime", "2014-9-12 5:2:27.000001");
+		elementTmp0.setAttribute("readTime", timestamp);
 		elementTmp.appendChild(elementTmp0);
 		elementOut.appendChild(elementTmp);
 		
@@ -85,12 +90,24 @@ public class Helpers {
 												.evaluate(docIn, XPathConstants.NODESET))
 												.item(0).getAttributes().getNamedItem("id").getNodeValue();
 
-		elementOut.appendChild(docIn.importNode(ParseBlocks(parentID), true));
-		elementOut.appendChild(docIn.importNode(ParseSignals(parentID), true));
+		elementOut.appendChild(docIn.importNode(ParseSuperBlock(parentID), true));
+		//elementOut.appendChild(docIn.importNode(ParseSignals(parentID), true));
 		
 		return elementOut;
 	}
 
+	private Element ParseSuperBlock(String parentID) throws XPathExpressionException, ParserConfigurationException, TransformerException, NoSuchMethodException, SecurityException, IllegalAccessException, IllegalArgumentException, InvocationTargetException, InstantiationException {		
+		Element elementOut = docIn.createElement("SystemBlock");
+		elementOut.setAttribute("type", "SubSystem");
+		elementOut.setAttribute("name", "NoName");
+		elementOut.setAttribute("isVirtual", "false");
+		elementOut.setAttribute("id", Integer.toString(++idCnt));
+		elementOut.setAttribute("directFeedThrough", "true");
+		
+		elementOut.appendChild(docIn.importNode(ParseBlocks(parentID), true));
+		elementOut.appendChild(docIn.importNode(ParseSignals(parentID), true));
+		return elementOut;
+	}
 	
 	private Element ParseBlocks(String parentID) throws XPathExpressionException, NoSuchMethodException, SecurityException, IllegalAccessException, IllegalArgumentException, InvocationTargetException, DOMException, ParserConfigurationException, InstantiationException, TransformerException{
 		PortAsscs = new ArrayList<ArrayList<Object>>();
@@ -113,8 +130,17 @@ public class Helpers {
 			blockID = blockNL.item(i).getAttributes().getNamedItem("id").getNodeValue();
 						
 			try {
-				if(blockNL.item(i).getNodeName().equals("SuperBlock")) {					
-					elementTmp = (Element) docIn.importNode(ParseSuperBlock(blockID), true);		
+				if(blockNL.item(i).getNodeName().equals("SuperBlock")) {
+					String superblockID = ((NodeList) XPathFactory.newInstance().newXPath()
+														.compile("//SuperBlock[@id='"
+																	+ blockID 
+																	+ "']/SuperBlockDiagram"
+																	+ "/mxCell[@as='defaultParent']")
+														.evaluate(docIn, XPathConstants.NODESET))
+														.item(0).getAttributes().getNamedItem("id").getNodeValue();
+					
+					elementTmp = (Element) docIn.importNode(ParseSuperBlock(superblockID), true);		
+				
 				} else {
 					Translator = TranClass.getClass().getDeclaredMethod(
 										blockNL.item(i).getAttributes().getNamedItem("interfaceFunctionName").getNodeValue() + "_tran", String.class);
@@ -178,27 +204,6 @@ public class Helpers {
 				//}
 		}
 		
-		return elementOut;
-	}
-		
-	private Element ParseSuperBlock(String blockID) throws XPathExpressionException, ParserConfigurationException, TransformerException, NoSuchMethodException, SecurityException, IllegalAccessException, IllegalArgumentException, InvocationTargetException, InstantiationException {		
-		String parentID = ((NodeList) XPathFactory.newInstance().newXPath()
-								.compile("//SuperBlock[@id='"
-											+ blockID 
-											+ "']/SuperBlockDiagram"
-											+ "/mxCell[@as='defaultParent']")
-								.evaluate(docIn, XPathConstants.NODESET))
-								.item(0).getAttributes().getNamedItem("id").getNodeValue();
-		
-		Element elementOut = docIn.createElement("SystemBlock");
-		elementOut.setAttribute("type", "SubSystem");
-		elementOut.setAttribute("name", "NoName");
-		elementOut.setAttribute("isVirtual", "false");
-		elementOut.setAttribute("id", Integer.toString(++idCnt));
-		elementOut.setAttribute("directFeedThrough", "true");
-		
-		elementOut.appendChild(docIn.importNode(ParseBlocks(parentID), true));
-		elementOut.appendChild(docIn.importNode(ParseSignals(parentID), true));
 		return elementOut;
 	}
 	
@@ -313,8 +318,9 @@ public class Helpers {
 		Element elementTemp0 = null;
 		NodeList inportNL = null;
 		String outportID = null;
+		String outpID = null;
 		String inportID = null;
-
+		String inpID = null;
 
 		NodeList blockNL = (NodeList) XPathFactory.newInstance().newXPath()
 										.compile("//*[@parent='" + parentID + "']"
@@ -334,37 +340,34 @@ public class Helpers {
 				inportID = inportNL.item(ii).getAttributes().getNamedItem("id").getNodeValue();
 				outportID = ParseSignal(inportID);
 				
-				elementTemp = docIn.createElement("Signal");
-				elementTemp.setAttribute("id", Integer.toString(++idCnt));
-				for(ArrayList<Object> portPortAssc : PortAsscs){
-					
+				outpID = null;
+				inpID = null;
+				for(ArrayList<Object> portPortAssc : PortAsscs){					
 					if(portPortAssc.get(0).equals(outportID)) {
-						elementTemp0 = docIn.createElement("srcPort");
-						elementTemp0.setAttribute("type", "gaxml:pointer");
-						elementTemp0.setTextContent(Integer.toString((int) portPortAssc.get(1)));			
-						elementTemp.appendChild(elementTemp0);
+						outpID = Integer.toString((int) portPortAssc.get(1));
 					}
 
 					if(portPortAssc.get(0).equals(inportID)) {
-						elementTemp0 = docIn.createElement("dstPort");
-						elementTemp0.setAttribute("type", "gaxml:pointer");
-						elementTemp0.setTextContent(Integer.toString((int) portPortAssc.get(1)));
-						elementTemp.appendChild(elementTemp0);
+						inpID = Integer.toString((int) portPortAssc.get(1));
 					}
-					elementOut.appendChild(elementTemp);
 				}
-				/*
-				NodeList outblockNL = (NodeList) XPathFactory.newInstance().newXPath().compile("//*[@id='" + outportID + "']")
-																						.evaluate(docIn, XPathConstants.NODESET);
-				System.out.println("Out Block: " + outblockNL.item(0).getNodeName());
-				NodeList outparentNL = (NodeList) XPathFactory.newInstance().newXPath()
-															.compile("//*[@id='" + outblockNL.item(0).getAttributes().getNamedItem("parent").getNodeValue() + "']")
-															.evaluate(docIn, XPathConstants.NODESET);				
-				System.out.println("Out Parent: " + outparentNL.item(0).getNodeName());
-				*/
+				
+				if((outpID == null) | (inpID == null)) {continue;}
+
+				elementTemp = docIn.createElement("Signal");
+				elementTemp.setAttribute("id", Integer.toString(++idCnt));
+				elementTemp0 = docIn.createElement("dstPort");
+				elementTemp0.setAttribute("type", "gaxml:pointer");
+				elementTemp0.setTextContent(outpID);
+				elementTemp.appendChild(elementTemp0);
+				elementTemp0 = docIn.createElement("srcPort");
+				elementTemp0.setAttribute("type", "gaxml:pointer");
+				elementTemp0.setTextContent(inpID);			
+				elementTemp.appendChild(elementTemp0);
+				elementOut.appendChild(elementTemp);
 			}
 		}
-		
+
 		return elementOut;
 	}
 	
@@ -419,86 +422,115 @@ public class Helpers {
 		return elementOut;
 	}
 	
-	public Element ParseParameters(ArrayList<ArrayList<Object>> paramArray) {
+	protected Element ParseParameters(ArrayList<ArrayList<Object>> paramArray) throws NoSuchMethodException, SecurityException, DOMException, IllegalAccessException, IllegalArgumentException, InvocationTargetException, InstantiationException {
 		Element elementOut = docIn.createElement("parameters");
 		elementOut.setAttribute("type", "gaxml:collection");
+		Element elementTmp = null;
 		
+		Helpers HelpClass = new Helpers(docIn);
 	    for(ArrayList<Object> pList : paramArray){
-	        //System.out.println(pList.get(0) + " -- " + pList.get(1) + " -- " + pList.get(2));
-			//elementOut.appendChild(docIn.importNode(ParseParameters(ParamArray), true));
-	        
-	        switch (pList.get(1).toString()) {
-				case "true":
-					//System.out.println(1);
-					elementOut.appendChild(docIn.importNode(ParseValueParam(pList), true));
-					break;
-					
-				case "false":
-					//System.out.println(0);
-					elementOut.appendChild(docIn.importNode(ParseStringParam(pList), true));
-					break;
-					
-				default:
-					break;
-			}
-
+	    	System.out.println((String) pList.get(0));
+	    	
+			elementTmp = docIn.createElement("BlockParameter");
+			elementTmp.setAttribute("name", (String) pList.get(0));
+			elementTmp.setAttribute("id", Integer.toString(++idCnt));
+			elementOut.appendChild(elementTmp);
+			
+			elementTmp = docIn.createElement("value");
+			elementTmp.setAttribute("type", "gaxml:object");
+			elementOut.getLastChild().appendChild(elementTmp);
+	    	
+			Method paramParser = HelpClass.getClass().getDeclaredMethod( "Parse" + ((String) pList.get(1)) + "Param", ArrayList.class);
+			paramParser.setAccessible(true);
+			elementOut.getLastChild().getFirstChild().appendChild(docIn.importNode((Element) paramParser.invoke(HelpClass, pList), true));
 	    }
 
 		return elementOut;
 	}
 	
-	public Element ParseValueParam(ArrayList<Object> paramList) {
-		Element elementOut = docIn.createElement("BlockParameter");
-		elementOut.setAttribute("name", (String) paramList.get(0));
+	@SuppressWarnings("unused")
+	protected Element ParseExpressionParam(ArrayList<Object> paramList) throws NoSuchMethodException, SecurityException, DOMException, IllegalAccessException, IllegalArgumentException, InvocationTargetException {
+		Helpers HelpClass = new Helpers(docIn);
+		Element elementOut = docIn.createElement("ExpressionValue");
 		elementOut.setAttribute("id", Integer.toString(++idCnt));
 		
 		Element elementTemp = docIn.createElement("value");
-		elementTemp.setAttribute("type", "gaxml:collection");
+		elementTemp.setAttribute("type", "gaxml:object");
 		elementOut.appendChild(elementTemp);
 		
-		elementTemp = docIn.createElement("ExpressionValue");
-		elementTemp.setAttribute("id", Integer.toString(++idCnt));
-		elementOut.getFirstChild().appendChild(elementTemp);
-		
-		elementTemp = docIn.createElement("value");
-		elementTemp.setAttribute("type", "gaxml:collection");
-		elementOut.getFirstChild().getFirstChild().appendChild(elementTemp);
-		
-		Double value = Double.parseDouble((String) paramList.get(2));
-		//System.out.println( "This is list item 3 : " + value);
-		elementTemp = docIn.createElement("RealExpression");
-		elementTemp.setAttribute("id", Integer.toString(++idCnt));	
-		elementTemp.setAttribute("litValue", Double.toString(value.floatValue()));
-		elementTemp.setAttribute("integerPart", Integer.toString(value.intValue()));
-		elementTemp.setAttribute("scientificValue", "false");
-		elementTemp.setAttribute("fractionalPart", Double.toString((Math.abs(value - value.intValue()))));
-		elementTemp.setAttribute("exponent", Integer.toString(0));	
-		elementOut.getFirstChild().getFirstChild().getFirstChild().appendChild(elementTemp);
-		
-		elementTemp = docIn.createElement("dataType");
-		elementTemp.setAttribute("type", "gaxml:collection");
-		elementOut.getFirstChild().getFirstChild().getFirstChild().getFirstChild().appendChild(elementTemp);
-		
-		elementTemp = docIn.createElement("TRealDouble");
-		elementTemp.setAttribute("id", Integer.toString(++idCnt));
-		elementOut.getFirstChild().getFirstChild().getFirstChild().getFirstChild().getFirstChild().appendChild(elementTemp);
+    	System.out.println((String) paramList.get(2));
+		Method paramParser = HelpClass.getClass().getDeclaredMethod( "Parse" + ((String) paramList.get(2)) + "Param", String.class);
+		paramParser.setAccessible(true);
+		elementOut.getFirstChild().appendChild(docIn.importNode((Element) paramParser.invoke(HelpClass, paramList.get(3)), true));
 		
 		return elementOut;
 	}
 	
-	public Element ParseStringParam(ArrayList<Object> paramList) {
-		Element elementOut = docIn.createElement("BlockParameter");
-		elementOut.setAttribute("name", (String) paramList.get(0));
-		elementOut.setAttribute("id", Integer.toString(++idCnt));
+	@SuppressWarnings("unused")
+	protected Element ParseRealExpParam(String pvalue) {
 		
-		Element elementTemp = docIn.createElement("value");
-		elementTemp.setAttribute("type", "gaxml:collection");
+		Double value = Double.parseDouble((String) pvalue);
+		Element elementOut = docIn.createElement("RealExpression");
+		elementOut.setAttribute("id", Integer.toString(++idCnt));	
+
+		elementOut.setAttribute("litValue", Double.toString(value.floatValue()));
+		elementOut.setAttribute("integerPart", Integer.toString(value.intValue()));
+		elementOut.setAttribute("scientificValue", "false");
+		elementOut.setAttribute("fractionalPart", Double.toString((Math.abs(value - value.intValue()))));
+		elementOut.setAttribute("exponent", Integer.toString(0));	
+		
+		Element elementTemp = docIn.createElement("dataType");
+		elementTemp.setAttribute("type", "gaxml:object");
 		elementOut.appendChild(elementTemp);
 		
-		elementTemp = docIn.createElement("StringValue");
+		elementTemp = docIn.createElement("TRealDouble");
 		elementTemp.setAttribute("id", Integer.toString(++idCnt));
-		elementTemp.setAttribute("value", (String) paramList.get(2));
 		elementOut.getFirstChild().appendChild(elementTemp);
+
+		return elementOut;
+	}
+	
+	@SuppressWarnings("unused")
+	protected Element ParseBinaryExpParam(String pvalue) {
+		
+		Element elementOut = docIn.createElement("BinaryExpression");
+		elementOut.setAttribute("id", Integer.toString(++idCnt));
+
+		Pattern pattern = Pattern.compile(">");
+		String[] split = pattern.split(pvalue);
+		
+		Element elementTemp = docIn.createElement("leftArgument");
+		elementTemp.setAttribute("type", "gaxml:object");
+		elementOut.appendChild(elementTemp);	
+		elementTemp = docIn.createElement("VariableExpression");
+		elementTemp.setAttribute("name", split[0]);
+		elementTemp.setAttribute("id", Integer.toString(++idCnt));
+		elementOut.getLastChild().appendChild(elementTemp);
+		
+		elementTemp = docIn.createElement("rightArgument");
+		elementTemp.setAttribute("type", "gaxml:object");
+		elementOut.appendChild(elementTemp);	
+		elementOut.getLastChild().appendChild(docIn.importNode(ParseRealExpParam(split[1]), true));
+
+		elementTemp = docIn.createElement("operator");
+		elementTemp.setAttribute("type", "gaxml:object");
+		elementOut.appendChild(elementTemp);	
+		elementTemp = docIn.createElement("BinaryOperator");
+		elementTemp.setAttribute("type", "gaxml:enum");
+		elementTemp.setAttribute("name", "GT_OPERATOR");
+		elementTemp.setAttribute("precedence", "10");
+		elementTemp.setAttribute("ordinal", "14");
+		elementOut.getLastChild().appendChild(elementTemp);
+
+		return elementOut;
+	}
+
+	
+	@SuppressWarnings("unused")
+	private Element ParseStringParam(ArrayList<Object> paramList) {		
+		Element elementOut = docIn.createElement("StringValue");
+		elementOut.setAttribute("id", Integer.toString(++idCnt));
+		elementOut.setAttribute("value", (String) paramList.get(2));
 		
 		return elementOut;
 	}

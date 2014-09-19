@@ -64,7 +64,7 @@ public class XcosBlockTran extends Helpers {
 	}
 	
 	@SuppressWarnings("unused")
-	private Element CONST_m_tran(String blockID) throws ParserConfigurationException, DOMException, XPathExpressionException {		
+	private Element CONST_m_tran(String blockID) throws ParserConfigurationException, DOMException, XPathExpressionException, NoSuchMethodException, SecurityException, IllegalAccessException, IllegalArgumentException, InvocationTargetException, InstantiationException {		
 		Element elementOut = docIn.createElement("SourceBlock");
 		elementOut.setAttribute("type", "Constant");
 		elementOut.setAttribute("name", "NoName");
@@ -77,7 +77,8 @@ public class XcosBlockTran extends Helpers {
 		ArrayList<Object> ParamList = new ArrayList<Object>();
 
 		ParamList.add("Value");
-		ParamList.add(true);
+		ParamList.add("Expression");
+		ParamList.add("RealExp");
 		try {
 			ParamList.add(((NodeList) XPathFactory.newInstance().newXPath()
 										.compile("//*[local-name()='BasicBlock']" + "[@id='" + blockID + "']"
@@ -98,13 +99,13 @@ public class XcosBlockTran extends Helpers {
 		
 		ParamList = new ArrayList<Object>();
 		ParamList.add("OutDataTypeMode");
-		ParamList.add(false);
+		ParamList.add("String");
 		ParamList.add("Inherit from 'Constant value'");
 		ParamArray.add(ParamList);
 
 		ParamList = new ArrayList<Object>();
 		ParamList.add("VectorParams1D");
-		ParamList.add(false);
+		ParamList.add("String");
 		ParamList.add("off");
 		ParamArray.add(ParamList);
 		
@@ -114,7 +115,7 @@ public class XcosBlockTran extends Helpers {
 	}
 	
 	@SuppressWarnings("unused")
-	private Element DOLLAR_m_tran(String blockID) throws ParserConfigurationException, DOMException, XPathExpressionException {		
+	private Element DOLLAR_m_tran(String blockID) throws ParserConfigurationException, DOMException, XPathExpressionException, NoSuchMethodException, SecurityException, IllegalAccessException, IllegalArgumentException, InvocationTargetException, InstantiationException {		
 		Element elementOut = docIn.createElement("SequentialBlock");
 		elementOut.setAttribute("type", "UnitDelay");
 		elementOut.setAttribute("name", "NoName");
@@ -127,7 +128,8 @@ public class XcosBlockTran extends Helpers {
 		ArrayList<Object> ParamList = new ArrayList<Object>();
 
 		ParamList.add("InitialValue");
-		ParamList.add(true);
+		ParamList.add("Expression");
+		ParamList.add("RealExp");
 		try {
 			ParamList.add(((NodeList) XPathFactory.newInstance().newXPath()
 										.compile("//*[local-name()='BasicBlock']" + "[@id='" + blockID + "']"
@@ -151,9 +153,59 @@ public class XcosBlockTran extends Helpers {
 	}
 	
 	@SuppressWarnings("unused")
-	private Element IFTHEL_f_tran(String blockID) throws ParserConfigurationException, DOMException, XPathExpressionException {		
+	private Element IFTHEL_f_tran(String blockID) throws ParserConfigurationException, DOMException, XPathExpressionException, NoSuchMethodException, SecurityException, IllegalAccessException, IllegalArgumentException, InvocationTargetException, InstantiationException {		
 		Element elementOut = docIn.createElement("CombinatorialBlock");
 		elementOut.setAttribute("type", "If");
+		elementOut.setAttribute("name", "NoName");
+		elementOut.setAttribute("isVirtual", "false");
+		elementOut.setAttribute("id", Integer.toString(++idCnt));
+		elementOut.setAttribute("directFeedThrough", "true");
+		elementOut.setAttribute("sampletime", "-1");
+		
+		ArrayList<ArrayList<Object>> ParamArray = new ArrayList<ArrayList<Object>>();
+		ArrayList<Object> ParamList = new ArrayList<Object>();
+		
+		ParamList.add("ShowElse");
+		ParamList.add("String");		
+		NodeList PortNL = (NodeList) XPathFactory.newInstance().newXPath()
+												.compile("//CommandPort[@parent='" + blockID + "' and @ordering='2']")
+												.evaluate(docIn, XPathConstants.NODESET);
+		if(PortNL.getLength() > 0) ParamList.add("on");
+		else ParamList.add("off");
+		ParamArray.add(ParamList);
+		
+		ParamList = new ArrayList<Object>();
+		ParamList.add("IfExpression");
+		ParamList.add("Expression");
+		ParamList.add("BinaryExp");
+		ParamList.add("u1>0");
+		ParamArray.add(ParamList);
+		
+		elementOut.appendChild(docIn.importNode(ParseParameters(ParamArray), true));
+		
+		return elementOut;
+	}
+	
+	@SuppressWarnings("unused")
+	private Element SUMMATION_tran(String blockID) throws ParserConfigurationException, DOMException, XPathExpressionException {		
+		Element elementOut = docIn.createElement("CombinatorialBlock");
+		elementOut.setAttribute("type", "Sum");
+		elementOut.setAttribute("name", "NoName");
+		elementOut.setAttribute("isVirtual", "false");
+		elementOut.setAttribute("id", Integer.toString(++idCnt));
+		elementOut.setAttribute("directFeedThrough", "true");
+		elementOut.setAttribute("sampletime", "-1");
+		
+		ArrayList<ArrayList<Object>> ParamArray = new ArrayList<ArrayList<Object>>();
+		ArrayList<Object> ParamList = new ArrayList<Object>();
+		
+		return elementOut;
+	}
+	
+	@SuppressWarnings("unused")
+	private Element SWITCH2_m_tran(String blockID) throws ParserConfigurationException, DOMException, XPathExpressionException {		
+		Element elementOut = docIn.createElement("CombinatorialBlock");
+		elementOut.setAttribute("type", "Switch");
 		elementOut.setAttribute("name", "NoName");
 		elementOut.setAttribute("isVirtual", "false");
 		elementOut.setAttribute("id", Integer.toString(++idCnt));
