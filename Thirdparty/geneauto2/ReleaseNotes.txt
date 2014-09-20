@@ -1,0 +1,1871 @@
+This file contains the list of changes for each release of geneauto2.
+
+2.4.10 01/05/2013
+Reference Title
+BZ:843 Import * as matrix multiplication
+BZ:842 Parenthesize binary expressions, when the generated expression tree is not in the C associativity order
+BZ:841 Improved support of binary operations between vectors and vector-matrices
+BZ:840 F and G blocks have been renamed to Interpolation1D and 2D respectively. Their interface has been extended to support Xcos integration and code generation has been corrected. 
+BZ:839 Fixed a problem with negative constants to avoid uncompilable expressions like a--1
+BZ:838 Generate correct code from matrix multiplications in nested expressions (e.g. A*B*C). Previously an error was raised or generated code was uncompilable
+BZ:837 Generate HAVE_STRUCT_<structure_name> iff <structure_name> structure is defined by GeneAuto to ease integrating with external applications
+BZ:386 Prefixing generated pimitive types with GA to avoid conflicts when integrating with external applications
+BZ:836 Correcting file mode of Linux launcher scripts
+BZ 406 Adding support for importing numeric values with negative exponent
+BZ:249 Sum block: Corrected case for single scalar input and "-" sign
+BZ:247 RelationalOperator block: Corrected port typing error
+
+
+2.4.9+ 23/07/2012 (Snapshot)
+Reference Title
+BZ:457 Moved extra blocks Scope and Display into the standard library blocklibrary.gbl.xml. Removed blocklibrary-extra.gbl.xml
+BZ:404 Math block: Fixed code generation for options "rem", "hypot" and "transpose". Unsupported functions (e.g. with complex domain) rejected with a clear error message.
+BZ:400 Fixed error importing negative constants from Simulink models.
+BZ:386 Renamed C type definition BOOL to GABOOL to avoid conflicts when integrating generated code with external applications.
+
+
+2.4.9+ 28/11/2011 (Snapshot)
+Reference Title
+BZ:126 CPrinter: Fixed an error handling output arrays.
+BZ:120 CPrinter: Fixed code generation for trigger/enable block
+BZ:102 CPrinter: Fixed assignment to observation variable
+BZ:101 SwitchBackend: Removed extra loop step in the generated code, when input is vector
+BZ:85   CodeModelOptimizer: Optimize both branches of an if statement
+
+
+2.4.9 05/10/2011
+Reference Title
+TN:77	CPrinter: name conflict check is not implemented for elements created in adaptation step
+TN:83	geneauto2 linux binary not found
+TN:46	Trigonometry block: Wrong code generated
+TN:45	Implement support of true and false constants in stateflow
+TN:61	Add debugging related command arguments to Gene-Auto
+TN:75	Implement pass-by-value mechanism for functions with non-scalar input
+TF:924	Added support for NE operator
+TF:925	Fixed base index handling in ForIterator backend
+TF:941	TSImulinkImporter determines model name from file name, instead the stored name
+TF:942	Log files are written in two places, when -O option was supplied
+TF:943	Tool initialisation erorr, when output file starts with a lowercase drive letter
+TF:944	Allow overriding the default binary installation path identification
+TF:946	Fixed required command line argument check
+TF:949	Removed unnecessary case conversion during name normalisation
+TF:950	Fixed library location problem in AdaPrinter
+TF:110811_1	Incorrect data type for loop variables
+TF:110901_3	Long line importing problem in Stateflow importer
+TF:110901_4	Inefficient Mux/Demux code generation (out of memory with large arrays)
+
+
+2.4.8 13/12/2010
+Reference	Title	
+    Version Submitted by	Date submitted	Severity	Datatype	Assigned to
+TF:560	Remove varPortIdMatches and store reference to a variable corresponding to port in the port object	
+		2.4.1	Castel	2009/01/30	MINOR	DEVELOPMENT TASK	Andrei Rybinski
+TF:850	Add attribute isVirtual to CompoundStatement	
+		2.4.6	Naks	2010/07/01	NICE TO HAVE	FEATURE REQUEST	Andrei Rybinski
+TF:854	TAdaPrinter: Shift left and shift right operators are not implemented	
+		2.4.6	Robinski	2010/07/06	MINOR	DEVELOPMENT TASK	Andrei Rybinski
+TF:855	TAdaPrinter: wrong printing of non-scalar UnaryExpressions	
+		2.4.6	Robinski	2010/07/06	MINOR	BUG REPORT	Andrei Rybinski
+TF:856	TAdaPrinter: null pointer exception in gac_18.gac_18_sp3Test	
+		2.4.6	Robinski	2010/07/06	MINOR	BUG REPORT	Andrei Rybinski
+TF:858	Code refactoring: rename method replaceExpression to replaceMe and change signature of argument to Object	
+		2.4.6	Robinski	2010/07/09	MINOR	DEVELOPMENT TASK	Andrei Rybinski
+TF:860	After introducing the method GASysInfo.getDefSrcLibraryPath() the ada printer does not find the library path	
+		2.4.7 dev	Naks	2010/07/13	MAJOR	BUG REPORT	Andrei Rybinski
+TF:861	Models with model reference block fail in fmpreprocessor with message "... block ... does not have Port parameter" (see also TF:863)	
+		2.4.7	Naks	2010/07/16	MAJOR	BUG REPORT	Tonu Naks
+TF:863	Simulink does not set PortNumber parameter for the rist port in subsystem	
+		2.4.7	Naks	2010/07/16	MAJOR	BUG REPORT	Tonu Naks
+TF:864	TAdaPrinter: compilation of gacommon file fails	
+		2.4.7 dev	Robinski	2010/07/16	MINOR	DEVELOPMENT TASK	Andrei Rybinski
+TF:865	Add semantic information about the transformations to the intermediate model file names	
+		2.4.7	Toom	2010/07/16		DEVELOPMENT TASK	Andres Toom
+TF:866	Inline all subsystems except function call targets, enabled subsystems and  stateflow charts	
+		2.4.7	Naks	2010/07/26	MAJOR	FEATURE REQUEST	Andrei Rybinski
+TF:867	Read isObservable flag from the mdl file	
+		2.4.7	Naks	2010/07/26	MAJOR	FEATURE REQUEST	Andrei Rybinski
+TF:869	Implement "treat as atomic unit" for inlined subsystems 	
+		2.4.6	Naks	2010/07/30	MAJOR	FEATURE REQUEST	Andres Toom
+TF:870	Add error message to expression's replaceMe method	
+		2.4.6	Robinski	2010/08/02	MINOR	DEVELOPMENT TASK	Andrei Rybinski
+TF:871	Quote filenames containing spaces when launching elementary tools	
+		2.4.7	Toom	2010/08/02		DEVELOPMENT TASK	Andres Toom
+TF:873	Generate global variable for each signal with flag isObservable  (depends on TF:868)	
+		2.4.6	Naks	2010/08/25	MAJOR	FEATURE REQUEST	Tonu Naks
+TF:875	AdaPrinter must allow initialisation of arrays with scalar values (the code model allows scalar expansion)	
+		2.4.6	Naks	2010/08/26	BLOCKING	FEATURE REQUEST	Andrei Rybinski
+TF:876	When merge block input is global and output local, the gloabal variable is removed after processign the merge block	
+		2.4.7 dev	Naks	2010/08/27	MINOR	DEVELOPMENT TASK	Andrei Rybinski
+TF:877	AdaPrinter: Two consecutive underscores in the variable name 	
+		2.4.7 dev	Naks	2010/08/29	BLOCKING	BUG REPORT	Tonu Naks
+TF:879	Improve name collision handling in TPrinter to avoid also possible hiding of names in subscopes	
+		2.4.7	Toom	2010/09/02		DEVELOPMENT TASK	Andrei Rybinski
+TF:880	ArgumentReader: Add support of multiple unvalued configuration switches	
+		2.4.7	Toom	2010/09/02			
+TF:881	Negative Real values are pritned without the sign	
+		2.4.7	Naks	2010/09/02	MAJOR	BUG REPORT	Tonu Naks
+TF:882	Array Data types of variable and its initial value do not match	
+		2.4.7	Robinski	2010/09/06	MINOR	DEVELOPMENT TASK	Andrei Rybinski
+TF:883	Initial Value of TCustom type variable is evaluated incorrectly	
+		2.4.7	Robinski	2010/09/06	MINOR	DEVELOPMENT TASK	Andrei Rybinski
+TF:884	ClassCastException in TCPrinter	
+		2.4.7	Robinski	2010/09/07	MINOR	BUG REPORT	Andrei Rybinski
+TF:885	Ensure that module names do not conflict with reserved words in target language	
+		2.4.7	Toom	2010/09/07		DEVELOPMENT TASK	Andrei Rybinski
+TF:886	TAdaPrinter: compilation error because of variable's name that starts wth number	
+		2.4.7	Robinski	2010/09/07	MINOR	DEVELOPMENT TASK	Andrei Rybinski
+TF:888	Printer: NamesNormalizer several subsequent whitespace and/or underscores shall be replaced with single underline	
+		2.4.7	Robinski	2010/09/20	MINOR	DEVELOPMENT TASK	Andrei Rybinski
+TF:890	Generate START and END annotations around the code section from a block	
+		2.4.7	Toom	2010/09/28		FEATURE REQUEST	Andrei Rybinski
+TF:893	Blocks with continuous sample time cause the rate translation buffer to be activated	
+		2.4.7	Naks	2010/10/07	MAJOR	BUG REPORT	Tonu Naks
+TF:896	Inlining does not connect the inputs of the inlined subsystem correctly	
+		2.4.7 dev	Naks	2010/10/07	BLOCKING	BUG REPORT	Andres Toom
+TF:899	Move only Exported variables to the parameters' module	
+		2.4.7 dev	Toom	2010/10/22		DEVELOPMENT TASK	Andres Toom
+TF:900	StateModel generation: Remove obsolete NamedConstant from the CodeModel before TPrinter	
+		2.4.7	Toom	2010/10/22		DEVELOPMENT TASK	Andres Toom
+TF:901	TSimulinkImporter: Constant definition importer does not stop on error	
+		2.4.7 dev	Toom	2010/10/29		DEVELOPMENT TASK	Andres Toom
+TF:902	UserDefinedFunction block: Incorrect handling of scalar OUT arguments	
+		2.4.7 dev	Toom	2010/11/03		BUG REPORT	Andres Toom
+TF:904	UserDefinedFunction block: Unable to parse long function names	
+		2.4.7 dev	Toom	2010/11/04		BUG REPORT	Andres Toom
+TF:905	UserDefinedFunction block: Size 1 array not supported in scalar input	
+		2.4.7 dev	Toom	2010/11/08		FEATURE REQUEST	Andres Toom
+TF:908	UserDefinedfunction block: Support string type in Legacy Function prototype	
+		2.4.7	Toom	2010/11/10		FEATURE REQUEST	Andres Toom
+TF:913	The optimiser assumes that a function call does not have a side effect	
+		2.4.7	Naks	2010/11/12	MAJOR	BUG REPORT	Andres Toom
+TF:914	TFMCodeModelGenerator: Error in inlining mode	
+		2.4.7 dev	Toom	2010/11/28		DEVELOPMENT TASK	Andres Toom
+TF:915	TFMCodeModelGenerator: Replace BlockVarName map with a map of elements	
+		2.4.7 dev	Toom	2010/11/29		DEVELOPMENT TASK	Andres Toom
+TF:916	TFMCodeModelGenerator: Replace usage of the 'signals' collection with maps	
+		2.4.7 dev	Toom	2010/11/29		DEVELOPMENT TASK	Andres Toom
+TF:918	Integer division is generated for division of constants	
+		2.4.7 dev	Toom	2010/12/12		DEVELOPMENT TASK	Andres Toom
+TF:920	TFMPreProcessor: Observation points on virtual subsystem io-signals are not preserved	
+		2.4.7 dev	Toom	2010/12/12		DEVELOPMENT TASK	Andres Toom
+TF:921	TCodeModelOptimiser: Optimiser removes an observable variable	
+		2.4.7 dev	Toom	2010/12/12		DEVELOPMENT TASK	Andres Toom
+TF:922	TPrinter: Misplacement of END annotations in non-scalar expansion	
+		2.4.7 dev	Toom	2010/12/13		DEVELOPMENT TASK	Andres Toom
+TF:923	DataStoreMemory backend fails because of missing InitialValue parameter 	
+		2.4.7	Naks	2010/12/13	MAJOR	BUG REPORT	Tonu Naks
+
+
+2.4.7 (DEV SNAPSHOT) 11/11/2010
+----------------
+
+Reference	Title	
+    Version	Submitted by	Date submitted	Severity	Datatype	Assigned to
+TF:560	Remove varPortIdMatches and store reference to a variable corresponding to port in the port object	
+        2.4.1	Castel	2009/01/30	MINOR	DEVELOPMENT TASK	Andrei Rybinski
+TF:850	Add attribute isVirtual to CompoundStatement	
+        2.4.6	Naks	2010/07/01	NICE TO HAVE	FEATURE REQUEST	Andrei Rybinski
+TF:854	TAdaPrinter: Shift left and shift right operators are not implemented	
+        2.4.6	Robinski	2010/07/06	MINOR	DEVELOPMENT TASK	Andrei Rybinski
+TF:855	TAdaPrinter: wrong printing of non-scalar UnaryExpressions	
+        2.4.6	Robinski	2010/07/06	MINOR	BUG REPORT	Andrei Rybinski
+TF:856	TAdaPrinter: null pointer exception in gac_18.gac_18_sp3Test	
+        2.4.6	Robinski	2010/07/06	MINOR	BUG REPORT	Andrei Rybinski
+TF:858	Code refactoring: rename method replaceExpression to replaceMe and change signature of argument to Object	
+        2.4.6	Robinski	2010/07/09	MINOR	DEVELOPMENT TASK	Andrei Rybinski
+TF:860	After introducing the method GASysInfo.getDefSrcLibraryPath() the ada printer does not find the library path	
+        2.4.7 dev	Naks	2010/07/13	MAJOR	BUG REPORT	Andrei Rybinski
+TF:861	Models with model reference block fail in fmpreprocessor with message "... block ... does not have Port parameter" (see also TF:863)	
+		2.4..7	Naks	2010/07/16	MAJOR	BUG REPORT	Tonu Naks
+TF:863	Simulink does not set PortNumber parameter for the first port in subsystem	
+		2.4..7	Naks	2010/07/16	MAJOR	BUG REPORT	Tonu Naks
+TF:864	TAdaPrinter: compilation of gacommon file fails	
+		2.4..7 dev	Robinski	2010/07/16	MINOR	DEVELOPMENT TASK	Andrei Rybinski
+TF:865	Add semantic information about the transformations to the intermediate model file names	
+		2.4..7	Toom	2010/07/16		DEVELOPMENT TASK	Andres Toom
+TF:866	Inline all subsystems except function call targets, enabled subsystems and  stateflow charts	
+		2.4..7	Naks	2010/07/26	MAJOR	FEATURE REQUEST	Andrei Rybinski
+TF:867	Read isObservable flag from the mdl file	
+		2.4..7	Naks	2010/07/26	MAJOR	FEATURE REQUEST	Andrei Rybinski
+TF:869	Implement "treat as atomic unit" for inlined subsystems 	
+		2.4..6	Naks	2010/07/30	MAJOR	FEATURE REQUEST	Andres Toom
+TF:870	Add error message to expression's replaceMe method	
+		2.4..6	Robinski	2010/08/02	MINOR	DEVELOPMENT TASK	Andrei Rybinski
+TF:871	Quote filenames containing spaces when launching elementary tools	
+		2.4..7	Toom	2010/08/02		DEVELOPMENT TASK	Andres Toom
+TF:873	Generate global variable for each signal with flag isObservable  (depends on TF:868)	
+		2.4..6	Naks	2010/08/25	MAJOR	FEATURE REQUEST	Tonu Naks
+TF:875	AdaPrinter must allow initialisation of arrays with scalar values (the code model allows scalar expansion)	
+		2.4..6	Naks	2010/08/26	BLOCKING	FEATURE REQUEST	Andrei Rybinski
+TF:876	When merge block input is global and output local, the gloabal variable is removed after processign the merge block	
+		2.4..7 dev	Naks	2010/08/27	MINOR	DEVELOPMENT TASK	Andrei Rybinski
+TF:877	AdaPrinter: Two consecutive underscores in the variable name 	
+		2.4..7 dev	Naks	2010/08/29	BLOCKING	BUG REPORT	Tonu Naks
+TF:879	Improve name collision handling in TPrinter to avoid also possible hiding of names in subscopes	
+		2.4..7	Toom	2010/09/02		DEVELOPMENT TASK	Andrei Rybinski
+TF:880	ArgumentReader: Add support of multiple unvalued configuration switches	
+		2.4..7	Toom	2010/09/02			
+TF:881	Negative Real values are pritned without the sign	
+		2.4..7	Naks	2010/09/02	MAJOR	BUG REPORT	Tonu Naks
+TF:882	Array Data types of variable and its initial value do not match	
+		2.4..7	Robinski	2010/09/06	MINOR	DEVELOPMENT TASK	Andrei Rybinski
+TF:883	Initial Value of TCustom type variable is evaluated incorrectly	
+		2.4..7	Robinski	2010/09/06	MINOR	DEVELOPMENT TASK	Andrei Rybinski
+TF:884	ClassCastException in TCPrinter	
+		2.4..7	Robinski	2010/09/07	MINOR	BUG REPORT	Andrei Rybinski
+TF:885	Ensure that module names do not conflict with reserved words in target language	
+		2.4..7	Toom	2010/09/07		DEVELOPMENT TASK	Andrei Rybinski
+TF:886	TAdaPrinter: compilation error because of variable's name that starts wth number	
+		2.4..7	Robinski	2010/09/07	MINOR	DEVELOPMENT TASK	Andrei Rybinski
+TF:888	Printer: NamesNormalizer several subsequent whitespace and/or underscores shall be replaced with single underline	
+		2.4..7	Robinski	2010/09/20	MINOR	DEVELOPMENT TASK	Andrei Rybinski
+TF:890	Generate START and END annotations around the code section from a block	
+		2.4..7	Toom	2010/09/28		FEATURE REQUEST	Andrei Rybinski
+TF:893	Blocks with continuous sample time cause the rate translation buffer to be activated	
+		2.4..7	Naks	2010/10/07	MAJOR	BUG REPORT	Tonu Naks
+TF:899	Move only Exported variables to the parameters' module	
+		2.4..7 dev	Toom	2010/10/22		DEVELOPMENT TASK	Andres Toom
+TF:900	StateModel generation: Remove obsolete NamedConstant from the CodeModel before TPrinter	
+		2.4..7	Toom	2010/10/22		DEVELOPMENT TASK	Andres Toom
+TF:901	TSimulinkImporter: Constant definition importer does not stop on error	
+		2.4..7 dev	Toom	2010/10/29		DEVELOPMENT TASK	Andres Toom
+TF:902	UserDefinedFunction block: Incorrect handling of scalar OUT arguments	
+		2.4..7 dev	Toom	2010/11/03		BUG REPORT	Andres Toom
+TF:904	UserDefinedFunction block: Unable to parse long function names	
+		2.4..7 dev	Toom	2010/11/04		BUG REPORT	Andres Toom
+TF:905	UserDefinedFunction block: Size 1 array not supported in scalar input	
+		2.4..7 dev	Toom	2010/11/08		FEATURE REQUEST	Andres Toom
+TF:908	UserDefinedfunction block: Support string type in Legacy Function prototype
+		2.4..7 dev	Toom	2010/11/10		FEATURE REQUEST	Andres Toom
+
+2.4.7 (DEV SNAPSHOT) 10/11/2010
+----------------
+
+Reference	Title	
+    Version	Submitted by	Date submitted	Severity	Datatype	Assigned to
+TF:560	Remove varPortIdMatches and store reference to a variable corresponding to port in the port object	
+        2.4.1	Castel	2009/01/30	MINOR	DEVELOPMENT TASK	Andrei Rybinski
+TF:850	Add attribute isVirtual to CompoundStatement	
+        2.4.6	Naks	2010/07/01	NICE TO HAVE	FEATURE REQUEST	Andrei Rybinski
+TF:854	TAdaPrinter: Shift left and shift right operators are not implemented	
+        2.4.6	Robinski	2010/07/06	MINOR	DEVELOPMENT TASK	Andrei Rybinski
+TF:855	TAdaPrinter: wrong printing of non-scalar UnaryExpressions	
+        2.4.6	Robinski	2010/07/06	MINOR	BUG REPORT	Andrei Rybinski
+TF:856	TAdaPrinter: null pointer exception in gac_18.gac_18_sp3Test	
+        2.4.6	Robinski	2010/07/06	MINOR	BUG REPORT	Andrei Rybinski
+TF:858	Code refactoring: rename method replaceExpression to replaceMe and change signature of argument to Object	
+        2.4.6	Robinski	2010/07/09	MINOR	DEVELOPMENT TASK	Andrei Rybinski
+TF:860	After introducing the method GASysInfo.getDefSrcLibraryPath() the ada printer does not find the library path	
+        2.4.7 dev	Naks	2010/07/13	MAJOR	BUG REPORT	Andrei Rybinski
+TF:861	Models with model reference block fail in fmpreprocessor with message "... block ... does not have Port parameter" (see also TF:863)	
+		2.4..7	Naks	2010/07/16	MAJOR	BUG REPORT	Tonu Naks
+TF:863	Simulink does not set PortNumber parameter for the first port in subsystem	
+		2.4..7	Naks	2010/07/16	MAJOR	BUG REPORT	Tonu Naks
+TF:864	TAdaPrinter: compilation of gacommon file fails	
+		2.4..7 dev	Robinski	2010/07/16	MINOR	DEVELOPMENT TASK	Andrei Rybinski
+TF:865	Add semantic information about the transformations to the intermediate model file names	
+		2.4..7	Toom	2010/07/16		DEVELOPMENT TASK	Andres Toom
+TF:866	Inline all subsystems except function call targets, enabled subsystems and  stateflow charts	
+		2.4..7	Naks	2010/07/26	MAJOR	FEATURE REQUEST	Andrei Rybinski
+TF:867	Read isObservable flag from the mdl file	
+		2.4..7	Naks	2010/07/26	MAJOR	FEATURE REQUEST	Andrei Rybinski
+TF:869	Implement "treat as atomic unit" for inlined subsystems 	
+		2.4..6	Naks	2010/07/30	MAJOR	FEATURE REQUEST	Andres Toom
+TF:870	Add error message to expression's replaceMe method	
+		2.4..6	Robinski	2010/08/02	MINOR	DEVELOPMENT TASK	Andrei Rybinski
+TF:871	Quote filenames containing spaces when launching elementary tools	
+		2.4..7	Toom	2010/08/02		DEVELOPMENT TASK	Andres Toom
+TF:873	Generate global variable for each signal with flag isObservable  (depends on TF:868)	
+		2.4..6	Naks	2010/08/25	MAJOR	FEATURE REQUEST	Tonu Naks
+TF:875	AdaPrinter must allow initialisation of arrays with scalar values (the code model allows scalar expansion)	
+		2.4..6	Naks	2010/08/26	BLOCKING	FEATURE REQUEST	Andrei Rybinski
+TF:876	When merge block input is global and output local, the gloabal variable is removed after processign the merge block	
+		2.4..7 dev	Naks	2010/08/27	MINOR	DEVELOPMENT TASK	Andrei Rybinski
+TF:877	AdaPrinter: Two consecutive underscores in the variable name 	
+		2.4..7 dev	Naks	2010/08/29	BLOCKING	BUG REPORT	Tonu Naks
+TF:879	Improve name collision handling in TPrinter to avoid also possible hiding of names in subscopes	
+		2.4..7	Toom	2010/09/02		DEVELOPMENT TASK	Andrei Rybinski
+TF:880	ArgumentReader: Add support of multiple unvalued configuration switches	
+		2.4..7	Toom	2010/09/02			
+TF:881	Negative Real values are pritned without the sign	
+		2.4..7	Naks	2010/09/02	MAJOR	BUG REPORT	Tonu Naks
+TF:882	Array Data types of variable and its initial value do not match	
+		2.4..7	Robinski	2010/09/06	MINOR	DEVELOPMENT TASK	Andrei Rybinski
+TF:883	Initial Value of TCustom type variable is evaluated incorrectly	
+		2.4..7	Robinski	2010/09/06	MINOR	DEVELOPMENT TASK	Andrei Rybinski
+TF:884	ClassCastException in TCPrinter	
+		2.4..7	Robinski	2010/09/07	MINOR	BUG REPORT	Andrei Rybinski
+TF:885	Ensure that module names do not conflict with reserved words in target language	
+		2.4..7	Toom	2010/09/07		DEVELOPMENT TASK	Andrei Rybinski
+TF:886	TAdaPrinter: compilation error because of variable's name that starts wth number	
+		2.4..7	Robinski	2010/09/07	MINOR	DEVELOPMENT TASK	Andrei Rybinski
+TF:888	Printer: NamesNormalizer several subsequent whitespace and/or underscores shall be replaced with single underline	
+		2.4..7	Robinski	2010/09/20	MINOR	DEVELOPMENT TASK	Andrei Rybinski
+TF:890	Generate START and END annotations around the code section from a block	
+		2.4..7	Toom	2010/09/28		FEATURE REQUEST	Andrei Rybinski
+TF:893	Blocks with continuous sample time cause the rate translation buffer to be activated	
+		2.4..7	Naks	2010/10/07	MAJOR	BUG REPORT	Tonu Naks
+TF:899	Move only Exported variables to the parameters' module	
+		2.4..7 dev	Toom	2010/10/22		DEVELOPMENT TASK	Andres Toom
+TF:900	StateModel generation: Remove obsolete NamedConstant from the CodeModel before TPrinter	
+		2.4..7	Toom	2010/10/22		DEVELOPMENT TASK	Andres Toom
+TF:901	TSimulinkImporter: Constant definition importer does not stop on error	
+		2.4..7 dev	Toom	2010/10/29		DEVELOPMENT TASK	Andres Toom
+TF:902	UserDefinedFunction block: Incorrect handling of scalar OUT arguments	
+		2.4..7 dev	Toom	2010/11/03		BUG REPORT	Andres Toom
+TF:904	UserDefinedFunction block: Unable to parse long function names	
+		2.4..7 dev	Toom	2010/11/04		BUG REPORT	Andres Toom
+TF:905	UserDefinedFunction block: Size 1 array not supported in scalar input	
+		2.4..7 dev	Toom	2010/11/08		FEATURE REQUEST	Andres Toom
+TF:908	UserDefinedfunction block: Support string type in Legacy Function prototype
+		2.4..7 dev	Toom	2010/11/10		FEATURE REQUEST	Andres Toom
+
+
+2.4.7 (DEV SNAPSHOT) 08/11/2010
+----------------
+
+Reference	Title	
+    Version	Submitted by	Date submitted	Severity	Datatype	Assigned to
+TF:560	Remove varPortIdMatches and store reference to a variable corresponding to port in the port object	
+        2.4.1	Castel	2009/01/30	MINOR	DEVELOPMENT TASK	Andrei Rybinski
+TF:850	Add attribute isVirtual to CompoundStatement	
+        2.4.6	Naks	2010/07/01	NICE TO HAVE	FEATURE REQUEST	Andrei Rybinski
+TF:854	TAdaPrinter: Shift left and shift right operators are not implemented	
+        2.4.6	Robinski	2010/07/06	MINOR	DEVELOPMENT TASK	Andrei Rybinski
+TF:855	TAdaPrinter: wrong printing of non-scalar UnaryExpressions	
+        2.4.6	Robinski	2010/07/06	MINOR	BUG REPORT	Andrei Rybinski
+TF:856	TAdaPrinter: null pointer exception in gac_18.gac_18_sp3Test	
+        2.4.6	Robinski	2010/07/06	MINOR	BUG REPORT	Andrei Rybinski
+TF:858	Code refactoring: rename method replaceExpression to replaceMe and change signature of argument to Object	
+        2.4.6	Robinski	2010/07/09	MINOR	DEVELOPMENT TASK	Andrei Rybinski
+TF:860	After introducing the method GASysInfo.getDefSrcLibraryPath() the ada printer does not find the library path	
+        2.4.7 dev	Naks	2010/07/13	MAJOR	BUG REPORT	Andrei Rybinski
+TF:861	Models with model reference block fail in fmpreprocessor with message "... block ... does not have Port parameter" (see also TF:863)	
+		2.4..7	Naks	2010/07/16	MAJOR	BUG REPORT	Tonu Naks
+TF:863	Simulink does not set PortNumber parameter for the first port in subsystem	
+		2.4..7	Naks	2010/07/16	MAJOR	BUG REPORT	Tonu Naks
+TF:864	TAdaPrinter: compilation of gacommon file fails	
+		2.4..7 dev	Robinski	2010/07/16	MINOR	DEVELOPMENT TASK	Andrei Rybinski
+TF:865	Add semantic information about the transformations to the intermediate model file names	
+		2.4..7	Toom	2010/07/16		DEVELOPMENT TASK	Andres Toom
+TF:866	Inline all subsystems except function call targets, enabled subsystems and  stateflow charts	
+		2.4..7	Naks	2010/07/26	MAJOR	FEATURE REQUEST	Andrei Rybinski
+TF:867	Read isObservable flag from the mdl file	
+		2.4..7	Naks	2010/07/26	MAJOR	FEATURE REQUEST	Andrei Rybinski
+TF:869	Implement "treat as atomic unit" for inlined subsystems 	
+		2.4..6	Naks	2010/07/30	MAJOR	FEATURE REQUEST	Andres Toom
+TF:870	Add error message to expression's replaceMe method	
+		2.4..6	Robinski	2010/08/02	MINOR	DEVELOPMENT TASK	Andrei Rybinski
+TF:871	Quote filenames containing spaces when launching elementary tools	
+		2.4..7	Toom	2010/08/02		DEVELOPMENT TASK	Andres Toom
+TF:873	Generate global variable for each signal with flag isObservable  (depends on TF:868)	
+		2.4..6	Naks	2010/08/25	MAJOR	FEATURE REQUEST	Tonu Naks
+TF:875	AdaPrinter must allow initialisation of arrays with scalar values (the code model allows scalar expansion)	
+		2.4..6	Naks	2010/08/26	BLOCKING	FEATURE REQUEST	Andrei Rybinski
+TF:876	When merge block input is global and output local, the gloabal variable is removed after processign the merge block	
+		2.4..7 dev	Naks	2010/08/27	MINOR	DEVELOPMENT TASK	Andrei Rybinski
+TF:877	AdaPrinter: Two consecutive underscores in the variable name 	
+		2.4..7 dev	Naks	2010/08/29	BLOCKING	BUG REPORT	Tonu Naks
+TF:879	Improve name collision handling in TPrinter to avoid also possible hiding of names in subscopes	
+		2.4..7	Toom	2010/09/02		DEVELOPMENT TASK	Andrei Rybinski
+TF:880	ArgumentReader: Add support of multiple unvalued configuration switches	
+		2.4..7	Toom	2010/09/02			
+TF:881	Negative Real values are pritned without the sign	
+		2.4..7	Naks	2010/09/02	MAJOR	BUG REPORT	Tonu Naks
+TF:882	Array Data types of variable and its initial value do not match	
+		2.4..7	Robinski	2010/09/06	MINOR	DEVELOPMENT TASK	Andrei Rybinski
+TF:883	Initial Value of TCustom type variable is evaluated incorrectly	
+		2.4..7	Robinski	2010/09/06	MINOR	DEVELOPMENT TASK	Andrei Rybinski
+TF:884	ClassCastException in TCPrinter	
+		2.4..7	Robinski	2010/09/07	MINOR	BUG REPORT	Andrei Rybinski
+TF:885	Ensure that module names do not conflict with reserved words in target language	
+		2.4..7	Toom	2010/09/07		DEVELOPMENT TASK	Andrei Rybinski
+TF:886	TAdaPrinter: compilation error because of variable's name that starts wth number	
+		2.4..7	Robinski	2010/09/07	MINOR	DEVELOPMENT TASK	Andrei Rybinski
+TF:888	Printer: NamesNormalizer several subsequent whitespace and/or underscores shall be replaced with single underline	
+		2.4..7	Robinski	2010/09/20	MINOR	DEVELOPMENT TASK	Andrei Rybinski
+TF:890	Generate START and END annotations around the code section from a block	
+		2.4..7	Toom	2010/09/28		FEATURE REQUEST	Andrei Rybinski
+TF:893	Blocks with continuous sample time cause the rate translation buffer to be activated	
+		2.4..7	Naks	2010/10/07	MAJOR	BUG REPORT	Tonu Naks
+TF:899	Move only Exported variables to the parameters' module	
+		2.4..7 dev	Toom	2010/10/22		DEVELOPMENT TASK	Andres Toom
+TF:900	StateModel generation: Remove obsolete NamedConstant from the CodeModel before TPrinter	
+		2.4..7	Toom	2010/10/22		DEVELOPMENT TASK	Andres Toom
+TF:901	TSimulinkImporter: Constant definition importer does not stop on error	
+		2.4..7 dev	Toom	2010/10/29		DEVELOPMENT TASK	Andres Toom
+TF:902	UserDefinedFunction block: Incorrect handling of scalar OUT arguments	
+		2.4..7 dev	Toom	2010/11/03		BUG REPORT	Andres Toom
+TF:904	UserDefinedFunction block: Unable to parse long function names	
+		2.4..7 dev	Toom	2010/11/04		BUG REPORT	Andres Toom
+TF:905	UserDefinedFunction block: Size 1 array not supported in scalar input	
+		2.4..7 dev	Toom	2010/11/08		FEATURE REQUEST	Andres Toom
+
+2.4.7 (DEV SNAPSHOT) 05/11/2010
+----------------
+
+Reference	Title	
+    Version	Submitted by	Date submitted	Severity	Datatype	Assigned to
+TF:560	Remove varPortIdMatches and store reference to a variable corresponding to port in the port object	
+        2.4.1	Castel	2009/01/30	MINOR	DEVELOPMENT TASK	Andrei Rybinski
+TF:850	Add attribute isVirtual to CompoundStatement	
+        2.4.6	Naks	2010/07/01	NICE TO HAVE	FEATURE REQUEST	Andrei Rybinski
+TF:854	TAdaPrinter: Shift left and shift right operators are not implemented	
+        2.4.6	Robinski	2010/07/06	MINOR	DEVELOPMENT TASK	Andrei Rybinski
+TF:855	TAdaPrinter: wrong printing of non-scalar UnaryExpressions	
+        2.4.6	Robinski	2010/07/06	MINOR	BUG REPORT	Andrei Rybinski
+TF:856	TAdaPrinter: null pointer exception in gac_18.gac_18_sp3Test	
+        2.4.6	Robinski	2010/07/06	MINOR	BUG REPORT	Andrei Rybinski
+TF:858	Code refactoring: rename method replaceExpression to replaceMe and change signature of argument to Object	
+        2.4.6	Robinski	2010/07/09	MINOR	DEVELOPMENT TASK	Andrei Rybinski
+TF:860	After introducing the method GASysInfo.getDefSrcLibraryPath() the ada printer does not find the library path	
+        2.4.7 dev	Naks	2010/07/13	MAJOR	BUG REPORT	Andrei Rybinski
+TF:861	Models with model reference block fail in fmpreprocessor with message "... block ... does not have Port parameter" (see also TF:863)	
+		2.4..7	Naks	2010/07/16	MAJOR	BUG REPORT	Tonu Naks
+TF:863	Simulink does not set PortNumber parameter for the first port in subsystem	
+		2.4..7	Naks	2010/07/16	MAJOR	BUG REPORT	Tonu Naks
+TF:864	TAdaPrinter: compilation of gacommon file fails	
+		2.4..7 dev	Robinski	2010/07/16	MINOR	DEVELOPMENT TASK	Andrei Rybinski
+TF:865	Add semantic information about the transformations to the intermediate model file names	
+		2.4..7	Toom	2010/07/16		DEVELOPMENT TASK	Andres Toom
+TF:866	Inline all subsystems except function call targets, enabled subsystems and  stateflow charts	
+		2.4..7	Naks	2010/07/26	MAJOR	FEATURE REQUEST	Andrei Rybinski
+TF:867	Read isObservable flag from the mdl file	
+		2.4..7	Naks	2010/07/26	MAJOR	FEATURE REQUEST	Andrei Rybinski
+TF:869	Implement "treat as atomic unit" for inlined subsystems 	
+		2.4..6	Naks	2010/07/30	MAJOR	FEATURE REQUEST	Andres Toom
+TF:870	Add error message to expression's replaceMe method	
+		2.4..6	Robinski	2010/08/02	MINOR	DEVELOPMENT TASK	Andrei Rybinski
+TF:871	Quote filenames containing spaces when launching elementary tools	
+		2.4..7	Toom	2010/08/02		DEVELOPMENT TASK	Andres Toom
+TF:873	Generate global variable for each signal with flag isObservable  (depends on TF:868)	
+		2.4..6	Naks	2010/08/25	MAJOR	FEATURE REQUEST	Tonu Naks
+TF:875	AdaPrinter must allow initialisation of arrays with scalar values (the code model allows scalar expansion)	
+		2.4..6	Naks	2010/08/26	BLOCKING	FEATURE REQUEST	Andrei Rybinski
+TF:876	When merge block input is global and output local, the gloabal variable is removed after processign the merge block	
+		2.4..7 dev	Naks	2010/08/27	MINOR	DEVELOPMENT TASK	Andrei Rybinski
+TF:877	AdaPrinter: Two consecutive underscores in the variable name 	
+		2.4..7 dev	Naks	2010/08/29	BLOCKING	BUG REPORT	Tonu Naks
+TF:879	Improve name collision handling in TPrinter to avoid also possible hiding of names in subscopes	
+		2.4..7	Toom	2010/09/02		DEVELOPMENT TASK	Andrei Rybinski
+TF:880	ArgumentReader: Add support of multiple unvalued configuration switches	
+		2.4..7	Toom	2010/09/02			
+TF:881	Negative Real values are pritned without the sign	
+		2.4..7	Naks	2010/09/02	MAJOR	BUG REPORT	Tonu Naks
+TF:882	Array Data types of variable and its initial value do not match	
+		2.4..7	Robinski	2010/09/06	MINOR	DEVELOPMENT TASK	Andrei Rybinski
+TF:883	Initial Value of TCustom type variable is evaluated incorrectly	
+		2.4..7	Robinski	2010/09/06	MINOR	DEVELOPMENT TASK	Andrei Rybinski
+TF:884	ClassCastException in TCPrinter	
+		2.4..7	Robinski	2010/09/07	MINOR	BUG REPORT	Andrei Rybinski
+TF:885	Ensure that module names do not conflict with reserved words in target language	
+		2.4..7	Toom	2010/09/07		DEVELOPMENT TASK	Andrei Rybinski
+TF:886	TAdaPrinter: compilation error because of variable's name that starts wth number	
+		2.4..7	Robinski	2010/09/07	MINOR	DEVELOPMENT TASK	Andrei Rybinski
+TF:888	Printer: NamesNormalizer several subsequent whitespace and/or underscores shall be replaced with single underline	
+		2.4..7	Robinski	2010/09/20	MINOR	DEVELOPMENT TASK	Andrei Rybinski
+TF:890	Generate START and END annotations around the code section from a block	
+		2.4..7	Toom	2010/09/28		FEATURE REQUEST	Andrei Rybinski
+TF:893	Blocks with continuous sample time cause the rate translation buffer to be activated	
+		2.4..7	Naks	2010/10/07	MAJOR	BUG REPORT	Tonu Naks
+TF:899	Move only Exported variables to the parameters' module	
+		2.4..7 dev	Toom	2010/10/22		DEVELOPMENT TASK	Andres Toom
+TF:900	StateModel generation: Remove obsolete NamedConstant from the CodeModel before TPrinter	
+		2.4..7	Toom	2010/10/22		DEVELOPMENT TASK	Andres Toom
+TF:901	TSimulinkImporter: Constant definition importer does not stop on error	
+		2.4..7 dev	Toom	2010/10/29		DEVELOPMENT TASK	Andres Toom
+TF:902	UserDefinedFunction block: Incorrect handling of scalar OUT arguments	
+		2.4..7 dev	Toom	2010/11/03		BUG REPORT	Andres Toom
+TF:904	UserDefinedFunction block: Unable to parse long function names	
+		2.4..7 dev	Toom	2010/11/04		BUG REPORT	Andres Toom
+
+
+2.4.7 02/07/2010
+----------------
+Reference	Title
+		Ver		Submitted by	Date submitted	Severity	Datatype	Assigned to
+TF:562	Extend the approach for defining library dependencies with possibility to take into account function argument datatypes	
+        2.4.2	Castel	2009/02/02		FEATURE REQUEST	Tonu Naks
+TF:583	Warning at compilation: comparison is always false due to limited range of data type	
+        2.4.2	Naks	2009/04/29	MINOR	BUG REPORT	Tonu Naks
+TF:727	Name of the StructureMember is stored with points	
+		2.4.5	Robinski	2010/02/10	MINOR	DEVELOPMENT TASK	Andrei Rybinski
+TF:752	TAdaPrinter: error message "target of goto statement is not reachable"	
+		2.4.5	Robinski	2010/03/22	 	DEVELOPMENT TASK	Andrei Rybinski
+TF:758	TAdaPrinter: printing an unary expression with deref operator	
+		2.4.5	Robinski	2010/03/25		DEVELOPMENT TASK	Andrei Rybinski
+TF:761	TAdaPrinter: actual for "state" must be a variable or "state" not referenced	
+		2.4.5	Naks	2010/03/29	MAJOR	BUG REPORT	Tonu Naks
+TF:763	TAdaPrinter: Logical operation with non-boolean type	
+		2.4.5	Naks	2010/03/29	MINOR	BUG REPORT	Andrei Rybinski
+TF:764	TAdaPrinter: data type mismatch in matrix operations	
+		2.4.5	Naks	2010/03/29	MAJOR	BUG REPORT	Andrei Rybinski
+TF:765	Printer: addIndexExpression does not change data type of parent expression	
+		2.4.5	Robinski	2010/04/01	MINOR	DEVELOPMENT TASK	Andrei Rybinski
+TF:766	AdaPrinter: identifier starting with "_"	
+		2.4.5	Robinski	2010/04/01	MINOR	BUG REPORT	Andrei Rybinski
+TF:767	Printer: problems with file comparison	
+		2.4.5	Robinski	2010/04/05	MAJOR	BUG REPORT	Andrei Rybinski
+TF:768	Initial value expressions referencing other constants or trigonometric function not placed in the init function as desired (follow-up of TF:733)	
+		2.4.6	Naks	2010/04/06	BLOCKING	BUG REPORT	Andrei Rybinski
+TF:769	The special syntax of parameter names referring to block inputs, outputs and other parameters should apply only for user-defined function prototypes	
+		2.4.6	Naks	2010/04/07	MINOR	BUG REPORT	Tonu Naks
+TF:770	DEREF operator not removed in function calls	
+		2.4.6	Naks	2010/04/07	BLOCKING	BUG REPORT	Andrei Rybinski
+TF:771	Parent of dataType is not defined	
+		2.4.6	Robinski	2010/04/12	MAJOR	BUG REPORT	Andrei Rybinski
+TF:772	"CPrinter: error message ""invalid operands to binary * (have 'UINT8 *' and 'int')""	"	
+		2.4.6	Robinski	2010/04/12	MINOR	BUG REPORT	Andrei Rybinski
+TF:773	TAdaPrinter: error message "statement exprexted"	
+		2.4.6	Robinski	2010/04/13	MAJOR	DEVELOPMENT TASK	Andrei Rybinski
+TF:775	eval method is not implemented for UnaryExpression	
+		2.4.6	Robinski	2010/04/15	MINOR	DEVELOPMENT TASK	Andrei Rybinski
+TF:776	Implement possibility to run tests  from xml-files	
+		2.4.6	Robinski	2010/04/15	MINOR	DEVELOPMENT TASK	Andrei Rybinski
+TF:777	TAdaPrinter: error message "stand alone volatile constant must be imported" 	
+		2.4.6	Robinski	2010/04/15	MINOR	DEVELOPMENT TASK	Andrei Rybinski
+TF:778	TAdaPrinter: identifiers with the same name but different case	
+		2.4.6	Robinski	2010/04/15	MINOR	DEVELOPMENT TASK	Andrei Rybinski
+TF:779	TAdaPrinter: error message "two consecutive underlines not permitted"	
+		2.4.6	Robinski	2010/04/15		DEVELOPMENT TASK	Andrei Rybinski
+TF:782	Pointer data types of implicit function arguments not used always correctly	
+		2.4.6	Naks	2010/04/21	BLOCKING	BUG REPORT	Tonu Naks
+TF:783	TAdaPrinter: data type mismatch	
+		2.4.6	Robinski	2010/04/21	MINOR	DEVELOPMENT TASK	Andrei Rybinski
+TF:784	TAdaPrinter: change gaTypes Module according to the new requirements	
+		2.4.6	Robinski	2010/04/21	MINOR	DEVELOPMENT TASK	Andrei Rybinski
+TF:785	TAdaPrinter: implement copying Spark library files and .shs files to source file path	
+		2.4.6	Robinski	2010/04/21	MINOR	DEVELOPMENT TASK	Andrei Rybinski
+TF:786	Infinite loop in CodeModelAdapterAda	
+		2.4.6 dev	Naks	2010/04/22	BLOCKING	BUG REPORT	Andrei Rybinski
+TF:788	Iterator variables are declared in function's name space instead of RangeIterationStatements name space.	
+		2.4.6	Robinski	2010/04/22	MINOR	DEVELOPMENT TASK	Andrei Rybinski
+TF:789	When Goto block is not found for a From block the From block remains in the model and gives error in FMCodeModelGenerator	
+		2.4.6	Naks	2010/04/22	MAJOR	BUG REPORT	Tonu Naks
+TF:791	Error with initialisation of data-store memory block	
+		2.4.6	Naks	2010/04/23	MAJOR	BUG REPORT	Tonu Naks
+TF:792	DataStoreMemory takes its data type from the initial value. Should take primarily from "Data type", if this is empty, then from initial value.	
+		2.4.6	Naks	2010/04/23		BUG REPORT	Tonu Naks
+TF:793	Error from InPortTyper when Enable port has output signal	
+		2.4.6	Naks	2010/04/23	MAJOR	BUG REPORT	Tonu Naks
+TF:794	TAdaPrinter: Boolean variable initialised with integer constant	
+		2.4.6	Naks	2010/04/26	MAJOR	BUG REPORT	Andrei Rybinski
+TF:795	TadaPrinter: missing initialisation for a variable imported from .m file	
+		2.4.6	Naks	2010/04/26	BLOCKING	BUG REPORT	Tonu Naks
+TF:796	Logic operator: incorrect typing in typer, poor error handling in backend, not all data type combinations supported	
+		2.4.6	Naks	2010/04/26		BUG REPORT	Tonu Naks
+TF:799	Loop iterator not defined in C	
+		2.4.6 dev	Naks	2010/04/27	BLOCKING	BUG REPORT	Andrei Rybinski
+TF:800	TAdaPrinter: implement printing of bitwise binary expressions	
+		2.4.6	Robinski	2010/04/27	MINOR	DEVELOPMENT TASK	Andrei Rybinski
+TF:801	TAdaPrinter: impelment printing of calls to spark math functions	
+		2.4.6	Robinski	2010/04/27	MINOR	DEVELOPMENT TASK	Andrei Rybinski
+TF:802	TAdaPrinter: integer type arguments in UnaryExpression with NOT_OPERATOR	
+		2.4.6	Robinski	2010/04/27	MINOR	DEVELOPMENT TASK	Andrei Rybinski
+TF:803	TAdaPrinter: rangeExpressions are printed without using range types	
+		2.4.6	Robinski	2010/04/29	MINOR	BUG REPORT	Andrei Rybinski
+TF:804	Wrong data type evaluation for unary expression with not operator	
+		2.4.6	Robinski	2010/04/29	MINOR	DEVELOPMENT TASK	Andrei Rybinski
+TF:805	Incorrect definition of iterator variable's data type	
+		2.4.6	Robinski	2010/04/29		DEVELOPMENT TASK	Andrei Rybinski
+TF:809	When parsing data types from the user-defined function signature (UserDefinedFunction block or s-function) the parser replaces illegal names with the default type	
+		2.4.6	Naks	2010/05/03	MAJOR	BUG REPORT	Tonu Naks
+TF:812	References to function parameters from UserDefined function signature work only in case of a s-function generated by the Legacy Code Tool	
+		2.4.6	Naks	2010/05/03	MAJOR	FEATURE REQUEST	Tonu Naks
+TF:813	AdaPrinter: no cast in assign statement when printing matrix assignments	
+		2.4.6	Robinski	2010/05/04	MINOR	BUG REPORT	Andrei Rybinski
+TF:814	TAdaPrinter: type gatypes.Integer is used for printed ranges	
+		2.4.6	Robinski	2010/05/04	MINOR	DEVELOPMENT TASK	Andrei Rybinski
+TF:815	TAdaPrinter: Function call not printed 	
+		2.4.6	Toom	2010/05/04		BUG REPORT	Andrei Rybinski
+TF:817	Variable defined in one function's name space is used in another function	
+		2.4.6	Robinski	2010/05/05	MINOR		Andres Toom
+TF:818	TAdaPrinter: problem with function argument's direction definition in circular calls	
+		2.4.6	Robinski	2010/05/06	MINOR	DEVELOPMENT TASK	Andrei Rybinski
+TF:819	TAdaPrinter: call expression is printed twice	
+		2.4.6	Robinski	2010/05/06	MINOR	BUG REPORT	Andrei Rybinski
+TF:820	TAdaPrinter : data types of index expression and corresponding dimension are not equal	
+		2.4.6	Robinski	2010/05/06		DEVELOPMENT TASK	Andrei Rybinski
+TF:821	Why variable names are converted to lowercase in AdaPrinter	
+		2.4.6 dev	Naks	2010/05/10	MINOR	DEVELOPMENT TASK	Andrei Rybinski
+TF:823	TAdaPrinter: range data type is not taken into account when generating array types	
+		2.4.6	Robinski	2010/05/10	MINOR	DEVELOPMENT TASK	Andrei Rybinski
+TF:827	TAdaPrinter: remove copying ada lib files from CompilerAgent to GACodemodel	
+		2.4.6	Robinski	2010/05/14	MINOR	DEVELOPMENT TASK	Andrei Rybinski
+TF:828	TAdaPrinter: wrong data type choosing for array types	
+		2.4.6	Robinski	2010/05/17	MINOR	DEVELOPMENT TASK	Andrei Rybinski
+TF:830	Make local variables of graphical functions non-static	
+		2.4.6 dev	Toom	2010/05/26		DEVELOPMENT TASK	Andres Toom
+TF:831	UnaryExpression (UnaryOperator) typing does not match specification	
+		2.4.6 dev	Toom	2010/05/27		BUG REPORT	Andres Toom
+TF:832	Subtyping implementation for pointer types does not match the specification	
+		2.4.6 dev	Toom	2010/05/27		BUG REPORT	Andres Toom
+TF:833	Incorrect treatment of pass-by-reference array argument	
+		2.4.6 dev	Toom	2010/05/27		BUG REPORT	Andrei Rybinski
+TF:834	Error in C and Ada Printers related to pass-by-reference array argument (RELATED TO TF:833)	
+		2.4.6 dev	Toom	2010/05/27		BUG REPORT	Andres Toom
+TF:835	Error in Ada Printer related to pass-by-reference array argument (RELATED TO TF:833)	
+		2.4.6 dev	Toom	2010/05/27		BUG REPORT	Andrei Rybinski
+TF:837	Make arguments to junction functions pass by reference (C branch) (FOLLOWUP of TF:752)	
+		2.4.6	Toom	2010/05/27		DEVELOPMENT TASK	Andres Toom
+TF:838	Change the type of the "parameters" field of the Block class to be a collection of BlockParameter instead of Parameter	
+		2.4.6 dev	Toom	2010/06/04		DEVELOPMENT TASK	Andres Toom
+TF:839	Make the type of the "elements" field of the Model class specific to the implementing subclass	
+		2.4.6 dev	Toom	2010/06/04		DEVELOPMENT TASK	Andres Toom
+TF:840	Remove obsolete initialiser from SystemBlock.fcnName	
+		2.4.6 dev	Toom	2010/06/10		DEVELOPMENT TASK	Andres Toom
+TF:842	DataStoreRead assigns type Boolean to the outgoing signal regardless of the data type in corresponding DataStoreMemory	
+		2.4.6	Naks	2010/06/15	MAJOR	BUG REPORT	Tonu Naks
+TF:843	Type cast of constant array does not apply correctly to the array base type	
+		2.4.6	Naks	2010/06/16	MAJOR	BUG REPORT	Tonu Naks
+TF:844	Output directory cleaning not recursive	
+		2.4.6 dev	Toom	2010/06/23		DEVELOPMENT TASK	Andres Toom
+TF:845	Improve the toolset configuration handling to support external launchers	
+		2.4.6 dev	Toom	2010/06/23		DEVELOPMENT TASK	Andres Toom
+TF:846	Configuration error in the source build's configuration files	
+		2.4.6 dev	Toom	2010/06/23		DEVELOPMENT TASK	Andres Toom
+TF:848	CodeModelOptimiser makes multiple copies of the same biary expression in case the local variable on the left-hand side is used several times	
+		2.4.6	Robinski	2010/06/30	MINOR	DEVELOPMENT TASK	Andrei Rybinski
+TF:849	TAdaPrinter: attempt to cast integer expression  to boolean type	
+		2.4.6	Robinski	2010/07/01	MINOR	DEVELOPMENT TASK	Andrei Rybinski
+
+
+2.4.6 (DEV SNAPSHOT) 16/06/2010
+----------------
+Reference	Title
+		Ver		Submitted by	Date submitted	Severity	Datatype	Assigned to
+TF:727	Name of the StructureMember is stored with points
+		2.4.5	Robinski	2010/02/10	MINOR	DEVELOPMENT TASK	Andrei Rybinski
+TF:765	Printer: addIndexExpression does not change data type of parent expression
+		2.4.5	Robinski	2010/04/01	MINOR	DEVELOPMENT TASK	Andrei Rybinski
+TF:767	Printer: problems with file comparison
+		2.4.5	Robinski	2010/04/05	MAJOR	BUG REPORT	Andrei Rybinski
+TF:768	Initial value expressions referencing other constants or trigonometric function not placed in the init function as desired (follow-up of TF:733)
+		2.4.6	Naks	2010/04/06	BLOCKING	BUG REPORT	Andrei Rybinski
+TF:769	The special syntax of parameter names referring to block inputs, outputs and other parameters should apply only for user-defined function prototypes
+		2.4.6	Naks	2010/04/07	MINOR	BUG REPORT	Tonu Naks
+TF:770	DEREF operator not removed in function calls
+		2.4.6	Naks	2010/04/07	BLOCKING	BUG REPORT	Andrei Rybinski
+TF:771	Parent of dataType is not defined
+		2.4.6	Robinski	2010/04/12	MAJOR	BUG REPORT	Andrei Rybinski
+TF:772	"CPrinter: error message ""invalid operands to binary * (have 'UINT8 *' and 'int')""	"
+		2.4.6	Robinski	2010/04/12	MINOR	BUG REPORT	Andrei Rybinski
+TF:775	eval method is not implemented for UnaryExpression
+		2.4.6	Robinski	2010/04/15	MINOR	DEVELOPMENT TASK	Andrei Rybinski
+TF:776	Implement possibility to run tests  from xml-files
+		2.4.6	Robinski	2010/04/15	MINOR	DEVELOPMENT TASK	Andrei Rybinski
+TF:782	Pointer data types of implicit function arguments not used always correctly
+		2.4.6	Naks	2010/04/21	BLOCKING	BUG REPORT	Tonu Naks
+TF:786	Infinite loop in CodeModelAdapterAda
+		2.4.6 dev	Naks	2010/04/22	BLOCKING	BUG REPORT	Andrei Rybinski
+TF:788	Iterator variables are declared in function's name space instead of RangeIterationStatements name space.
+		2.4.6	Robinski	2010/04/22	MINOR	DEVELOPMENT TASK	Andrei Rybinski
+TF:789	When Goto block is not found for a From block the From block remains in the model and gives error in FMCodeModelGenerator
+		2.4.6	Naks	2010/04/22	MAJOR	BUG REPORT	Tonu Naks
+TF:791	Error with initialisation of data-store memory block
+		2.4.6	Naks	2010/04/23	MAJOR	BUG REPORT	Tonu Naks
+TF:792	DataStoreMemory takes its data type from the initial value. Should take primarily from "Data type", if this is empty, then from initial value.
+		2.4.6	Naks	2010/04/23		BUG REPORT	Tonu Naks
+TF:793	Error from InPortTyper when Enable port has output signal
+		2.4.6	Naks	2010/04/23	MAJOR	BUG REPORT	Tonu Naks
+TF:794	TAdaPrinter: Boolean variable initialised with integer constant
+		2.4.6	Naks	2010/04/26	MAJOR	BUG REPORT	Andrei Rybinski
+TF:795	TadaPrinter: missing initialisation for a variable imported from .m file
+		2.4.6	Naks	2010/04/26	BLOCKING	BUG REPORT	Tonu Naks
+TF:796	Logic operator: incorrect typing in typer, poor error handling in backend, not all data type combinations supported
+		2.4.6	Naks	2010/04/26		BUG REPORT	Tonu Naks
+TF:799	Loop iterator not defined in C
+		2.4.6 dev	Naks	2010/04/27	BLOCKING	BUG REPORT	Andrei Rybinski
+TF:804	Wrong data type evaluation for unary expression with not operator
+		2.4.6	Robinski	2010/04/29	MINOR	DEVELOPMENT TASK	Andrei Rybinski
+TF:805	Incorrect definition of iterator variable's data type
+		2.4.6	Robinski	2010/04/29		DEVELOPMENT TASK	Andrei Rybinski
+TF:809	When parsing data types from the user-defined function signature (UserDefinedFunction block or s-function) the parser replaces illegal names with the default type
+		2.4.6	Naks	2010/05/03	MAJOR	BUG REPORT	Tonu Naks
+TF:812	References to function parameters from UserDefined function signature work only in case of a s-function generated by the Legacy Code Tool
+		2.4.6	Naks	2010/05/03	MAJOR	FEATURE REQUEST	Tonu Naks
+TF:813	AdaPrinter: no cast in assign statement when printing matrix assignments
+		2.4.6	Robinski	2010/05/04	MINOR	BUG REPORT	Andrei Rybinski
+TF:817	Variable defined in one function's name space is used in another function
+		2.4.6	Robinski	2010/05/05	MINOR		Andres Toom
+TF:821	Why variable names are converted to lowercase in AdaPrinter
+		2.4.6 dev	Naks	2010/05/10	MINOR	DEVELOPMENT TASK	Andrei Rybinski
+TF:830	Make local variables of graphical functions non-static
+		2.4.6 dev	Toom	2010/05/26		DEVELOPMENT TASK	Andres Toom
+TF:831	UnaryExpression (UnaryOperator) typing does not match specification
+		2.4.6 dev	Toom	2010/05/27		BUG REPORT	Andres Toom
+TF:832	Subtyping implementation for pointer types does not match the specification
+		2.4.6 dev	Toom	2010/05/27		BUG REPORT	Andres Toom
+TF:833	Incorrect treatment of pass-by-reference array argument
+		2.4.6 dev	Toom	2010/05/27		BUG REPORT	Andrei Rybinski
+TF:837	Make arguments to junction functions pass by reference (C branch) (FOLLOWUP of TF:752)
+		2.4.6	Toom	2010/05/27		DEVELOPMENT TASK	Andres Toom
+TF:838	Change the type of the "parameters" field of the Block class to be a collection of BlockParameter instead of Parameter
+		2.4.6 dev	Toom	2010/06/04		DEVELOPMENT TASK	Andres Toom
+TF:839	Make the type of the "elements" field of the Model class specific to the implementing subclass
+		2.4.6 dev	Toom	2010/06/04		DEVELOPMENT TASK	Andres Toom
+TF:840	Remove obsolete initialiser from SystemBlock.fcnName
+		2.4.6 dev	Toom	2010/06/10		DEVELOPMENT TASK	Andres Toom
+TF:842	DataStoreRead assigns type Boolean to the outgoing signal regardless of the data type in corresponding DataStoreMemory
+		2.4.6	Naks	2010/06/15	MAJOR	BUG REPORT	Tonu Naks
+        
+
+2.4.6 (DEV SNAPSHOT) 03/05/2010
+----------------
+Reference	Title
+		Ver		Submitted by	Date submitted	Severity	Datatype	Assigned to
+TF:765	Printer: addIndexExpression does not change data type of parent expression
+		2.4.5	Robinski	2010/04/01	MINOR	DEVELOPMENT TASK	Andrei Rybinski
+TF:766	AdaPrinter: identifier starting with "_"
+		2.4.5	Robinski	2010/04/01	MINOR	BUG REPORT	Andrei Rybinski
+TF:767	Printer: problems with file comparison
+		2.4.5	Robinski	2010/04/05	MAJOR	BUG REPORT	Andrei Rybinski
+TF:769	The special syntax of parameter names referring to block inputs, outputs and other parameters should apply only for user-defined function prototypes
+		2.4.6	Naks	2010/04/07	MINOR	BUG REPORT	Tonu Naks
+TF:771	Parent of dataType is not defined
+		2.4.6	Robinski	2010/04/12	MAJOR	BUG REPORT	Andrei Rybinski
+TF:772	"CPrinter: error message ""invalid operands to binary * (have 'UINT8 *' and 'int')""	"
+		2.4.6	Robinski	2010/04/12	MINOR	BUG REPORT	Andrei Rybinski
+TF:773	TAdaPrinter: error message "statement exprexted"
+		2.4.6	Robinski	2010/04/13	MAJOR	DEVELOPMENT TASK	Andrei Rybinski
+TF:775	eval method is not implemented for UnaryExpression
+		2.4.6	Robinski	2010/04/15	MINOR	DEVELOPMENT TASK	Andrei Rybinski
+TF:782	Pointer data types of implicit function arguments not used always correctly
+		2.4.6	Naks	2010/04/21	BLOCKING	BUG REPORT	Tonu Naks
+TF:786	Infinite loop in CodeModelAdapterAda
+		2.4.6 dev	Naks	2010/04/22	BLOCKING	BUG REPORT	Andrei Rybinski
+TF:789	When Goto block is not found for a From block the From block remains in the model and gives error in FMCodeModelGenerator
+		2.4.6	Naks	2010/04/22	MAJOR	BUG REPORT	Tonu Naks
+TF:791	Error with initialisation of data-store memory block
+		2.4.6	Naks	2010/04/23	MAJOR	BUG REPORT	Tonu Naks
+TF:793	Error from InPortTyper when Enable port has output signal
+		2.4.6	Naks	2010/04/23	MAJOR	BUG REPORT	Tonu Naks
+TF:799	Loop iterator not defined in C
+		2.4.6 dev	Naks	2010/04/27	BLOCKING	BUG REPORT	Andrei Rybinski
+TF:804	Wrong data type evaluation for unary expression with not operator
+		2.4.6	Robinski	2010/04/29	MINOR	DEVELOPMENT TASK	Andrei Rybinski
+TF:809	When parsing data types from the user-defined function signature (UserDefinedFunction block or s-function) the parser replaces illegal names with the default type
+		2.4.6	Naks	2010/05/03	MAJOR	BUG REPORT	Tonu Naks
+TF:812	References to function parameters from UserDefined function signature work only in case of a s-function generated by the Legacy Code Tool
+		2.4.6	Naks	2010/05/03	MAJOR	FEATURE REQUEST	Tonu Naks
+
+
+2.4.6 31/03/2010
+----------------
+Reference	Title
+		Ver		Submitted by	Date submitted	Severity	Datatype	Assigned to
+TF:67	Merge similar parts of AntLR grammars
+		2.0.0	Kotkas	2008/08/05	MINOR	DEVELOPMENT TASK	Tonu Naks
+TF:125	Consider optimising of non-constant local variables
+		2.0.1	Robinski	2008/08/28	MINOR	DEVELOPMENT TASK	Andrei Rybinski
+TF:343	Reject models that could lead to a a run-time state inconsistency
+		2.2	Toom	2008/11/03	NICE TO HAVE	DEVELOPMENT TASK	Andres Toom
+TF:354	Add solution for processing system model blocks in FMPreprocessor (blocks TF:50)
+		2.2.0	Naks	2008/11/05	MAJOR	DEVELOPMENT TASK	Andrei Rybinski
+TF:392	Give understandable error message if function calls cross atomic subsystem boundaries 
+		2.3.0	Rugina	2008/11/19	MINOR	BUG REPORT	Andres Toom
+TF:405	Move handling of datastore to pre-processor
+		2.3	Naks	2008/11/21	MAJOR	FEATURE REQUEST	Andrei Rybinski
+TF:451	Analyse with PriviledgedAccessor.setValue(..) does not throw an error on failure
+		2.3.1	Toom	2008/12/05	MINOR	BUG REPORT	Andrei Rybinski
+TF:478  Support referencing mask variables in masked subsystem
+        2.3.2   Toom    2008/12/18          FEATURE REQUEST Andrei Rybinski
+TF:574	"Optimiser crashing with a model having buses	"
+		2.4.2 (dev)	Naks	2009/03/13	MAJOR	BUG REPORT	Andrei Rybinski
+TF:588	Parameter value with multi-line text crashes simulink and stateflow importers (applies to models from Simulink 2008  and newer -- converting to 2006b format does not help)
+		2.4.2	Naks	2009/05/18	MINOR	BUG REPORT	Tonu Naks
+TF:599	Enabled subsystem is not forced to be treated as atomic unit
+		2.4.3	Naks	2009/07/28	MINOR	BUG REPORT	Tonu Naks
+TF:601	Header file of a subsystem contains reference to itself
+		2.4.3	Naks	2009/07/28	MINOR	BUG REPORT	Andrei Rybinski
+TF:602	Encapsulate subsystem state variables into a single structure and pass instance of this structure as function argument
+		2.4.3	Naks	2009/07/28	MAJOR	FEATURE REQUEST	Tonu Naks
+TF:636	AdaPrinter: Move language-independent model transformations from TCPrinter into a separate project
+		2.4.2	Naks	2009/09/17	MAJOR	DEVELOPMENT TASK	Andrei Rybinski
+TF:637	AdaPrinter: add element RangeLoopStatement to CodeModel
+		2.4.2	Naks	2009/09/17	MAJOR	FEATURE REQUEST	Andrei Rybinski
+TF:638	AdaPrinter: add direction for each function argument (and structure element in function argument)
+		2.4.2	Naks	2009/09/17	MAJOR	FEATURE REQUEST	Andrei Rybinski
+TF:642	"AdaPrinter: add Code model element DerivedType	"
+		2.4.4	Naks	2009/10/08	MAJOR	DEVELOPMENT TASK	Andrei Rybinski
+TF:645	Add method that enable to define data type of the variable in RangeIterationStatement
+		2.4.4	Robinski	2009/10/20	MINOR	DEVELOPMENT TASK	Andrei Rybinski
+TF:646	Add new class RangeExpression for RangeIterationStatement and Ada ranges printing
+		2.4.4	Robinski	2009/10/20	MINOR	DEVELOPMENT TASK	Andrei Rybinski
+TF:648	Mux-Demux pair looses the original data types of Mux input
+		2.4.4	Naks	2009/10/23	MINOR	DEVELOPMENT TASK	Andrei Rybinski
+TF:650	TCPrinter generates for-loop for assignments between one element vectors
+		2.4.4	Naks	2009/10/23	MINOR	FEATURE REQUEST	Andrei Rybinski
+TF:653	Mask parameters are not converted to expression when importing (mantis id 0011933)
+		2.4.4	Naks	2009/10/26	MAJOR	DEVELOPMENT TASK	Tonu Naks
+TF:654	Change TArray functionality in Ada and add new array content type for handling of TArrays in Ada
+		2.4.4	Robinski	2009/10/26	MAJOR	DEVELOPMENT TASK	Andrei Rybinski
+TF:661	Add method that defines which parent to set to the data type in setDataType mehtod
+		2.4.4	Robinski	2009/11/04	MINOR	DEVELOPMENT TASK	Andrei Rybinski
+TF:669	Support exponential notation in integer expressions
+		2.4.4	Toom	2009/11/09	NICE TO HAVE	FEATURE REQUEST	Andrei Rybinski
+TF:672	The toolset rejects empty mask values (mantis id 0011270, followup of TF:631)
+		2.4.5	Naks	2009/11/10	BLOCKING	BUG REPORT	Tonu Naks
+TF:674	The order of included file does not correspond to the order of dependencies in the model
+		2.4.5	Naks	2009/11/12	BLOCKING	BUG REPORT	Andrei Rybinski
+TF:681	AdaPrinter: multiple instances of the same default value constant
+		2.4.5	Naks	2009/11/15	MAJOR	BUG REPORT	Andrei Rybinski
+TF:682	AdaPrinter: wrong argument direction definition in CodeModelAdaptation state
+		2.4.5	Robinski	2009/11/18	MAJOR	DEVELOPMENT TASK	Andrei Rybinski
+TF:684	AdaPrinter: Call to function defined later in the same module
+		2.4.5	Robinski	2009/11/20	MAJOR	DEVELOPMENT TASK	Andrei Rybinski
+TF:685	TCPrinter: Module Name normalization does not work correctly after refactoring
+		2.4.5	Robinski	2009/11/20	MAJOR	BUG REPORT	Andrei Rybinski
+TF:688	Non-linear complexity of typer algorithm processing sequential blocks
+		2.4.5	Naks	2009/11/25	MAJOR	DEVELOPMENT TASK	Tonu Naks
+TF:689	Disable printing DEBUG messages to log file by default        
+		2.4.5	Naks	2009/11/25	MINOR	BUG REPORT	Tonu Naks
+TF:690	AdaPrinter: No conversion for  assignments Structure variable to scalar value
+		2.4.5	Robinski	2009/11/25	MAJOR	DEVELOPMENT TASK	Andrei Rybinski
+TF:693	Refactor modelfactory to support using it in the geneauto to ecore conversion
+		2.4.5	Toom	2009/11/26		DEVELOPMENT TASK	Andres Toom
+TF:694	Bus resolving error with hierarchical models (bus blocks with same names on different levels)
+		2.4.5	Toom	2009/11/30	MAJOR	BUG REPORT	Andrei Rybinski
+TF:696	Replace usages of ForStatement with RangeIterationStatement
+		2.4.5	Naks	2009/12/03	NICE TO HAVE	DEVELOPMENT TASK	Andrei Rybinski
+TF:697	AdaPrinter: implement printing of ForStatement is Ada as While loop
+		2.4.5	Naks	2009/12/03	MINOR	FEATURE REQUEST	Andrei Rybinski
+TF:700	Optimise BlockLibraryFactory to use map when looking for block types (related to TF:653)
+		2.4.5	Naks	2009/12/08	MINOR	DEVELOPMENT TASK	Tonu Naks
+TF:701	Refactor method normalizeNames in GenericNamesNormalizer
+		2.4.5	Robinski	2009/12/09	MINOR	DEVELOPMENT TASK	Andrei Rybinski
+TF:702	Remove all generic attributes and related methods from classes Module and GenericNameNormalizer in printer  to the same classes in printerutilities
+		2.4.5	Robinski	2009/12/09	MINOR	DEVELOPMENT TASK	Andrei Rybinski
+TF:703	Potentially incorrect parsing of mask variable string
+		2.4.5	Naks	2009/12/10	MINOR	DEVELOPMENT TASK	Andrei Rybinski
+TF:704  Change source distribution so that it contains all necessary libraries and does not demand initialisation with maven (mantis id 0012804)
+        2.4.5   Naks    2009/12/10  NICE TO HAVE    GENEAUTO    Tonu Naks
+TF:705  Remove redundant classes TVector, TMatrix 
+        2.4.5   Toom    2009/12/10  NICE TO HAVE    GENEAUTO    Tonu Naks        
+TF:706	Extra loop generated in case of matrix multiplication with vector (mantis id 0012989)
+		2.4.5	Naks	2009/12/10	MAJOR	BUG REPORT	Andrei Rybinski
+TF:707	Lim: modify lim block to omit the check of min/max values in case min and max are taken from block parameters (mantis id 0012990)
+		2.4.5	Naks	2009/12/11	NICE TO HAVE	DEVELOPMENT TASK	Andrei Rybinski
+TF:708	Optimiser: add optimisation that removes dead branches of if statements (mantis id 0012990)
+		2.4.5	Naks	2009/12/11	NICE TO HAVE	FEATURE REQUEST	Andrei Rybinski
+TF:709	Remove TVector and TMatrix from code model
+		2.4.5	Robinski	2009/12/14	MINOR	DEVELOPMENT TASK	Andrei Rybinski
+TF:711	Take into account held/reset states and outputs flags in enabled subsystems
+		2.4.5	Naks	2009/12/16	MAJOR	FEATURE REQUEST	Tonu Naks
+TF:720	Annotation with toPrint = false shall not be printed
+		2.4.5	Robinski	2009/12/28	MINOR	BUG REPORT	Andrei Rybinski
+TF:723	Unify file extension specification and management of models in elementary tools
+		2.4.5	Toom	2010/01/13		DEVELOPMENT TASK	Andres Toom
+TF:724	Change enum constants to capital case
+		2.4.5	Toom	2010/01/26		DEVELOPMENT TASK	Andres Toom
+TF:726	EMLAccessor: refactor convertEMLToCodeModel method
+		2.4.5	Robinski	2010/02/02	MINOR	DEVELOPMENT TASK	Andrei Rybinski
+TF:728	Remove explicit inter-model references from the metamodel
+		2.4.5	Toom	2010/02/10		DEVELOPMENT TASK	Andres Toom
+TF:729	AdaPrinter: Long annotations are split incorrectly
+		2.4.5	Robinski	2010/02/11	MINOR	BUG REPORT	Andrei Rybinski
+TF:730	Avoid creating CodeModel too early in the model transformation process
+		2.4.5	Toom	2010/02/13		DEVELOPMENT TASK	Andres Toom
+TF:731	StateModel EvaluationContext not initialised correctly
+		2.4.5	Toom	2010/02/13	MAJOR	BUG REPORT	Andres Toom
+TF:733	When initial value of a variable is not literal value (Boolean, false, true, numeric, LValue etc.) then put initialising assignment in beginning of init function fo that module
+		2.4.6 dev	Naks	2010/02/22	MAJOR	DEVELOPMENT TASK	Andrei Rybinski
+TF:734	Optimiser fails when processing a model with external parameters
+		2.4.5	Toom	2010/02/24		BUG REPORT	Andrei Rybinski
+TF:737	Improve error reporting in TSimulinkImporter and TFMPreprocessor
+		2.4.5	Toom	2010/02/25		DEVELOPMENT TASK	Andres Toom
+TF:738	BinaryOperator.getDataType does not support correctly non-scalar relational and logical operators with scalar expansion
+		2.4.5	Toom	2010/02/25Andres Toom
+TF:741	TCPrinter: warning when printing C-library functions
+		2.4.5	Robinski	2010/03/01	MINOR	DEVELOPMENT TASK	Andrei Rybinski
+TF:742	Optimiser fails on loop interators
+		2.4.5 dev	Naks	2010/03/02	MAJOR	BUG REPORT	Andrei Rybinski
+TF:743	Remove the GANamedReference class from the metamodel
+		2.4.5	Toom	2010/03/02		DEVELOPMENT TASK	Andres Toom
+TF:744	TCustom.getDefaultValue called from geneauto.models package in tadaprinter
+		2.4.5 dev	Naks	2010/03/10	BLOCKING	BUG REPORT	Andrei Rybinski
+TF:745	Printer: Structures with the same name in generated code
+		2.4.5	Robinski	2010/03/16	MINOR	BUG REPORT	Andrei Rybinski
+TF:746	Printer: data type conflict in new AssignStatements from Adaptation phase
+		2.4.5	Robinski	2010/03/22	MINOR	BUG REPORT	Andrei Rybinski
+
+
+2.4.5 (DEV SNAPSHOT) 25/11/2009
+----------------
+Reference	Title
+		Ver		Submitted by	Date submitted	Severity	Datatype	Assigned to
+TF:574	"Optimiser crashing with a model having buses	"
+		2.4.2 (dev)	Naks	2009/03/13	MAJOR	BUG REPORT	Andrei Rybinski
+TF:601	Header file of a subsystem contains reference to itself
+		2.4.3	Naks	2009/07/28	MINOR	BUG REPORT	Andrei Rybinski
+TF:636	AdaPrinter: Move language-independent model transformations from TCPrinter into a separate project
+		2.4.2	Naks	2009/09/17	MAJOR	DEVELOPMENT TASK	Andrei Rybinski
+TF:637	AdaPrinter: add element RangeLoopStatement to CodeModel
+		2.4.2	Naks	2009/09/17	MAJOR	FEATURE REQUEST	Andrei Rybinski
+TF:638	AdaPrinter: add direction for each function argument (and structure element in function argument)
+		2.4.2	Naks	2009/09/17	MAJOR	FEATURE REQUEST	Andrei Rybinski
+TF:642	"AdaPrinter: add Code model element DerivedType	"
+		2.4.4	Naks	2009/10/08	MAJOR	DEVELOPMENT TASK	Andrei Rybinski
+TF:645	Add method that enable to define data type of the variable in RangeIterationStatement
+		2.4.4	Robinski	2009/10/20	MINOR	DEVELOPMENT TASK	Andrei Rybinski
+TF:646	Add new class RangeExpression for RangeIterationStatement and Ada ranges printing
+		2.4.4	Robinski	2009/10/20	MINOR	DEVELOPMENT TASK	Andrei Rybinski
+TF:647	Improve the algorithm generating temporary variables 
+		2.4.4	Robinski	2009/10/20	MINOR	DEVELOPMENT TASK	Andrei Rybinski
+TF:650	TCPrinter generates for-loop for assignments between one element vectors
+		2.4.4	Naks	2009/10/23	MINOR	FEATURE REQUEST	Andrei Rybinski
+TF:661	Add method that defines which parent to set to the data type in setDataType mehtod
+		2.4.4	Robinski	2009/11/04	MINOR	DEVELOPMENT TASK	Andrei Rybinski
+TF:672	The toolset rejects empty mask values (mantis id 0011270, followup of TF:631)
+		2.4.5	Naks	2009/11/10	BLOCKING	BUG REPORT	Tonu Naks
+TF:674	The order of included file does not correspond to the order of dependencies in the model
+		2.4.5	Naks	2009/11/12	BLOCKING	BUG REPORT	Andrei Rybinski
+TF:685	TCPrinter: Module Name normalization does not work correctly after refactoring
+		2.4.5	Robinski	2009/11/20	MAJOR	BUG REPORT	Andrei Rybinski
+TF:686	Non-linear complexity of typer algorithm processing sequential blocks
+		2.04.2005	Naks	24.11.2009	MAJOR	BUG REPORT	Tonu Naks
+
+
+2.4.5 10/11/2009
+----------------
+Reference	Title
+		Ver		Submitted by	Date submitted	Severity	Datatype	Assigned to
+
+TF:572	Block "Multiport Switch" does not honour the parameter "Use zero-based indexing"
+		2.4.2	Naks	2009/03/10	MINOR	FEATURE REQUEST	Tonu Naks
+TF:573	Null pointer exception in BusSelectorBackend
+		2.4.2	Naks	2009/03/10	BLOCKING	BUG REPORT	Tonu Naks
+TF:578	Switch block: criteria u2>Threshold not supported
+		2.4.2	Naks	2009/04/29	MAJOR	BUG REPORT	Tonu Naks
+TF:579	Switch block: criteria u2~=0 not supported
+		2.4.2	Naks	2009/04/29	MAJOR	BUG REPORT	Tonu Naks
+TF:600	Top-level subssytem does not have port objects, only port blocks exist (part of TF635)
+		2.4.3	Naks	2009/07/28	MAJOR	BUG REPORT	Fabien CASTEL
+TF:605	Error converting bus structure (RELATED TO TF:595)
+		2.4.2	Toom	2009/08/02	MINOR	BUG REPORT	Tonu Naks
+TF:606	Wrong name assigned to the rootlevel system's methods and structures
+		2.4.2	Toom	2009/08/02		DEVELOPMENT TASK	Tonu Naks
+TF:608	Data type is lost when mapping a parameter expression in TSimulinkImporter (Mantis ID 0010366)
+		2.4.3	Naks	2009/08/03	BLOCKING	BUG REPORT	Fabien CASTEL
+TF:609	Insufficient error handling in ConstantTyper in case determining expression data type fails (Mantis id 0010366)
+		2.4.3	Naks	2009/08/03	MINOR	BUG REPORT	Tonu Naks
+TF:611	SwitchTyper, MultiPortSwitchTyper and MuxTyper error in output type computation (SEE ALSO TF:617)
+		2.4.2	Toom	2009/08/03		BUG REPORT	Tonu Naks
+TF:612	Dangerous type conversion in assignments not caught (RELATED TO TF 611)
+		2.4.2	Toom	2009/08/03		BUG REPORT	Tonu Naks
+TF:615	Typing error when generating code from a s-function block with LegacyCode mask (mantis id 0010190)
+		2.4.3	Naks	2009/08/04	BLOCKING	BUG REPORT	Tonu Naks
+TF:616	MultiPortSwitch: incorrect handling of inputs in case of single data port
+		2.4.4	Naks	2009/08/06	MINOR	BUG REPORT	Tonu Naks
+TF:620	Current approach for handling Reference blocks does not allow supporting Simulink native libraries
+		2.4.2	Naks	2009/08/12	MAJOR	FEATURE REQUEST	Tonu Naks
+TF:624	TrigonometryTyper rejects data type 'single'
+		2.4.4	Naks	2009/08/21	MINOR	BUG REPORT	Fabien CASTEL
+TF:626	Data type initial value overrides intial value of a variable in case of TCustom
+		2.4.4	Naks	2009/09/01	MINOR	BUG REPORT	Tonu Naks
+TF:628	Include configuration file for non-embedded blocks (display, scope ..) to the release
+		2.4.4	Naks	2009/09/02	MINOR	DEVELOPMENT TASK	Tonu Naks
+TF:631	SimulinkImporter crashes when mask variable does not hold value (Mantis id 0011269, 0011270)
+		2.4.4	Naks	2009/09/16	MAJOR	BUG REPORT	Fabien CASTEL
+TF:634	Constants true/false not accepted by typer (regression of functionality implemented in TF:346)
+		2.4.4	Naks	2009/09/17	MAJOR	BUG REPORT	Fabien CASTEL
+TF:635	Output data type of top-level subsystem port is not taken into account correctly (follow-up of TF:582, related to TF:600)
+		2.4.4	Naks	2009/09/17	MAJOR	BUG REPORT	Fabien CASTEL
+TF:640	Add additional variable DefinitionScope that enables to define an imported variable with "extern" declaration in the importing module
+		2.4.4	Naks	2009/09/21	MAJOR	FEATURE REQUEST	Andrei Rybinski
+TF:641	geneauto.models: rename method equalsTo to equals at GADataType and subclasses
+		2.4.4	Robinski	2009/09/21	MINOR	DEVELOPMENT TASK	Andrei Rybinski
+TF:643	Data type is ignored when importing constants from m-file (mantis id 0011922) (related to  TF:608)
+		2.4.2	Naks	2009/10/19	MAJOR	BUG REPORT	Fabien CASTEL
+TF:644	Incorrect vector indexes when expanding matrix multiplication with vector
+		2.4.4	Naks	2009/10/19	MAJOR	BUG REPORT	Andrei Rybinski
+TF:651	DataTypeUtils.isValidAssignment gives incorrect result when scalar expansion is applied to a structure
+		2.4.4	Naks	2009/10/25	MAJOR	BUG REPORT	Tonu Naks
+TF:652	EML expression parsed incorrectly by stateflow
+		2.4.4	Naks	2009/10/25	MINOR	BUG REPORT	Andres Toom
+TF:665	Single data type not supported for constants (mantis id 0011466) (related to TF:608)
+		2.4.4	Naks	2009/11/04	MINOR	FEATURE REQUEST	Fabien CASTEL
+TF:667	Optimiser removes an assignment to non-optimisable variable (Mantis id 0012294)
+		2.4.4	Naks	2009/11/06	BLOCKING	BUG REPORT	Tonu Naks
+TF:668	Optimiser removes CustomType when this type is used as a base type of an array
+		2.4.4	Naks	2009/11/09	BLOCKING	BUG REPORT	Tonu Naks
+
+2.4.4 (DEV SNAPSHOT) 24/09/2009
+----------------
+Reference	Title
+		Ver		Submitted by	Date submitted	Severity	Datatype	Assigned to
+
+TF:640  Add additional variable DefinitionScope that enables to define an imported variable with "extern" declaration in the importing module
+        2.4.4   Pouchan         21/09/09        MAJOR       FEATURE REQUEST Andrei Rybinski
+
+2.4.4 (DEV SNAPSHOT) 02/09/2009
+----------------
+Reference	Title
+		Ver		Submitted by	Date submitted	Severity	Datatype	Assigned to
+
+TF:626  Data type initial value overrides intial value of a variable in case of TCustom
+        2.4.4   Pouchan         01/09/09        BLOCKING    BUG REPORT  Tonu Naks   
+        
+2.4.4 (DEV SNAPSHOT) 07/08/2009
+----------------
+Reference	Title
+		Ver		Submitted by	Date submitted	Severity	Datatype	Assigned to
+        
+TF:572	Block "Multiport Switch" does not honour the parameter "Use zero-based indexing"
+        2.4.2	Naks	2009/03/10	MINOR	FEATURE REQUEST	MEDIUM	Tonu Naks
+TF:578	Switch block: criteria u2>Threshold not supported
+        2.4.2	Naks	2009/04/29	MAJOR	BUG REPORT	MEDIUM	Tonu Naks
+TF:579	Switch block: criteria u2~=0 not supported
+        2.4.2	Naks	2009/04/29	MAJOR	BUG REPORT	MEDIUM	Tonu Naks
+TF:615	Typing error when generating code from a s-funciton block with LegacyCode mask
+        2.4.3	Naks	2009/08/04	BLOCKING	BUG REPORT	HIGH	Tonu Naks
+TF:616	MultiPortSwitch: incorrect handling of inputs in case of single data port
+        2.4.4	Naks	2009/08/06	MINOR	BUG REPORT	MEDIUM	Tonu Naks
+
+
+2.4.4 04/08/2009
+----------------
+Reference	Title
+		Ver		Submitted by	Date submitted	Severity	Datatype	Assigned to
+        
+TF:114	Use signal and port names when generating variables (GR-CF-V001, GR-CF-V002)
+        2.0.1	Naks	2008/08/24	MINOR	DEVELOPMENT TASK	MEDIUM	Tonu Naks
+TF:408	Legacy function -- Allow users to specify the header files to be included through a mask parameter
+        2.3.0	Rugina	2008/11/24	MAJOR	FEATURE REQUEST	LOW	Andrei Rybinski
+TF:516	Name of internal field of structure change between two release of geneauto
+        2.4.0 and previous	DALBIN	2009/01/09	MAJOR	BUG REPORT	MEDIUM	Tonu Naks
+TF:571	Confusing error message in case of non-supported block
+        2.4.2	Naks	2009/03/10	MINOR	DEVELOPMENT TASK	LOW	Tonu Naks
+TF:577	Potentially incorrect interpretation of PortDimension property in SystemTyper
+        2.4.2	Naks	2009/04/28	MINOR	BUG REPORT	MEDIUM	Fabien CASTEL
+TF:580	Naming conflicts: two variables are generated with the same name but not the same type (related to 443)	
+        2.4.2	Naks	2009/04/29	MINOR	BUG REPORT	LOW	Tonu Naks
+TF:582	User-defined type of outport is overwritten by the type derived from preceding block in top level system (follow-up of TF:543)
+        2.4.2	Naks	2009/04/29	MAJOR	BUG REPORT	MEDIUM	Fabien CASTEL
+TF:590	Add a Simulink version check in the GeneAuto toolset (followup : TF604)
+        2.4.2	Duffau	2009/05/27	NICE TO HAVE	FEATURE REQUEST	MEDIUM	Fabien CASTEL
+TF:591	Code cleanup and requirement synchronization (TCPrinter)
+        2.4.2	Robinski	2009/06/09	MINOR	DEVELOPMENT TASK	LOW	Andrei Rybinski
+TF:593	Unnecessary variables generated for control signals
+        2.4.3	Naks	2009/06/17	MAJOR	DEVELOPMENT TASK	MEDIUM	Tonu Naks
+TF:594	Matrixes not supported in Inports
+        2.4.2	Toom	2009/07/22		BUG REPORT	HIGH	Andres Toom
+TF:595	Printer error with hierachical structure in m file (Mantis id 0010186)
+        2.4.2	Toom	2009/07/27		BUG REPORT	HIGH	Andres Toom
+TF:596	Incorrect generation of negative constants (Mantis id 0009452)
+        2.4.3	Naks	2009/07/27	MAJOR	BUG REPORT	MEDIUM	Tonu Naks
+TF:598	Symbol mask is lost when masked block is defined in an external library (Mantis id 0008752)
+        2.4.3	Naks	2009/07/28	BLOCKING	BUG REPORT	HIGH	Tonu Naks
+TF:603	Simplified name conflict handling covering variable names
+        2.4.3	Naks	2009/07/28	BLOCKING	FEATURE REQUEST	HIGH	Tonu Naks
+TF:607	Assert methods must never return without raising an error on failed check
+        2.4.2	Toom	2009/08/03		DEVELOPMENT TASK	MEDIUM	Andres Toom
+
+
+2.4.3 26/05/2009
+----------------
+Reference	Title
+		Ver		Submitted by	Date submitted	Severity	Datatype	Assigned to
+
+TF:130	Testsuite: Add functionality for comparing reference files and generated files to the testsuite
+        2.1.0	Naks	2008/09/01	MINOR	DEVELOPMENT TASK	HIGH	Andrei Rybinski
+TF:336 	Create unit tests for expanding and printing operator expressions with non-scalar arguments
+        2.2		Toom	2008/10/30	MAJOR	DEVELOPMENT TASK	MEDIUM	Andrei Rybinski
+TF:457 	Create tests for printing BinaryExpression with mulMatOperator
+        2.3.1	Robinski	2008/12/11	MAJOR	DEVELOPMENT TASK	MEDIUM	Andrei Rybinski
+TF:541 	illegal pointer value
+        2.4.1	Pollet	2009/01/21	MAJOR	BUG REPORT	MEDIUM	Andres Toom
+TF:567	Redundant macro definition in  BlocType class
+        2.4.2	Naks	2009/02/05	MINOR	DEVELOPMENT TASK	LOW	Tonu Naks
+TF:568 	Optimiser removes preStatemnt of a ForStatement
+        2.4.2	Naks	2009/02/25	MAJOR	BUG REPORT	HIGH	Andrei Rybinski
+TF:570 	Remove getDataType methods from tcprinter package, refactor these methods in models package
+        2.4.2	Robinski	2009/02/27	MINOR	DEVELOPMENT TASK	LOW	Andrei Rybinski
+TF:584 	Problem with cascade structure declaration
+        2.4.2	Castel	2009/05/14	BLOCKING	BUG REPORT	HIGH	Fabien CASTEL
+TF:585 	Variable with structure declaration not handled correctly when included in an EML expression
+        2.4.2	Castel	2009/05/14	BLOCKING	BUG REPORT	HIGH	Fabien CASTEL
+TF:586 	Handling of vector matrixes in DemuxBackend (Mantis ID 0008616)
+        2.4.2	Castel	2009/05/14	BLOCKING	BUG REPORT	HIGH	Fabien CASTEL
+TF:587 	One-dimensional array from m-file is handled as matrix by Gene-Auto and vector in Simulink (Mantis ID 0008616)
+        2.4.2	Naks	2009/05/17	BLOCKING	DEVELOPMENT TASK	HIGH	Tonu Naks
+TF:589 	Output type of unit delay block should always equal to the input type 
+        2.4.2	Naks	2009/05/22	MAJOR	BUG REPORT	HIGH	Tonu Naks
+
+
+
+2.4.2 03/02/2009
+----------------
+Reference	Title	
+		Ver		Submitted by	Date submitted	Severity	Datatype	Assigned to
+
+TF:524	No header information in source C
+        2.4.0	DALBIN	2009/01/12	MAJOR	DEVELOPMENT TASK	MEDIUM	Andrei Rybinski
+TF:540	Replace operators with calls in adapting model state
+        2.4.1	Robinski	2009/01/20	MINOR	DEVELOPMENT TASK	LOW	Andrei Rybinski
+TF:543	User-defined type of outport is overwritten by the type derived from preceding block
+        2.4.1	Naks	2009/01/26	MAJOR	BUG REPORT	HIGH	Fabien CASTEL
+TF:545	WriteMapArray block makes optimiser to fail
+        2.4.1	Naks	2009/01/28	MAJOR	BUG REPORT	HIGH	Tonu Naks
+
+2.4.1 20/01/2009
+----------------
+Reference	Title	
+		Ver		Submitted by	Date submitted	Severity	Datatype	Assigned to
+
+TF:410	Check code generated when a uncontrolled block is between two controlled blocks by the same controller.
+        2.3.0	Pantel	2008/11/25	MINOR	DEVELOPMENT TASK	Tonu Naks		
+TF:452	Decide, if Simulink parsers should import 1 by n matrix as TMatrix or TVector
+		2.3.1	Toom	2008/12/05		DEVELOPMENT TASK	Andres Toom		
+TF:483	Optimisation not done on declared variables
+		2.3.1	Ssi Yan Kai	2008/12/18	MAJOR	BUG REPORT	Andrei Rybinski		
+TF:510	Switch block condition not parsed correctly (follow-up of 378)
+		2.4.0	Naks	2009/01/07	BLOCKING	BUG REPORT	Fabien CASTEL		
+TF:512	Missing code from a subchart
+		2.4.0	Pollet	2009/01/08	BLOCKING	BUG REPORT	Andres Toom		
+TF:513	Passing structured signals (output of BusCreator) from one subsystem to another does not work
+		2.4.0	Naks	2009/01/08	BLOCKING	BUG REPORT	Tonu Naks		
+TF:514	Order of the condition instruction (rising test) is not generated in a deterministic way
+		2.3.2 and 2.4.0	DALBIN	2009/01/09	MAJOR	BUG REPORT	Andres Toom		
+TF:515	"Function ""sign"" not found in FMCodemodelGenerator	"
+		2.4.0	Naks	2009/01/09	BLOCKING	BUG REPORT	Fabien CASTEL		
+TF:517	Slow file operations in C printer
+		2.4.0	Toom	2009/01/09		DEVELOPMENT TASK	Andres Toom		
+TF:519	Unsupported assignment between 1xn, nx1 matrixes and vectors
+		2.4.0	Toom	2009/01/09		BUG REPORT	Andres Toom		
+TF:520	Edge_mem array not initialized in the pilotauto_v3_GeneAuto.c
+		2.4.0 and previous	DALBIN	2009/01/09	MAJOR	BUG REPORT	Vahur Kotkas		
+TF:521	Signum backed does not work in case of non-scalar input
+		2.4.0	Naks	2009/01/09	BLOCKING	BUG REPORT	Fabien CASTEL		
+TF:522	Typing error with Gain block and Merge
+		2.4.0	Toom	2009/01/09		BUG REPORT	Andres Toom		
+TF:525	Typing fails when a susbsystem has diplayname set
+		2.4.0	Toom	2009/01/12	BLOCKING	BUG REPORT	Tonu Naks		
+TF:526	Implement isSubType for all used types
+		2.4.0	Toom	2009/01/13		DEVELOPMENT TASK	Andres Toom		
+TF:527	Support expressions like [value] in scalar context
+		2.4.0	Toom	2009/01/14		FEATURE REQUEST	Andres Toom		
+TF:528	Remove usage of TVector and TMatrix classes from Gene-Auto code
+		2.4.0	Toom	2009/01/14		DEVELOPMENT TASK	Andres Toom		
+TF:530	pattern match failed (critical error stateflow importer)
+		2.4.0	Pollet	2009/01/15	MINOR	BUG REPORT	Andres Toom		
+TF:532	TCPrinter fails on a model, where a bus exits a controlled subsystem - New feature: bus signal initialisation with a scalar value
+		2.4.1 (14.01 pre-release snapshot)	Rugina	2009/01/15	MAJOR	FEATURE REQUEST	Andrei Rybinski		
+TF:533	Typing problem in a model with a loop over fucntion call subsystems called by the same chart
+		2.4.1 (14.01 pre-release snapshot)	Rugina	2009/01/16	MAJOR	BUG REPORT	Tonu Naks		
+TF:534	Scheduling algorithm needs to consider data-flow dependencies between controlled blocks
+		2.4.1 (14.01 pre-release snapshot)	Toom	2009/01/16		DEVELOPMENT TASK	Marc Pantel		
+TF:535	Type definition of TRealSingle not generated
+		2.4.0	Toom	2009/01/16		DEVELOPMENT TASK	Andres Toom		
+TF:537	UserDefinedBlockTyper generates an error in case it has not inputs and ouptuts (follow up to TF:211)
+		2.4.0	Kotkas	2009/01/19		BUG REPORT	Vahur Kotkas		
+
+
+2.4.0 07/01/2009
+----------------
+Reference	Title	
+		Ver		Submitted by	Date submitted	Severity	Datatype	Assigned to
+        
+TF:221	Requirement compliance of data type declaration		
+        2.1.1	Olive	2008/09/25	MAJOR	BUG REPORT	Tonu Naks
+TF:249	TStatefloImporter: problems with importing stateflow labels with comments (follow-up to TF156)
+		2.1.1	Naks	2008/10/08	MINOR	BUG REPORT	Vahur Kotkas
+TF:273	Refine printing of multiple annotations and module annotations
+		2.1.1	Toom	2008/10/14	NICE TO HAVE	DEVELOPMENT TASK	Andrei Rybinski
+TF:317	Gain backend does not match the requirement R-B-04 in D.1.19.1 document (blocks TF:374)
+		2.2.0	Rugina	2008/10/24	MAJOR	DEVELOPMENT TASK	Andrei Rybinski
+TF:345	Don't include "GATypes.h" in code files, where it is not required
+		2.2	Toom	2008/11/04	NICE TO HAVE	DEVELOPMENT TASK	Andrei Rybinski
+TF:347	multiple declaration of extern variables
+		2.2.0	Rimaur	2008/11/05	MAJOR	FEATURE REQUEST	Tonu Naks
+TF:364	Behaviour of TCodeModelOptimiser non-deterministic
+		2.2.0	Naks	2008/11/12	MAJOR	BUG REPORT	Andrei Rybinski
+TF:374	Matrix as gain parameter not supported (blocked by TF:317)
+		2.3.0	Olive	2008/11/14	MAJOR	BUG REPORT	Fabien CASTEL
+TF:375	Replace matrix operations in backends and typers with native code model matrix expressions
+		2.3	Naks	2008/11/14	MAJOR	DEVELOPMENT TASK	Fabien CASTEL
+TF:412	Make LiteralExpression an abstract class
+		2.3	Naks	2008/11/25	NICE TO HAVE	DEVELOPMENT TASK	Andrei Rybinski
+TF:419	Issue decent error message and stop gracefully when top-level system has untyped ports (TF398 sibling)
+		2.3	Naks	2008/11/27	MINOR	BUG REPORT	Vahur Kotkas
+TF:434	Codegenerator fail on gac_13 TFTP model
+		2.3.0	DALBIN	2008/12/02	MAJOR	BUG REPORT	Fabien CASTEL
+TF:466	Remove empty modules before printing
+		2.3.1	Naks	2008/12/16	NICE TO HAVE	DEVELOPMENT TASK	Andrei Rybinski
+TF:471	Incorrect type inference in ListExpression's getDataType() method
+		2.3.1	Toom	2008/12/16		DEVELOPMENT TASK	Andrei Rybinski
+TF:472	Typing problem with loop over function call subsystems
+		2.3.1	Rugina	2008/12/17	MAJOR	BUG REPORT	Andrei Rybinski
+TF:477	Incorrect handling of input data types in ABS backend
+		2.3.2	Naks	2008/12/18	MAJOR	BUG REPORT	Tonu Naks
+TF:479	Improve handling of defailt data type for expressions
+		2.3.2	Naks	2008/12/18	MAJOR	DEVELOPMENT TASK	Andrei Rybinski
+TF:480	Math block constructs division with integer on the left side in case of operation "reciprocal"
+		2.3.2	Naks	2008/12/18	MINOR	BUG REPORT	Andrei Rybinski
+TF:490	check writemaparray backend
+		2.3.1	Ssi Yan Kai	2008/12/18	MAJOR	BUG REPORT	Fabien CASTEL
+TF:494	Latched outputs are not initialised
+		2.3.2	Toom	2008/12/18		BUG REPORT	Fabien CASTEL
+TF:495	Traceability is lost in case several virtual subsystems are merged
+		2.3.2	Preden	2008/12/19	MINOR	FEATURE REQUEST	Tonu Naks
+TF:496	Parent states not closed when an interlevel transition goes outside the parent
+		2.3.2	Toom	2008/12/19		BUG REPORT	Andres Toom
+TF:497	Wrong interpretation of the divide block
+		2.3.2	Preden	2008/12/22	BLOCKING	BUG REPORT	Tonu Naks
+TF:501	../geneauto-tests/user/TUT/TUT_2/sltbuGen_R14.mdl does not generate
+		2.3.2	Robinski	2008/12/23	BLOCKING	BUG REPORT	Fabien CASTEL
+TF:502	EMLParser error on value [ double(1)  double(1)  double(1) ]
+		2.3.2	Toom	2008/12/30		BUG REPORT	Fabien CASTEL
+TF:503	Too much code generated from a Stateflow model
+		2.3.2	Toom	2009/01/05		BUG REPORT	Andres Toom
+TF:504	matrix is handled as a vector in places, where it shouldn't be
+		2.3.2	Robinski	2009/01/05	MAJOR	BUG REPORT	Andres Toom
+TF:506	Typing not deterministic in case there are several interconnected blocks controlled by the same chart
+		2.3.2	Naks	2009/01/06	BLOCKING	BUG REPORT	Tonu Naks
+TF:507	LogicTyper does not fully correspond to behaviour in Simulink
+		2.3.2	Naks	2009/01/06	MINOR	BUG REPORT	Tonu Naks
+TF:508	Integer value converted to double in EMLAccessor/DataTypeAccessor - RELATED to TF:498
+		2.3.2	Toom	2009/01/07		BUG REPORT	Andres Toom
+
+
+2.3.2 18/12/2008
+----------------
+Reference	Title	
+		Ver		Submitted by	Date submitted	Severity	Datatype	Assigned to
+        
+TF:340	Add getDataType and assertTypeValidity methods to all operator types
+2.2.0	Naks	2008/10/31	MAJOR	DEVELOPMENT TASK	Andrei Rybinski	
+TF:371	Add metrics from charts to the complexity report
+		2.2	Toom	2008/11/12	NICE TO HAVE	DEVELOPMENT TASK	Andres Toom	
+TF:397	Typing of vector parameter in structure
+		2.3.0	Olive	2008/11/20	BLOCKING	BUG REPORT	Fabien CASTEL	
+TF:399	UserDefinedFunctionBlock should be checked for input and output types.
+		2.3.1	Kotkas	2008/11/20	MAJOR	DEVELOPMENT TASK	Fabien CASTEL	
+TF:411	Move constants imported from m file to separate module
+		2.3	Naks	2008/11/25	MINOR	FEATURE REQUEST	Fabien CASTEL	
+TF:420	TSimulinkImporter fails on models with model references
+		2.3	Naks	2008/11/28	MAJOR	BUG REPORT	Fabien CASTEL	
+TF:430	Code generation fail on TFTP gac_11 model
+		2.3.0	DALBIN	2008/12/01	BLOCKING	BUG REPORT	Fabien CASTEL	
+TF:446	Class cast exception on SumBackend and SignumBackend
+		2.3.1	Olive	2008/12/05	BLOCKING	BUG REPORT	Fabien CASTEL	
+TF:447	Edge enable memory does not function correctly when edge enablers are inside a subsystem
+		2.3.1	Toom	2008/12/05		BUG REPORT	Andres Toom	
+TF:448	Initialise edge-enable memory in the init function
+		2.3.1	Toom	2008/12/05		DEVELOPMENT TASK	Fabien CASTEL	
+TF:450	Subsystem expansion  ( evein if Treat as atomic = false ) not handled recursively starting from the third level
+		2.3.1	Ssi Yan Kai	2008/12/05	MAJOR	BUG REPORT	Tonu Naks	
+TF:453	Incorrect combinataion of gain and input in GainTyper
+		2.3.1	Robinski	2008/12/08	BLOCKING	DEVELOPMENT TASK	Fabien CASTEL	
+TF:454	Issue with SwitchCase and SwitchCaseAction systems
+		2.3.1	Olive	2008/12/08	BLOCKING	BUG REPORT	Fabien CASTEL	
+TF:455	Issue with eml - incorrect code
+		2.3.1	Olive	2008/12/08	MAJOR	BUG REPORT	Vahur Kotkas	
+TF:456	Modify Abs backend to use standard C abs (labs, fabs) function
+		2.3.1	Naks	2008/12/11	MAJOR	DEVELOPMENT TASK	Fabien CASTEL	
+TF:459	Dsiablling Stateflow tools in case of model with no charts does not work for derived launchers
+		2.3.1	Naks	2008/12/12	MINOR	DEVELOPMENT TASK	Tonu Naks	
+TF:461	Incorrect code generated from a flow-graph loop
+		2.3.1	Toom	2008/12/12	MAJOR	BUG REPORT	Andres Toom	
+TF:462	Faulty and excess TO_BOOL conversions
+		2.3.1	Toom	2008/12/12	MAJOR	BUG REPORT	Andrei Rybinski	
+TF:463	Wrong precedence of power operator
+		2.3.1	Toom	2008/12/12	MAJOR	BUG REPORT	Vahur Kotkas	
+TF:464	Typer error "DataType parameter has not been properly defined"
+		2.3.1	Naks	2008/12/15	BLOCKING	BUG REPORT	Tonu Naks	
+TF:465	The values of TRUE and FALSE are reversed in GATypes.h
+		2.3.1	Naks	2008/12/15	MAJOR	BUG REPORT	Andrei Rybinski	
+TF:468	Allow "On" as state name
+		2.3.1	Toom	2008/12/16		FEATURE REQUEST	Vahur Kotkas	
+TF:469	Label generated at the end of a compound statement
+		2.3.1	Toom	2008/12/16		BUG REPORT	Andres Toom	
+TF:473	Duplicated event condition
+		2.3.1	Toom	2008/12/17		BUG REPORT	Vahur Kotkas	
+TF:474	Error parsing "on event" action
+		2.3.1	Toom	2008/12/17		BUG REPORT	Vahur Kotkas	
+TF:340	Add getDataType and assertTypeValidity methods to all operator types
+		2.2.0	Naks	2008/10/31	MAJOR	DEVELOPMENT TASK	Andrei Rybinski	
+TF:371	Add metrics from charts to the complexity report
+		2.2	Toom	2008/11/12	NICE TO HAVE	DEVELOPMENT TASK	Andres Toom	
+TF:397	Typing of vector parameter in structure
+		2.3.0	Olive	2008/11/20	BLOCKING	BUG REPORT	Fabien CASTEL	
+TF:399	UserDefinedFunctionBlock should be checked for input and output types.
+		2.3.1	Kotkas	2008/11/20	MAJOR	DEVELOPMENT TASK	Fabien CASTEL	
+TF:411	Move constants imported from m file to separate module
+		2.3	Naks	2008/11/25	MINOR	FEATURE REQUEST	Fabien CASTEL	
+TF:420	TSimulinkImporter fails on models with model references
+		2.3	Naks	2008/11/28	MAJOR	BUG REPORT	Fabien CASTEL	
+TF:430	Code generation fail on TFTP gac_11 model
+		2.3.0	DALBIN	2008/12/01	BLOCKING	BUG REPORT	Fabien CASTEL	
+TF:446	Class cast exception on SumBackend and SignumBackend
+		2.3.1	Olive	2008/12/05	BLOCKING	BUG REPORT	Fabien CASTEL	
+TF:447	Edge enable memory does not function correctly when edge enablers are inside a subsystem
+		2.3.1	Toom	2008/12/05		BUG REPORT	Andres Toom	
+TF:448	Initialise edge-enable memory in the init function
+		2.3.1	Toom	2008/12/05		DEVELOPMENT TASK	Fabien CASTEL	
+TF:450	Subsystem expansion  ( evein if Treat as atomic = false ) not handled recursively starting from the third level
+		2.3.1	Ssi Yan Kai	2008/12/05	MAJOR	BUG REPORT	Tonu Naks	
+TF:453	Incorrect combinataion of gain and input in GainTyper
+		2.3.1	Robinski	2008/12/08	BLOCKING	DEVELOPMENT TASK	Fabien CASTEL	
+TF:454	Issue with SwitchCase and SwitchCaseAction systems
+		2.3.1	Olive	2008/12/08	BLOCKING	BUG REPORT	Fabien CASTEL	
+TF:455	Issue with eml - incorrect code
+		2.3.1	Olive	2008/12/08	MAJOR	BUG REPORT	Vahur Kotkas	
+TF:456	Modify Abs backend to use standard C abs (labs, fabs) function
+		2.3.1	Naks	2008/12/11	MAJOR	DEVELOPMENT TASK	Fabien CASTEL	
+TF:459	Dsiablling Stateflow tools in case of model with no charts does not work for derived launchers
+		2.3.1	Naks	2008/12/12	MINOR	DEVELOPMENT TASK	Tonu Naks	
+TF:461	Incorrect code generated from a flow-graph loop
+		2.3.1	Toom	2008/12/12	MAJOR	BUG REPORT	Andres Toom	
+TF:462	Faulty and excess TO_BOOL conversions
+		2.3.1	Toom	2008/12/12	MAJOR	BUG REPORT	Andrei Rybinski	
+TF:463	Wrong precedence of power operator
+		2.3.1	Toom	2008/12/12	MAJOR	BUG REPORT	Vahur Kotkas	
+TF:464	Typer error "DataType parameter has not been properly defined"
+		2.3.1	Naks	2008/12/15	BLOCKING	BUG REPORT	Tonu Naks	
+TF:465	The values of TRUE and FALSE are reversed in GATypes.h
+		2.3.1	Naks	2008/12/15	MAJOR	BUG REPORT	Andrei Rybinski	
+TF:468	Allow "On" as state name
+		2.3.1	Toom	2008/12/16		FEATURE REQUEST	Vahur Kotkas	
+TF:469	Label generated at the end of a compound statement
+		2.3.1	Toom	2008/12/16		BUG REPORT	Andres Toom	
+TF:473	Duplicated event condition
+		2.3.1	Toom	2008/12/17		BUG REPORT	Vahur Kotkas	
+TF:474	Error parsing "on event" action
+		2.3.1	Toom	2008/12/17		BUG REPORT	Vahur Kotkas	
+
+
+2.3.1 05/12/2008
+----------------
+Reference	Title	
+		Ver		Submitted by	Date submitted	Severity	Datatype	Assigned to
+
+TF:76	Implement support for geneauto subsystem parameters block (GR-SL-Y020)
+	    2.0.1	Naks	2008/08/11	MINOR	DEVELOPMENT TASK	Fabien CASTEL		
+TF:110	Make sure symbolic name of bus is used when generating data strcutures for non-virtual bus (GR-SL-S017)
+		2.0.1	Naks	2008/08/24	MINOR	DEVELOPMENT TASK	Fabien CASTEL		
+TF:113	Generate unique function names when several subsystems have the same name and subsystem does not have function name parameter (GR-SL-Y040)
+		2.0.1	Naks	2008/08/24	MAJOR	DEVELOPMENT TASK	Fabien CASTEL		
+TF:135	Check in TFM preprocessor if all used constants and variables exist in the model
+		2.0.1	Naks	2008/09/03	MINOR	DEVELOPMENT TASK	Fabien CASTEL		
+TF:157	Support for multi-rate models (user requirement R-CS-040)
+		2.1.0	Naks	2008/09/15	MAJOR	DEVELOPMENT TASK	Fabien CASTEL		
+TF:207	"Index out of bounds" error when trying to import model exported by SCICOS containing ifthenelse block
+		2.1.0	Naks	2008/09/23	MAJOR	BUG REPORT	Fabien CASTEL		
+TF:212	Variables with same name in case of duplicated signal with user-defined name
+		2.1.0	Castel	2008/09/24	NICE TO HAVE	DEVELOPMENT TASK	Nicolas MARY		
+TF:228	Add generic mechanism for checking existence of required attributes of a block
+		2.1.1	Naks	2008/09/26	NICE TO HAVE	FEATURE REQUEST	Fabien CASTEL		
+TF:260	Switch block does not accept inputs with different dimensions (tas/simple/Test1392.java)
+		2.1.1	Naks	2008/10/12	MINOR	FEATURE REQUEST	Fabien CASTEL		
+TF:261	TFMCodeModelGenerator: long loop in stateCoverting model (tut/SLcoordcOTest.java)
+		2.1.1	Naks	2008/10/12	MAJOR	DEVELOPMENT TASK	Fabien CASTEL		
+TF:275	In TSIMULINK importer, Geneauto force to have all blocks defined even if masked previously
+		2.1.1	Ssi Yan Kai	2008/10/14	MINOR	BUG REPORT	Fabien CASTEL		
+TF:280	Reject models containing eml style truthtables with a proper message
+		2.1.1	Toom	2008/10/14	MINOR	DEVELOPMENT TASK	Vahur Kotkas		
+TF:283	Implement a mechanism to map known functions in the input langauge to target language functions
+		2.1.1	Toom	2008/10/15		DEVELOPMENT TASK	Andres Toom		
+TF:287	TBlockSequencer_coq: add reference to specific model elemetns in blocksequencer error messages
+		2.1.1	Naks	2008/10/16	MAJOR	DEVELOPMENT TASK	Marc Pantel		
+TF:289	Typer error @ /geneauto.testsuite/src/test/java/geneauto/testsuite/user/ea/simple/TwoMerge_Test.java
+		2.2.0	Kotkas	2008/10/17	MAJOR	BUG REPORT	Fabien CASTEL		
+TF:290	Update GATypes according to D2.21
+		2.1.1	Toom	2008/10/17	MINOR	DEVELOPMENT TASK	Andrei Rybinski		
+TF:293	Different handling of division of integer constants in Simulink/Stateflow/Gene-Auto - SEE ALSO TF:421
+		2.2	Toom	2008/10/19		DEVELOPMENT TASK	Fabien CASTEL		
+TF:323	Typing error with delay and mux operators in stateflow model -- partly related to TF:340
+		2.2.0	DALBIN	2008/10/27	BLOCKING	DEVELOPMENT TASK	Fabien CASTEL		
+TF:346	EMLAccessor.convertEMLToCodeModel has to take in account the values true and false	V2.2.0	Rimaur	2008/11/05	MAJOR	DEVELOPMENT TASK	Fabien CASTEL		
+TF:348	Declaration and initialisation of a variable in a DataStoreMemory block	V2.2.0	Rimaur	2008/11/05	BLOCKING	DEVELOPMENT TASK	Fabien CASTEL		
+TF:352	The variables declared with the m file must not be static	V2.2.0	Rimaur	2008/11/05	BLOCKING	FEATURE REQUEST	Tonu Naks		
+TF:358	TTyper: Potential NULL pointer access
+		2.2.0	Naks	2008/11/06	MINOR	BUG REPORT	Fabien CASTEL		
+TF:366	Error in handling cascading function calls
+		2.2	Toom	2008/11/12	BLOCKING	BUG REPORT	Tonu Naks		
+TF:367	Avoid excess CompoundStatement for broadcasts and junctions
+		2.2	Toom	2008/11/12	NICE TO HAVE	DEVELOPMENT TASK	Andres Toom		
+TF:368	Do not generate TICK event, when the Chart has input control ports and it is not executed during initialisation
+		2.2	Toom	2008/11/12	MINOR	DEVELOPMENT TASK	Andres Toom		
+TF:369	Avoid reading and writing of unchanged models in StateModel elementary tools
+		2.2	Toom	2008/11/12	NICE TO HAVE	DEVELOPMENT TASK	Bertrand Demay		
+TF:376	Structure support in M-file (related to TF197)
+		2.3.0	Olive	2008/11/17	BLOCKING	BUG REPORT	Fabien CASTEL		
+TF:377	Issue on number into TCPrinter (Exception raised)
+		2.3.0	Olive	2008/11/17	MINOR	BUG REPORT	Nicolas MARY		
+TF:378	Issue on TSimulinkImporter with SwitchCase
+		2.3.0	Olive	2008/11/17	MAJOR	BUG REPORT	Fabien CASTEL		
+TF:379	Parser error with floating scalar starting by "."
+		2.3.0	Olive	2008/11/17	MINOR	BUG REPORT	Nicolas MARY		
+TF:380	ifdef position in Header file
+		2.3.0	Olive	2008/11/17	BLOCKING	BUG REPORT	Andrei Rybinski		
+TF:381	Add support for unlabelled actions in stateflow importer (Related to TF:53)
+		2.2.0	Naks	2008/11/17	MAJOR	DEVELOPMENT TASK	Vahur Kotkas		
+TF:382	Issue on Trigonometry block with two inputs (atan2 function for instance)
+		2.3.0	Castel	2008/11/17	BLOCKING	BUG REPORT	Fabien CASTEL		
+TF:383	Error parsing label of form "entry:Out++"
+		2.3	Toom	2008/11/17	 	BUG REPORT	Vahur Kotkas		
+TF:384	Separate code model expansion and printing in the printer
+		2.3	Toom	2008/11/17		DEVELOPMENT TASK	Andrei Rybinski		
+TF:386	Add cast to boolean for non-boolean expressions assigned to boolean variables. Update eval() accordingly
+		2.3	Toom	2008/11/17		DEVELOPMENT TASK	Andrei Rybinski		
+TF:387	Extend multirate support to  zero-order hold block
+		2.3	Naks	2008/11/18	MAJOR	DEVELOPMENT TASK	Fabien CASTEL		
+TF:388	Add support for vector (edge)enabling
+		2.3.0	Kotkas	2008/11/18	MINOR		Vahur Kotkas		
+TF:390	Cast left argument of division in case the data type is of floating type (related to TF:293)
+		2.3	Naks	2008/11/18	BLOCKING	DEVELOPMENT TASK	Andrei Rybinski		
+TF:393	"Backend of DataStoreRead/DataStoreWrite must declare as external the needed variables in the .h and must not include the uppersystem.h
+(See s2_r14_modif_22.mdl: n_020102.h includes s2_r14_modif_22.h that includes n_020102.h ... )
+Backend of DataStoreRead/DataStoreWrite must declare as external the needed variables in the .h and must not include the uppersystem.h"
+		2.3.0	Naks	2008/11/19	BLOCKING	FEATURE REQUEST	Tonu Naks		
+TF:398	Top level system inport block typing
+		2.3.0	Kotkas	2008/11/20	MINOR	BUG REPORT	Tonu Naks		
+TF:400	The Product typer does not allow multiplication of int with double  (blocked by TF:317)
+		2.30	Rugina	2008/11/20	MINOR	BUG REPORT	Fabien CASTEL		
+TF:401	No typing when combination of merge and function call blocks
+		2.2.0	Ssi Yan Kai	2008/11/20	BLOCKING	BUG REPORT	Tonu Naks		
+TF:403	Store originalFullName attribute for Block and Signal only
+		2.3	Naks	2008/11/21	MINOR	DEVELOPMENT TASK	Tonu Naks		
+TF:406	TFMCodeModelGenerator fails when block does not have any data inputs and outputs
+		2.3	Naks	2008/11/21	BLOCKING	BUG REPORT	Tonu Naks		
+TF:407	Merge blocks not handled in TFMCodeModelGenerator
+		2.3.0	Castel	2008/11/24	BLOCKING	BUG REPORT	Fabien CASTEL		
+TF:409	Undefined variable in TFMCodeModelGenerator (possible error in ModelReader or ModelWriter)
+		2.3.0	Toom	2008/11/24	BLOCKING	BUG REPORT	Andres Toom		
+TF:413	TCPrinter fails with cascading MUX on function calls
+		2.3.0	Rugina	2008/11/25	MAJOR	BUG REPORT	Andres Toom		
+TF:414	CodeModelGenerator fails with MUX on function calls.
+		2.3.0	Rugina	2008/11/25	MAJOR	BUG REPORT	Andres Toom		
+TF:415	Typing fails with dependent function call subsystems
+		2.3.0	Rugina	2008/11/25	MAJOR	BUG REPORT	Tonu Naks		
+TF:416	unneccessary varaibles created for control signals
+		2.3.1	Kotkas	2008/11/26		BUG REPORT	Vahur Kotkas		
+TF:418	Support for "extern" declarations for variables imported in backend
+		2.3	Naks	2008/11/27	BLOCKING	FEATURE REQUEST	Tonu Naks		
+TF:421	Refine parameter typing in TSimulinkImporter (RELATED TO TF:293)
+		2.3	Toom	2008/11/28	BLOCKING	DEVELOPMENT TASK	Fabien CASTEL		
+TF:422	Code generated for declaration and initialization of parameters inside a structure
+		2.3.0++ (last CVS version 11/30/08)	Olive	2008/11/30	BLOCKING	DEVELOPMENT TASK	Andrei Rybinski		
+TF:425	Multiple functions with same name generated, when Chart contains similar functions.
+		2.3.0	Toom	2008/12/01		BUG REPORT	Andres Toom		
+TF:426	Lack of chart function call in source code of PA
+		2.3.0	DALBIN	2008/12/01	MAJOR	BUG REPORT	Andres Toom		
+TF:427	Compilation error on file TFTP_Work.h
+		2.3.0	DALBIN	2008/12/01	BLOCKING	BUG REPORT	Andres Toom		
+TF:428	Ttype generation error on TFTP gac_13 model
+		2.3.0	DALBIN	2008/12/01	BLOCKING	BUG REPORT	Tonu Naks		
+TF:429	Custom type printed twice in case of importing structure variables from m-file
+		2.3	Naks	2008/12/01	BLOCKING	BUG REPORT	Fabien CASTEL		
+TF:431	Block sequencer elementary tool does not find the OCaML/Coq parts in linux 
+		2.3.0	Pantel	2008/12/01	NICE TO HAVE	BUG REPORT	Marc Pantel		
+TF:432	Duplicated id's when same stateflow event is used multiple times
+		2.3.0	Kotkas	2008/12/02	MAJOR	BUG REPORT	Vahur Kotkas		
+TF:433	Setting index for VariableExpression is broken
+		2.3.0	Kotkas	2008/12/02	MAJOR	BUG REPORT	Andres Toom		
+TF:435	MergeTyper shall allow different input types if common compatible type can be found for inputs 
+		2.3	Naks	2008/12/03	MAJOR	DEVELOPMENT TASK	Tonu Naks		
+TF:437	Problem on demux with Row or Column matrix input
+		2.3.0	Castel	2008/12/03	BLOCKING	BUG REPORT	Fabien CASTEL		
+TF:439	MuxTyper error in Pilotauto v3
+		2.3.0	Toom	2008/12/04	BLOCKING	BUG REPORT	Fabien CASTEL		
+TF:441	Infinite loop in the C code for bus treatment of the model gac_13
+		2.3.0	DALBIN	2008/12/04	MAJOR	BUG REPORT	Andres Toom		
+TF:442	Multiple writing of same function "falling" or "rising" when a system contains several edge-enable subsystems.
+		2.3.0	Castel	2008/12/04	 	BUG REPORT	Fabien CASTEL		
+TF:444	ModelReader skips collection members in case they are pointers
+		2.3.0	Naks	2008/12/04	MAJOR	BUG REPORT	Tonu Naks		
+TF:445	Multiple edge detector functions, when model contains mutiple edge detectors
+		2.3.0	Toom	2008/12/04		BUG REPORT	Andres Toom		
+
+2.2.0 13/11/2008
+----------------
+Reference	Title	
+		Ver		Submitted by	Date submitted	Severity	Datatype	Assigned to
+        
+TF:79	Problem with datStoreRead and dataStoreWrite blocks implementation - related to TF 310
+		2.0.1	Castel	2008/08/13	BUG REPORT	Fabien CASTEL
+TF:197	Support loading struct variables from .m file
+		2.1.0	Naks	2008/09/22	FEATURE REQUEST	Fabien CASTEL
+TF:211	"TFMCodeModelGenerator fails when there is no ports for the top-level system - REALTED TO 307	"
+		2.1.0	Naks	2008/09/24	BUG REPORT	Fabien CASTEL
+TF:247	masked subsystem shall not always considered as primitive  
+		2.1.0	Ssi Yan Kai	2008/10/06	BUG REPORT	Fabien CASTEL
+TF:262	Loop control and interator variables not passed to for-iterator subsystem 
+		2.1.1	Naks	2008/10/12	DEVELOPMENT TASK	Fabien CASTEL
+TF:263	TSimulinkImporter fails when model file contains "\" character (ab/gene_auto_wp3_tftp_new_modif/GererAutSess2_V5_R14Test.java)
+		2.1.1	Naks	2008/10/12	BUG REPORT	Nicolas MARY
+TF:265	Block parameters not supported in S-function (sfun/LegacyCodeEx10Test.java)
+		2.1.1	Naks	2008/10/12	BUG REPORT	Andrei Rybinski
+TF:267	Optimisation breaking model with indexed arrays
+		2.1.1	Ssi Yan Kai	2008/10/14	BUG REPORT	Andrei Rybinski
+TF:268	StateFlowImporter : error importing a model (user/ea/testashMgrCheckSearch_twoFncCall.mdl)
+		2.1.1	Castel	2008/10/14	BUG REPORT	Tonu Naks
+TF:272	Annotations of struct members not printed
+		2.1.1	Toom	2008/10/14	BUG REPORT	Andrei Rybinski
+TF:274	Avoid empty structure generation and usage in tfmcodemodelgenerator
+		2.1.1	Toom	2008/10/14	DEVELOPMENT TASK	Nicolas MARY
+TF:276	Constant initialization doesn't compile when matrix are used
+		2.1.1	Castel	2008/10/14	BUG REPORT	Andrei Rybinski
+TF:279	Error when handling minus in Stateflow expressions
+		2.1.1	Toom	2008/10/14	DEVELOPMENT TASK	Vahur Kotkas
+TF:281	Refine label printing
+		2.1.1	Toom	2008/10/15	DEVELOPMENT TASK	Andrei Rybinski
+TF:288	Fix reusing automatic loop variables
+		2.1.1	Toom	2008/10/16	DEVELOPMENT TASK	Andrei Rybinski
+TF:292	NullPointerException in TTyper/DataTypeAccessor
+		2.2	Toom	2008/10/19	BUG REPORT	Vahur Kotkas
+TF:295	Error when handling comments in a truthtable
+		2.2	Toom	2008/10/19	BUG REPORT	Vahur Kotkas
+TF:296	Error in converting flowchart of a graphical function
+		2.2	Toom	2008/10/19	BUG REPORT	Andres Toom
+TF:297	Error when handling control port
+		2.2	Toom	2008/10/19	BUG REPORT	Vahur Kotkas
+TF:298	Constant defined in .m file not visible in Stateflow - RELATED TO TF:333
+		2.2	Toom	2008/10/19	DEVELOPMENT TASK	Andres Toom
+TF:300	broken pointers when using masked sub-systems
+		2.2	Castel	2008/10/20	BUG REPORT	Fabien CASTEL
+TF:301	Typer fails when subsystem has open inputs
+		2.2.0	Naks	2008/10/21	BUG REPORT	Fabien CASTEL
+TF:303	Importer creates additional signal when subsystem containing stateflow block has the same name as stateflow block
+		2.2.0	Ssi Yan Kai	2008/10/21	BUG REPORT	Fabien CASTEL
+TF:304	Faulty typing order
+		2.2.0	Kotkas	2008/10/22	BUG REPORT	Fabien CASTEL
+TF:305	Generated code of a SystemBlock contains calls to controled blocks.
+		2.2.0	Kotkas	2008/10/22	BUG REPORT	Fabien CASTEL
+TF:306	Improve ExpressionStatement print method to enable non-scalar expression argument statements printing
+		2.2.0	Robinski	2008/10/22	DEVELOPMENT TASK	Andrei Rybinski
+TF:310	DataStoreRead blocks doesn't work when corresponding DataStoreMemory block is defined in an other system
+		2.2	Castel	2008/10/22	BUG REPORT	Fabien CASTEL
+TF:312	TStateflowImporter error when importing entry action with several lines
+		2.2	Olive	2008/10/23	BUG REPORT	Vahur Kotkas
+TF:313	PreProcessor fails with masked subsystem
+		2.2.0	Rugina	2008/10/23	BUG REPORT	Fabien CASTEL
+TF:314	CodeModelGenerator fails with bus creator inside atomic subsys and bus selector outside the subsys 
+		2.2.0	Rugina	2008/10/24	BUG REPORT	Fabien CASTEL
+TF:315	Typer fails when bus creator inside subsystem and bus selector outside
+		2.2.0	Rugina	2008/10/24	BUG REPORT	Fabien CASTEL
+TF:316	Broken pointer when bus creator outpus is not fed into bus selector
+		2.2.0	Rugina	2008/10/24	BUG REPORT	Fabien CASTEL
+TF:318	Remove LiteralCodeSection from the CodeModel
+		2.2	Toom	2008/10/27	DEVELOPMENT TASK	Andrei Rybinski
+TF:319	Broken pointer while expanding an empty system
+		2.2	Castel	2008/10/27	BUG REPORT	Fabien CASTEL
+TF:320	for block code incorrect
+		2.2	Preden	2008/10/27	DEVELOPMENT TASK	Fabien CASTEL
+TF:321	java.lang.NullPointerException on SEC Stateflow model
+		2.2.0	DALBIN	2008/10/27	BUG REPORT	Andres Toom
+TF:322	Support susbsystems with unconnected function call input/output ports
+		2.2	Toom	2008/10/27	DEVELOPMENT TASK	Vahur Kotkas
+TF:324	Dependency undefined in a CallExpression - HANDLED IN TF:337
+		2.2.0	DALBIN	2008/10/27	BUG REPORT	Andres Toom
+TF:325	Typer error on ListExpression
+		2.2.0	DALBIN	2008/10/27	BUG REPORT	Andrei Rybinski
+TF:326	TSMPreprocessor error on constant defined in a .m file - RELATED TO TF:333
+		2.2.0	DALBIN	2008/10/27	BUG REPORT	Andres Toom
+TF:327	TSMPreProcessor Broken pointer
+		2.2.0	DALBIN	2008/10/27	BUG REPORT	Andres Toom
+TF:328	Java exception when handling Data Store memory - related to TF 299
+		2.2.0	DALBIN	2008/10/27	BUG REPORT	Fabien CASTEL
+TF:329	Error in state INIT1 in stateflow chart
+		2.2.0	DALBIN	2008/10/27	BUG REPORT	Vahur Kotkas
+TF:330	StateflowImporter fails with to parse transition labels
+		2.2.0	Rugina	2008/10/28	BUG REPORT	Vahur Kotkas
+TF:331	Source port of a control signal is not changed to cintrol port when Mux block in control path is removed
+		2.2	Castel	2008/10/29	BUG REPORT	Tonu Naks
+TF:333	Generate CodeModel elements for variables supplied from the .m file in TFMPreprocessor - RELATED TO 326
+		2.2	Toom	2008/10/30	DEVELOPMENT TASK	Fabien CASTEL
+TF:334	IndexOutOfBoundsException in DependencyMap
+		2.2	Toom	2008/10/30	BUG REPORT	Andrei Rybinski
+TF:337	Implement support for including custom headers from Stateflow "Target options" section
+		2.2	Toom	2008/10/31	DEVELOPMENT TASK	Andres Toom
+TF:338	Function call missing from one caller in case two function calls are directed to one block using Mux
+		2.2.0	Naks	2008/10/31	BUG REPORT	Vahur Kotkas
+TF:339	In case of expression referring to a NameSpaceElement in different module add automatically Dependency to this module
+		2.2.0	Naks	2008/10/31	DEVELOPMENT TASK	Andrei Rybinski
+TF:342	Imported variables are imported in the c file not in h file as coding rules require
+        V2.2.0	Rimaur	2008/10/31	BUG REPORT	Andrei Rybinski
+TF:350	Include files are both included in .c and .h files
+        V2.2.0	Rimaur	2008/11/05	FEATURE REQUEST	Andrei Rybinski
+TF:353	HashSet type collection are not supported in ModelWritter
+		2.2	Robinski	2008/11/05	
+TF:355	Connective junctions in SF
+		2.2.0	Levush	2008/11/06	BUG REPORT	Andres Toom
+TF:356	Gode generation performance
+		2.2.0	Levush	2008/11/06	BUG REPORT	Tonu Naks
+TF:357	memory variables used in EdgeEnable if-statements are not initialised nor updated
+		2.2.1	Kotkas	2008/11/06		Vahur Kotkas
+TF:360	TCPrinter: assingment to several namespaces when creating loop variable
+		2.2.0	Naks	2008/11/06	BUG REPORT	Tonu Naks
+TF:361	gcc compilation error on label not defined - RELATED TO 296
+		2.2.0	DALBIN	2008/11/06	BUG REPORT	Andres Toom
+TF:362	Add timing benchmarks to state changes and ealementary tool completion
+		2.2.0	Naks	2008/11/09	DEVELOPMENT TASK	Tonu Naks
+TF:363	Error importing inner transition
+		2.2	Toom	2008/11/11	BUG REPORT	Andres Toom
+TF:365	GeneAuto takes too much time	V2.2.0	Rimaur	2008/11/12	BUG REPORT	Tonu Naks
+TF:370	Add progress info for code generation from charts
+		2.2	Toom	2008/11/12	DEVELOPMENT TASK	Andres Toom
+TF:372	Optimise TTyper
+		2.2.0	Naks	2008/11/12	DEVELOPMENT TASK	Tonu Naks
+TF:373	Support mutliple rate on subsystems (R-CS-040)
+		2.2.0	Naks	2008/11/13	DEVELOPMENT TASK	Nicolas MARY
+
+
+2.1.1 25/09/2008
+----------------
+Reference	Title	
+		Ver		Submitted by	Date submitted	Severity	Datatype	Assigned to
+TF:42	Support function calls from Charts
+		2.0.0	Toom	2008/08/04	DEVELOPMENT TASK	Vahur Kotkas
+TF:44	Support graphical functions with non-scalar output
+		2.0.0	Toom	2008/08/04	DEVELOPMENT TASK	Andres Toom
+TF:107	Add annotation with .m file name to imported constants (GR-TG-I030)
+		2.0.1	Naks	2008/08/24	DEVELOPMENT TASK	Nicolas MARY
+TF:109	Implement suport for UserDefinedFunction block (GR-SL-B130, ...)
+		2.0.1	Naks	2008/08/24	DEVELOPMENT TASK	Andrei Rybinski
+TF:117	Provide feedback about used backends (GR-TG-U020)
+		2.0.1	Naks	2008/08/24	DEVELOPMENT TASK	Fabien CASTEL
+TF:119	Change IntegerExpression to support hex values
+		2.0.1	Naks	2008/08/26	DEVELOPMENT TASK	Vahur Kotkas
+TF:126	Error message when .m files are starting with empty line
+		2.0.1	Ssi Yan Kai	2008/08/28	BUG REPORT	Nicolas MARY
+TF:128	"Optimise behaviour of TSmulinkImporter	"
+		2.0.1	Naks	2008/08/31	DEVELOPMENT TASK	Fabien CASTEL
+TF:136	Elementary tools give error when user-defined library is identical to the standard block library
+		2.0.2	Naks	2008/09/03	BUG REPORT	Nicolas MARY
+TF:143	"Missing files in release 2.1 binary and source packages	"
+		2.1	Pantel	2008/09/10	DEVELOPMENT TASK	Tonu Naks
+TF:144	Block source of a signal connected to an edge enable port is considered as controled
+		2.1	Pantel	2008/09/11	BUG REPORT	Marc Pantel
+TF:153	Change the main launcer to use TBlocksequencer_coq, remove other launchers from delivery
+		2.1.0	Naks	2008/09/15	DEVELOPMENT TASK	Tonu Naks
+TF:156	Support comments and whitespace in Stateflow labels
+		2.1.0	Toom	2008/09/15	DEVELOPMENT TASK	Vahur Kotkas
+TF:159	EMLParser is used in the Backend, it should be only used in TSimulinkImporter.
+		2.1	Castel	2008/09/16	DEVELOPMENT TASK	Fabien CASTEL
+TF:161	Several includes generated in file code
+		2.1.0	Ssi Yan Kai	2008/09/16	BUG REPORT	Andrei Rybinski
+TF:162	TFMCodeModelGenerator fails when model contains constants loaded from an .m file
+		2.1.0	Kotkas	2008/09/16	BUG REPORT	Tonu Naks
+TF:163	When incorrect constant file name is given, the toolset gives only an information message and continues
+		2.1.0	Naks	2008/09/17	BUG REPORT	Tonu Naks
+TF:164	EML expressions in block parameters are not parsed correctly
+		2.1.0	Naks	2008/09/17	BUG REPORT	Nicolas MARY
+TF:165	TSimulinkImporter: OutOfMemoryError when array elements are separated by comma
+		2.1.0	Naks	2008/09/17	BUG REPORT	Tonu Naks
+TF:166	"When constant name loaded from .m file is used as block parameter value, reference to correspondiong variable is not created	"
+		2.1.0	Naks	2008/09/17	BUG REPORT	Fabien CASTEL
+TF:167	Error message GED0006 shall contain reference to the statement where error occurred
+		2.1.0	Naks	2008/09/17	BUG REPORT	Andrei Rybinski
+TF:168	Assignment of an array to scalar variable created in Constant backend
+		2.1.0	Naks	2008/09/17	BUG REPORT	Fabien CASTEL
+TF:169	Library file not loaded when -mLib parameter is not given
+		2.1.0	Naks	2008/09/17	BUG REPORT	Nicolas MARY
+TF:170	Importer continues running after parse error
+		2.1.0	Naks	2008/09/17	BUG REPORT	Nicolas MARY
+TF:173	Cast error in ListExpression.getDataType when base data type is not array
+		2.1.0	Naks	2008/09/18	BUG REPORT	Andrei Rybinski
+TF:174	Problem in parsing vector parameters with a single value
+		2.1.0	Castel	2008/09/18	DEVELOPMENT TASK	Loic Salvado
+TF:175	EML parser does not handle ElseIfExpressions parameters in If blocks.
+		2.1.0	Mary	2008/09/18	BUG REPORT	Nicolas MARY
+TF:176	Incorrect typing of BinaryExpressions with operator DivOperator or ModOperator
+		2.1.0	Robinski	2008/09/18	DEVELOPMENT TASK	Andrei Rybinski
+TF:179	Confusing message "SystemModel must have a SystemBlock as top-level element"
+		2.1.0	Naks	2008/09/18	DEVELOPMENT TASK	Tonu Naks
+TF:180	TCPritner: Array with 1 dimension and length 1 is treated like scalar object
+		2.1.0	Naks	2008/09/19	BUG REPORT	Andrei Rybinski
+TF:182	Incorrect printing of AssignStatement with List Expression containing right expression
+		2.1.0	Robinski	2008/09/19	DEVELOPMENT TASK	Andrei Rybinski
+TF:184	TFMCodeModelGenerator fail on given sample model
+		2.1.0	Kotkas	2008/09/19	BUG REPORT	Fabien CASTEL
+TF:186	TCPrinter does not print declaration for variables with scope "Imported"
+		2.1.0	Naks	2008/09/20	BUG REPORT	Tonu Naks
+TF:187	Listexpression assignment in {} format outside of variable definition
+		2.1.0	Naks	2008/09/20	BUG REPORT	Tonu Naks
+TF:188	EML parser does not accept numbers in form <number>. (e.g. "0.")
+		2.1.0	Naks	2008/09/21	BUG REPORT	Tonu Naks
+TF:189	Constant parser does not accept numbers in form <number>. (e.g. "0.")
+		2.1.0	Naks	2008/09/21	BUG REPORT	Tonu Naks
+TF:190	TSimulinkImporter: in case of untyped constant in .m file the tool either crashes of gives an error in typer
+		2.1.0	Naks	2008/09/21	BUG REPORT	Tonu Naks
+TF:191	Variable names with space are printed to generated code
+		2.1.0	Naks	2008/09/21	BUG REPORT	Tonu Naks
+TF:192	TCPrinter shall give an error in case function or variable name starts with a number
+		2.1.0	Naks	2008/09/21	BUG REPORT	Tonu Naks
+TF:193	TCPrinter puts array initialisations into the code with no brackets
+		2.1.0	Naks	2008/09/21	BUG REPORT	Tonu Naks
+TF:194	Duplicated definition of subsystem functions and IO structures in code model
+		2.1.0	Naks	2008/09/21	BUG REPORT	Fabien CASTEL
+TF:196	OutOfMemory error when using expressions in an .m file
+		2.1.0	Rugina	2008/09/22	DEVELOPMENT TASK	Nicolas MARY
+TF:199	Sum block with single vector input shall collapse the vectory by adding (or sustracting) all vector elements
+		2.1.0	Naks	2008/09/22	DEVELOPMENT TASK	Fabien CASTEL
+TF:200	When control input of Switch block is vector, the output of switch block shall be the vector of same size
+		2.1.0	Naks	2008/09/22	DEVELOPMENT TASK	Fabien CASTEL
+TF:201	TSimulinkImporter problem when using a custom block library file
+		2.1.0	Rugina	2008/09/22		Nicolas MARY
+TF:213	Compile originalFullName for each element in TFMPreProcessor, not importer
+		2.1.0	Naks	2008/09/24	DEVELOPMENT TASK	Tonu Naks
+TF:214	Method isScalar returns always true in case of some expression types
+		2.1.0	Naks	2008/09/24	BUG REPORT	Tonu Naks
+TF:217	IfElsebackend takes only first expression from the list of elseif expressions
+		2.1.0	Naks	2008/09/25	BUG REPORT	Tonu Naks
+
+
+2.1.0 08/09/2008
+----------------
+
+Reference	Title	
+		Ver		Submitted by	Date submitted	Severity	Datatype	Assigned to
+TF:24	Different output between log file and console	
+        2.0.0	Ssi Yan Kai	2008/07/24	 	BUG REPORT	Marc Pantel		
+TF:29	Initialisation of DataStoreMemory block	
+        2.0	Rimaur	2008/07/28	MAJOR	BUG REPORT	Fabien CASTEL		
+TF:30	Delay within execution of coq scheduling 	
+        2.0.0	Ssi Yan Kai	2008/07/28	MINOR	BUG REPORT	Marc Pantel		
+TF:34	Optimisation overwrites a variable value in case of sequential assignment of optimised variables	
+        2.0.1 pre-release	Naks	2008/08/01	MAJOR	BUG REPORT	Andrei Rybinski		
+TF:39	Initialize StateModel local variables on location entry	
+        2.0.0	Toom	2008/08/04	 	DEVELOPMENT TASK	Andres Toom		
+TF:41	Removed unused labels from generated code	
+        2.0.0	Toom	2008/08/04	 	DEVELOPMENT TASK	Andres Toom		
+TF:43	Support Stateflow graphical functions	
+        2.0.0	Toom	2008/08/04	 	DEVELOPMENT TASK	Andres Toom		
+TF:45	Support subcharts and supertransitions in StateModels	
+        2.0.0	Toom	2008/08/04	 	DEVELOPMENT TASK	Vahur Kotkas		
+TF:68	Create conidtional statements for Enable and EdgeEnable port based on port object data not in port block backend	
+        2.0.0	Kotkas	2008/08/05	MINOR	DEVELOPMENT TASK	Fabien CASTEL		
+TF:69	SFImporter: Unary expression is not parsed correclty	
+        2.0.0	Naks	2008/08/06	BLOCKING	BUG REPORT	Vahur Kotkas		
+TF:71	Implement Chart initialization function.	
+        2.0.0	Toom	2008/08/11	 	DEVELOPMENT TASK	Andres Toom		
+TF:72	SFImporter: Guard expression is null	
+        2.0.0	Toom	2008/08/11	 	DEVELOPMENT TASK	Vahur Kotkas		
+TF:73	"Constant and UnitDelay typing with value giving as a constant (defined in .m file) inaccurate"	
+        2.0.1	Castel	2008/08/11	MAJOR	DEVELOPMENT TASK	Fabien CASTEL		
+TF:74	Implement reading RTW parameters in simulinkimporter (GR-SL-Y021)	
+        2.0.1	Naks	2008/08/11	MINOR	DEVELOPMENT TASK	Nicolas MARY		
+TF:77	Java code does not compile on platforms that have default encoding something else than cp1257	
+        2.0.1	Naks	2008/08/12	MINOR	BUG REPORT	Tonu Naks		
+TF:78	Importer reads newline characters incorrectly in case of cross-platform usage (the input file is from Windows and the code generator is runnig on Linux or vice versa)	
+        2.0.1	Naks	2008/08/12	MINOR	DEVELOPMENT TASK	Nicolas MARY		
+TF:80	SFImporter: OnEventAction support in states	
+        2.0.1	Naks	2008/08/14	MAJOR	DEVELOPMENT TASK	Vahur Kotkas		
+TF:81	SFImporter: global data, event and target (sections of chart)	
+        2.0.1	Naks	2008/08/14	MAJOR	DEVELOPMENT TASK	Vahur Kotkas		
+TF:83	SFImporter: notebox (state with innoteBox=1)	
+        2.0.1	Naks	2008/08/14		DEVELOPMENT TASK	Vahur Kotkas		
+TF:84	When default block library is not found the system shall give an error and stop	
+        2.0.1	Naks	2008/08/15	MINOR	BUG REPORT	Nicolas MARY		
+TF:85	Add requiremetns to D2.38 to explain usage of backend interfaces (trace back to GR-SL-B120) and typer interface (GR-SL-B110)	
+        2.0.1	Naks	2008/08/15	MINOR	DEVELOPMENT TASK	Nicolas MARY		
+TF:86	Implement support for sub-states	
+        2.0.1	Toom	2008/08/15		DEVELOPMENT TASK	Vahur Kotkas		
+TF:88	The path to the user library directory requires "/" in the end	
+        2.0.0	Naks	2008/08/15	MINOR	BUG REPORT	Nicolas MARY		
+TF:89	Transition (event) condition not generated	
+        2.0.1	Toom	2008/08/15		DEVELOPMENT TASK	Andres Toom		
+TF:90	Support (graphical) functions with non-scalar input	
+        2.0.1	Toom	2008/08/15		DEVELOPMENT TASK	Andres Toom		
+TF:91	Implement error handling for run-time errors in Stateflow charts	
+        2.0.0	Toom	2008/08/15		DEVELOPMENT TASK	Andres Toom		
+TF:92	Transition action propagates to an alternative branch	
+        2.0.1	Toom	2008/08/15		DEVELOPMENT TASK	Andres Toom		
+TF:100	Mask parameters missing in case of reference block	
+        2.0.1	Castel	2008/08/21	MAJOR	BUG REPORT	Fabien CASTEL		
+TF:102	TSimulinkImporter crashes, when input model contains S-function	
+        2.1.0 DEV	Naks	2008/08/24	MAJOR	BUG REPORT	Tonu Naks		
+TF:116	Add code metrics report (GR-TG-U011)	
+        2.0.1	Naks	2008/08/24	MAJOR	DEVELOPMENT TASK	Andrei Rybinski		
+TF:121	BlockSequencer executable not found in some case	
+        2.0.1	Pantel	2008/08/27	MINOR	BUG REPORT	Marc Pantel		
+TF:122	.M files parsing issue with comments -  JAVA Memory HEAP message	
+        2.0.1	Ssi Yan Kai	2008/08/27	MINOR	BUG REPORT	Tonu Naks		
+TF:123	Output list of source files generated by CPrinter (GR-TG-U012)	
+        2.0.1	Naks	2008/08/27	MINOR	DEVELOPMENT TASK	Andrei Rybinski		
+TF:124	Testsuite: Automate integration tests using a separate project	
+        2.0.1	Naks	2008/08/28	MAJOR	DEVELOPMENT TASK	Andres Toom		
+TF:127	Flattening subsystem does not work when the subsystem hierarchy is too deep	
+        2.0.1	Naks	2008/08/31	BLOCKING	BUG REPORT	Tonu Naks		
+TF:129	Lost block and connextion  during parsing of mdl file	
+        2.0.1	Ssi Yan Kai	2008/09/01	MAJOR	BUG REPORT	Tonu Naks		
+TF:133	TTyper: whne sybssytem contains ort with data type "auto" then type propagation is not done and typer gives error	
+        2.0.1	SOUYRI	2008/09/02	MAJOR	BUG REPORT	Benoit Souyri		
+TF:134	Store block name with full subsystem hierarchy to originalName filed of that element and use this field in error messages	
+        2.0.1	Naks	2008/09/02	MINOR	DEVELOPMENT TASK	Tonu Naks		
+TF:139	Support named constants in data size and initial value fields (Stateflow)	
+        2.0.1	Toom	2008/09/07		DEVELOPMENT TASK	Andres Toom	
+
+2.0.2 22/08/2008
+----------------
+
+Reference	Title	
+		Ver		Submitted by	Date submitted	Severity	Datatype	Assigned to
+TF:99	Create laucher that reads input from SCICOS-generated XML file and generates code from functionl model part	
+        2.0.1	Naks	2008/08/19	BLOCKING	DEVELOPMENT TASK	Tonu Naks		
+
+OTHER CHANGES NOT BASELINED -- THE INTERMEDIATE RELEASE IS MADE ONLY FOR 
+TESTING SCICOS INTEGRATION AND NOT DISTRIBUTED TO ANY OTHER USER
+
+2.0.1 11/08/2008
+----------------
+
+Reference	Title	
+		Ver		Submitted by	Date submitted	Severity	Datatype	Assigned to
+TF:15	MAVEN documentation/POM to be updated	
+		2.0.0	Ssi Yan Kai	2008/07/15	MINOR	BUG REPORT	Benoit Souyri
+TF:16	Versions number of tools not corrects	
+		2.0.0	Ssi Yan Kai	2008/07/16	MINOR	BUG REPORT	Nicolas MARY
+TF:17	Sample Mdl files does not go thru anymore 	
+		2.0.0	Ssi Yan Kai	2008/07/17	BLOCKING	BUG REPORT	Nicolas MARY
+TF:18	Generation  with coq scheduler stucks on typer	
+		2.0.0	Ssi Yan Kai	2008/07/18	MAJOR	BUG REPORT	Marc Pantel		
+TF:19	Binary distribution contains incorrect folder name and no bat files	
+		2.0.0	Naks	2008/07/22	MINOR	BUG REPORT	Benoit Souyri
+TF:20	Output xxx_GA not emptied before generation -> mix of old and new generated items.	
+		2.0.0	Ssi Yan Kai	2008/07/22	MINOR	FEATURE REQUEST	Tonu Naks
+TF:21	Problem importing m files with negative values	
+		2.0.0	SOUYRI	2008/07/22	MAJOR	BUG REPORT	Nicolas MARY
+TF:22	Problem with user defined block when they are used by reference.	
+		2.0.0	SOUYRI	2008/07/22	MAJOR	BUG REPORT	Nicolas MARY
+TF:23	A variable can not contain a number in its name (except if placed at the end) in the m file.	
+		2.0.0	SOUYRI	2008/07/22	MAJOR	BUG REPORT	Nicolas MARY
+TF:26	Test GAModelElement.getChildren method and remove the overrides in subclasses of models package	
+		2.0.0	Naks	2008/07/28	MAJOR	DEVELOPMENT TASK	Tonu Naks
+TF:27	Implement support for multiple modules in FMCodeModelGenerator	
+		2.0.0	Naks	2008/07/28	MAJOR	DEVELOPMENT TASK	Nicolas MARY
+TF:28	Move processing of masked subsystems from importer to fmpreprocessor	
+		2.0.0	Naks	2008/07/28	MAJOR	DEVELOPMENT TASK	Nicolas MARY
+TF:29	Initialisation of DataStoreMemory block	
+		2.0.0	Rimaur	2008/07/28	MAJOR	BUG REPORT	Fabien CASTEL
+TF:32	Add support merging user-defined and standard block library (requirements GR-TG-I023 .. GR-TG-I025)	
+		2.0.0	Naks	2008/07/29	MAJOR	DEVELOPMENT TASK	Nicolas MARY
+TF:33	Optimisation overwrites memory variables in case of adjacent sequential blocks	
+		2.0.1 DEV	Naks	2008/08/01	MAJOR	BUG REPORT	Tonu Naks
+TF:35	Call expression not printed	
+		2.0.0	Castel	2008/08/04	 	BUG REPORT	Fabien CASTEL
+TF:36	Update/complete CodeModel merging state in SMPostProcessor with new model reference mechanism	
+		2.0.0	Toom	2008/08/04	 	DEVELOPMENT TASK	Andres Toom
+TF:37	Implement StateModel specific CodeModel constructs (open/close location, isOpen, broadcast)	
+		2.0.0	Toom	2008/08/04	 	DEVELOPMENT TASK	Andres Toom
+TF:38	Complete generation of the Chart's computation control structure	
+		2.0.0	Toom	2008/08/04	 	DEVELOPMENT TASK	Andres Toom
+TF:40	Implement primitive conversion state in SMPostProcessor	
+		2.0.0	Toom	2008/08/04	 	DEVELOPMENT TASK	Andres Toom
+TF:60	Allow creating rederences beftween code model and system model elements	
+		2.0.0	Naks	2008/08/05	BLOCKING	DEVELOPMENT TASK	Tonu Naks
+TF:61	Parent is not always referring to correct element in tree -- elements are lost when reading xml	
+		2.0.0	Naks	2008/08/05	MAJOR	BUG REPORT	Tonu Naks
+TF:62	Duplicate id's in xml file	
+		2.0.0	Naks	2008/08/05	MAJOR	BUG REPORT	Tonu Naks
+TF:63	Prevent ModelReader saving illegal pointers	
+		2.0.0	Naks	2008/08/05	MAJOR	BUG REPORT	Tonu Naks
+TF:64	There is no need to override GAMain in each different launcher	
+		2.0.0	Naks	2008/08/05	MINOR	DEVELOPMENT TASK	Tonu Naks
+TF:65	Remove the full blocklibrary from geneauto.files and replace with an example file for testing block type override	
+		2.0.0	Naks	2008/08/05	MINOR	DEVELOPMENT TASK	Fabien CASTEL		
+TF:70	Simplify installation of source distributions and ensure consistency of configuration files	
+		2.0.0	Naks	2008/08/10	MINOR	DEVELOPMENT TASK	Tonu Naks
+

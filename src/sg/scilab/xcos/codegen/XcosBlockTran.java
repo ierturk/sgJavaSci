@@ -187,7 +187,7 @@ public class XcosBlockTran extends Helpers {
 	}
 	
 	@SuppressWarnings("unused")
-	private Element SUMMATION_tran(String blockID) throws ParserConfigurationException, DOMException, XPathExpressionException {		
+	private Element SUMMATION_tran(String blockID) throws ParserConfigurationException, DOMException, XPathExpressionException, NoSuchMethodException, SecurityException, IllegalAccessException, IllegalArgumentException, InvocationTargetException, InstantiationException {		
 		Element elementOut = docIn.createElement("CombinatorialBlock");
 		elementOut.setAttribute("type", "Sum");
 		elementOut.setAttribute("name", "NoName");
@@ -199,11 +199,33 @@ public class XcosBlockTran extends Helpers {
 		ArrayList<ArrayList<Object>> ParamArray = new ArrayList<ArrayList<Object>>();
 		ArrayList<Object> ParamList = new ArrayList<Object>();
 		
+		ParamList.add("Inputs");
+		ParamList.add("String");		
+		NodeList PortNL = ((NodeList) XPathFactory.newInstance().newXPath()
+										.compile("//*[@id='" + blockID + "']"
+													+ "/ScilabDouble[@as='integerParameters']/data")
+										.evaluate(docIn, XPathConstants.NODESET));
+		String inputs = "";
+		for(int i=0;i<PortNL.getLength();i++) {
+			if(PortNL.item(i).getAttributes().getNamedItem("realPart").getNodeValue().equals("1.0")) inputs += "+";
+			else inputs += "-";
+		}
+
+		ParamList.add(inputs);
+		ParamArray.add(ParamList);
+		
+		ParamList = new ArrayList<Object>();
+		ParamList.add("OutDataTypeMode");
+		ParamList.add("String");
+		ParamList.add("Inherit via internal rule");
+		ParamArray.add(ParamList);		
+		elementOut.appendChild(docIn.importNode(ParseParameters(ParamArray), true));
+		
 		return elementOut;
 	}
 	
 	@SuppressWarnings("unused")
-	private Element SWITCH2_m_tran(String blockID) throws ParserConfigurationException, DOMException, XPathExpressionException {		
+	private Element SWITCH2_m_tran(String blockID) throws ParserConfigurationException, DOMException, XPathExpressionException, NoSuchMethodException, SecurityException, IllegalAccessException, IllegalArgumentException, InvocationTargetException, InstantiationException {		
 		Element elementOut = docIn.createElement("CombinatorialBlock");
 		elementOut.setAttribute("type", "Switch");
 		elementOut.setAttribute("name", "NoName");
@@ -214,6 +236,34 @@ public class XcosBlockTran extends Helpers {
 		
 		ArrayList<ArrayList<Object>> ParamArray = new ArrayList<ArrayList<Object>>();
 		ArrayList<Object> ParamList = new ArrayList<Object>();
+		
+		String[] operation = {"u2 >= Threshold", "u2 > Threshold", "u2 ~= 0"};
+		NodeList PortNL = ((NodeList) XPathFactory.newInstance().newXPath()
+										.compile("//*[@id='" + blockID + "']"
+													+ "/ScilabDouble[@as='integerParameters']/data")
+										.evaluate(docIn, XPathConstants.NODESET));
+		
+		ParamList.add("Criteria");
+		ParamList.add("String");
+		ParamList.add(operation[(int) Double.parseDouble(((NodeList) XPathFactory.newInstance().newXPath()
+																			.compile("//*[@id='" + blockID + "']"
+																							+ "/ScilabDouble[@as='integerParameters']/data")
+																			.evaluate(docIn, XPathConstants.NODESET)).item(0)
+																			.getAttributes().getNamedItem("realPart").getNodeValue())]);
+		ParamArray.add(ParamList);
+		
+		ParamList = new ArrayList<Object>();
+		ParamList.add("Threshold");
+		ParamList.add("Expression");
+		ParamList.add("RealExp");
+		ParamList.add(((NodeList) XPathFactory.newInstance().newXPath()
+												.compile("//*[@id='" + blockID + "']"
+																+ "/ScilabDouble[@as='realParameters']/data")
+												.evaluate(docIn, XPathConstants.NODESET)).item(0)
+												.getAttributes().getNamedItem("realPart").getNodeValue());
+	
+		ParamArray.add(ParamList);
+		elementOut.appendChild(docIn.importNode(ParseParameters(ParamArray), true));
 		
 		return elementOut;
 	}

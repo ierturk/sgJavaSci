@@ -1,0 +1,1215 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<!--
+ * Gene-Auto code generator
+ * 
+ *	$Source: /cvsroot/geneauto/geneauto.galauncher/blocklibrary.gbl.xml,v $
+ *  @version	$Revision: 1.53 $
+ *	@date		$Date: 2012-03-08 10:03:17 $
+ *
+ *	Copyright (c) 2006-2009 IB Krates OU
+ *  	http://www.krates.ee, geneauto@krates.ee
+ *  Copyright (c) 2006-2009 Alyotech
+ *  	http://www.alyotech.fr, geneauto@alyotech.fr
+ *  
+ *  This program is free software; you can redistribute it and/or modify
+ *  it under the terms of the GNU General Public License as published by
+ *  the Free Software Foundation, either version 3 of the License, or
+ *  (at your option) any later version.
+ *
+ *  This program is distributed in the hope that it will be useful,
+ *  but WITHOUT ANY WARRANTY; without even the implied warranty of
+ *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ *  GNU General Public License for more details.
+ *
+ *  You should have received a copy of the GNU General Public License
+ *  along with this program. If not, see <http://www.gnu.org/licenses/>
+ *  
+ *  Gene-Auto was originally developed by Gene-Auto consortium with support 
+ *  of ITEA (www.itea2-org) and national public funding bodies in France, 
+ *  Estonia, Belgium and Israel.  
+ *  
+ *  The members of Gene-Auto consortium are
+ *  	Continental SAS
+ *  	Airbus France SAS
+ *  	Thales Alenia Space France SAS
+ *  	ASTRIUM SAS
+ *  	IB KRATES OU
+ *  	Barco NV
+ *  	Israel Aircraft Industries
+ *  	Alyotech
+ *  	Tallinn University of Technology
+ *  	FERIA - Institut National Polytechnique de Toulouse
+ *  	INRIA - Institut National de Recherche en Informatique et en Automatique
+ *  
+ *-->
+
+<GABlockLibrary 
+	type="gaxml:model" 
+	xmlns="http://www.geneauto.org/GABlockLibrary" 
+	xmlns:gaxml="http://www.geneauto.org/GAXML" 
+	xmlns:gadt="http://www.geneauto.org/GADataType"> 
+
+	<!-- SOURCES -->
+	
+	<BlockType name="FunctionCall" type="SourceBlock" directFeedThrough="true" preprocessorPriority="0">
+        <parameterTypes type="gaxml:collection">
+		
+        </parameterTypes>
+        <libraryHandler type="gaxml:object">
+	        <LibraryHandler>
+		        <typer type="gaxml:object">
+		        	<NullTyper />
+			  </typer>
+		        <backend type="gaxml:object">
+		        	<FunctionCallBackend />
+			  </backend>
+	        </LibraryHandler>
+        </libraryHandler>
+      </BlockType>
+
+	<BlockType name="Ground" type="SourceBlock" directFeedThrough="true" preprocessorPriority="0">
+        <parameterTypes type="gaxml:collection"/>
+        <libraryHandler type="gaxml:object">
+	        <LibraryHandler>
+		        <typer type="gaxml:object">
+		        	<NullTyper />
+				</typer>
+		        <backend type="gaxml:object">
+		        	<GroundBackend />
+				</backend>
+	        </LibraryHandler>
+        </libraryHandler>
+    </BlockType>
+	
+    <BlockType name="Constant" type="SourceBlock" directFeedThrough="true" preprocessorPriority="0">
+        <parameterTypes type="gaxml:collection">
+            <ParameterType name="Value" evaluateEML="true"/>
+            <ParameterType name="VectorParams1D" evaluateEML="false"/>
+            <ParameterType name="OutDataTypeMode" evaluateEML="false">
+                <inputLanguageMappings type="gaxml:collection">
+                    <InputLanguageMapping language="Simulink" version="7.3" name="OutDataTypeStr"/>
+                </inputLanguageMappings>
+            </ParameterType>
+        </parameterTypes>
+        <libraryHandler type="gaxml:object">
+	        <LibraryHandler>
+		        <typer type="gaxml:object">
+		        	<ConstantTyper />
+				</typer>
+		        <backend type="gaxml:object">
+		        	<ConstantBackend />
+				</backend>
+	        </LibraryHandler>
+        </libraryHandler>
+    </BlockType>
+
+    <BlockType name="FromWorkspace" type="SourceBlock" directFeedThrough="true" preprocessorPriority="0">
+        <parameterTypes type="gaxml:collection">
+            <ParameterType name="VariableName" evaluateEML="false"/>
+        </parameterTypes>
+        <libraryHandler type="gaxml:object">
+	        <LibraryHandler>
+		        <typer type="gaxml:object">
+		        	<NullTyper />
+				</typer>
+		        <backend type="gaxml:object">
+		        	<FromWorkspaceBackend />
+				</backend>
+	        </LibraryHandler>
+        </libraryHandler>
+    </BlockType>
+	
+    <BlockType name="Inport" type="SourceBlock" directFeedThrough="true" preprocessorPriority="0">
+        <parameterTypes type="gaxml:collection">
+        	<ParameterType name="PortDimensions" evaluateEML="true" fullNormalization="true"/>
+            <ParameterType name="Port" evaluateEML="false"/>
+            <ParameterType name="DataType" evaluateEML="false">
+                <inputLanguageMappings type="gaxml:collection">
+                    <InputLanguageMapping language="Simulink" version="7.3" name="OutDataTypeStr" />
+                </inputLanguageMappings>
+            </ParameterType>    
+            <ParameterType name="InitialValue" evaluateEML="true"/>
+            <ParameterType name="SignalType" evaluateEML="false"/>
+        </parameterTypes>
+        <libraryHandler type="gaxml:object">
+	        <LibraryHandler>
+		        <typer type="gaxml:object">
+		        	<InportTyper />
+				</typer>
+		        <backend type="gaxml:object">
+		        	<InOutPortBackend />
+				</backend>
+	        </LibraryHandler>
+        </libraryHandler>
+    </BlockType>
+        
+     <BlockType name="DataStoreRead" type="SourceBlock" directFeedThrough="true" preprocessorPriority="3">
+        <parameterTypes type="gaxml:collection">
+            <ParameterType name="DataStoreName" evaluateEML="false"/>
+        </parameterTypes>
+        <libraryHandler type="gaxml:object">
+	        <LibraryHandler>
+		        <typer type="gaxml:object">
+		        	<DataStoreReadTyper />
+				</typer>
+		        <backend type="gaxml:object">
+		        	<DataStoreReadBackend />
+				</backend>
+	        </LibraryHandler>
+        </libraryHandler>
+    </BlockType>
+
+
+    <!-- SINK -->
+    
+    <BlockType name="Terminator" type="SinkBlock" directFeedThrough="true" preprocessorPriority="0">
+        <parameterTypes type="gaxml:collection"/>
+        <libraryHandler type="gaxml:object">
+	        <LibraryHandler>
+		        <typer type="gaxml:object">
+		        	<NullTyper />
+				</typer>
+		        <backend type="gaxml:object">
+		        	<NullBackend />
+				</backend>
+	        </LibraryHandler>
+        </libraryHandler>
+    </BlockType>
+    
+    <BlockType name="Outport" type="SinkBlock" directFeedThrough="true" preprocessorPriority="0">
+        <parameterTypes type="gaxml:collection">
+            <ParameterType name="Port" evaluateEML="false"/>
+            <ParameterType name="OutputWhenDisabled" evaluateEML="false"/>
+            <ParameterType name="InitialOutput" evaluateEML="true"/>
+            <ParameterType name="DataType" evaluateEML="false">
+                <inputLanguageMappings type="gaxml:collection">
+                    <InputLanguageMapping language="Simulink" version="7.3" name="OutDataTypeStr" />
+                </inputLanguageMappings>
+            </ParameterType>    
+            <ParameterType name="PortDimensions" evaluateEML="true" fullNormalization="true"/>
+        </parameterTypes>
+        <libraryHandler type="gaxml:object">
+	        <LibraryHandler>
+		        <typer type="gaxml:object">
+		        	<SinkTyper />
+				</typer>
+		        <backend type="gaxml:object">
+		        	<InOutPortBackend />
+				</backend>
+	        </LibraryHandler>
+        </libraryHandler>
+    </BlockType>
+
+    <BlockType name="ToWorkspace" type="SinkBlock" directFeedThrough="true" preprocessorPriority="0">
+        <parameterTypes type="gaxml:collection">
+            <ParameterType name="VariableName" evaluateEML="false"/>
+        </parameterTypes>
+        <libraryHandler type="gaxml:object">
+	        <LibraryHandler>
+		        <typer type="gaxml:object">
+		        	<SinkTyper />
+				</typer>
+		        <backend type="gaxml:object">
+		        	<ToWorkspaceBackend/>
+				</backend>
+	        </LibraryHandler>
+        </libraryHandler>
+    </BlockType>
+
+     <BlockType name="DataStoreWrite" type="SinkBlock" directFeedThrough="true" preprocessorPriority="4">
+        <parameterTypes type="gaxml:collection">
+            <ParameterType name="DataStoreName" evaluateEML="false"/>
+        </parameterTypes>
+        <libraryHandler type="gaxml:object">
+	        <LibraryHandler>
+		        <typer type="gaxml:object">
+		        	<SinkTyper />
+				</typer>
+		        <backend type="gaxml:object">
+		        	<DataStoreWriteBackend />
+				</backend>
+	        </LibraryHandler>
+        </libraryHandler>
+    </BlockType>
+    
+	<!-- COMBINATIORIAL -->
+    
+    <BlockType name="Assignment" type="CombinatorialBlock" directFeedThrough="true" preprocessorPriority="0">
+        <parameterTypes type="gaxml:collection">
+        	<ParameterType name="OutputDataType" evaluateEML="false"/>
+            <ParameterType name="Elements" evaluateEML="true"/>
+            <ParameterType name="Rows" evaluateEML="true"/>
+            <ParameterType name="Columns" evaluateEML="true"/>
+            <ParameterType name="RowSrc" evaluateEML="false"/>
+            <ParameterType name="ColumnSrc" evaluateEML="false"/>
+        </parameterTypes>
+        <libraryHandler type="gaxml:object">
+	        <LibraryHandler>
+		        <typer type="gaxml:object">
+		        	<AssignmentTyper />
+				</typer>
+		        <backend type="gaxml:object">
+		        	<AssignmentBackend />
+				</backend>
+	        </LibraryHandler>
+        </libraryHandler>
+    </BlockType>
+    
+    <BlockType name="ZeroOrderHold" type="CombinatorialBlock" directFeedThrough="true" preprocessorPriority="0">
+        <parameterTypes type="gaxml:collection">
+        	<ParameterType name="OutDataTypeMode" evaluateEML="false"/>
+        </parameterTypes>
+        <libraryHandler type="gaxml:object">
+	        <LibraryHandler>
+		        <typer type="gaxml:object">
+		        	<ZeroOrderHoldTyper />
+				</typer>
+		        <backend type="gaxml:object">
+		        	<ZeroOrderHoldBackend />
+				</backend>
+	        </LibraryHandler>
+        </libraryHandler>
+    </BlockType>
+
+    <BlockType name="MinMax" type="CombinatorialBlock" directFeedThrough="true" preprocessorPriority="0">
+        <parameterTypes type="gaxml:collection">
+            <ParameterType name="Function" evaluateEML="false"/>
+            <ParameterType name="OutDataTypeMode" evaluateEML="false"/>
+            <ParameterType name="OutDataType" evaluateEML="false"/>
+            <ParameterType name="OutputDataType" evaluateEML="false"/>
+        </parameterTypes>
+        <libraryHandler type="gaxml:object">
+	        <LibraryHandler>
+		        <typer type="gaxml:object">
+		        	<MinMaxTyper />
+				</typer>
+		        <backend type="gaxml:object">
+		        	<MinMaxBackend />
+				</backend>
+	        </LibraryHandler>
+        </libraryHandler>
+    </BlockType>
+    
+    <BlockType name="Lookup2D" type="CombinatorialBlock" directFeedThrough="true" preprocessorPriority="0">
+        <parameterTypes type="gaxml:collection">
+        </parameterTypes>
+        <libraryHandler type="gaxml:object">
+	        <LibraryHandler>
+		        <typer type="gaxml:object">
+		        	<MinMaxTyper />
+				</typer>
+		        <backend type="gaxml:object">
+		        	<MinMaxBackend />
+				</backend>
+	        </LibraryHandler>
+        </libraryHandler>
+    </BlockType>
+
+    <BlockType name="Lim" type="CombinatorialBlock" directFeedThrough="true" preprocessorPriority="0">
+        <parameterTypes type="gaxml:collection">
+            <ParameterType name="outputDataType" evaluateEML="false"/>
+            <ParameterType name="PARH1" evaluateEML="false"/>
+            <ParameterType name="PARH2" evaluateEML="false"/>
+        </parameterTypes>
+        <libraryHandler type="gaxml:object">
+	        <LibraryHandler>
+		        <typer type="gaxml:object">
+		        	<LimTyper />
+				</typer>
+		        <backend type="gaxml:object">
+		        	<LimBackend />
+				</backend>
+	        </LibraryHandler>
+        </libraryHandler>
+    </BlockType>
+    
+    <BlockType name="Modulo" type="CombinatorialBlock" directFeedThrough="true" preprocessorPriority="0">
+        <parameterTypes type="gaxml:collection">
+            <ParameterType name="outputDataType" evaluateEML="false"/>
+        </parameterTypes>
+        <libraryHandler type="gaxml:object">
+	        <LibraryHandler>
+		        <typer type="gaxml:object">
+		        	<ModuloTyper />
+				</typer>
+		        <backend type="gaxml:object">
+		        	<ModuloBackend />
+				</backend>
+	        </LibraryHandler>
+        </libraryHandler>
+    </BlockType>
+
+	<BlockType name="Gain" type="CombinatorialBlock" directFeedThrough="true" preprocessorPriority="0">
+        <parameterTypes type="gaxml:collection">
+            <ParameterType name="OutDataTypeMode" evaluateEML="false">
+                <inputLanguageMappings type="gaxml:collection">
+                    <InputLanguageMapping language="Simulink" version="7.3" name="OutDataTypeStr"/>
+                </inputLanguageMappings>
+            </ParameterType>
+            <ParameterType name="Gain" evaluateEML="true"/>
+            <ParameterType name="Multiplication" evaluateEML="false"/>
+        </parameterTypes>
+        <libraryHandler type="gaxml:object">
+	        <LibraryHandler>
+		        <typer type="gaxml:object">
+		        	<GainTyper />
+				</typer>
+		        <backend type="gaxml:object">
+		        	<GainBackend />
+				</backend>
+	        </LibraryHandler>
+        </libraryHandler>
+    </BlockType>
+
+    <BlockType name="Interpolation1D" type="CombinatorialBlock" directFeedThrough="true" preprocessorPriority="0">
+        <parameterTypes type="gaxml:collection">
+            <ParameterType name="VALH1" evaluateEML="true"/>
+            <ParameterType name="PARH1" evaluateEML="false"/>
+        </parameterTypes>
+        <libraryHandler type="gaxml:object">
+	        <LibraryHandler>
+		        <typer type="gaxml:object">
+		        	<Interpolation12DTyper />
+				</typer>
+		        <backend type="gaxml:object">
+		        	<Interpolation1DBackend />
+				</backend>
+	        </LibraryHandler>
+        </libraryHandler>
+    </BlockType>
+
+    <BlockType name="Interpolation2D" type="CombinatorialBlock" directFeedThrough="true" preprocessorPriority="0">
+        <parameterTypes type="gaxml:collection">
+            <ParameterType name="VALH1" evaluateEML="true"/>
+            <ParameterType name="PARH1" evaluateEML="false"/>
+        </parameterTypes>
+        <libraryHandler type="gaxml:object">
+	        <LibraryHandler>
+		        <typer type="gaxml:object">
+		        	<Interpolation12DTyper />
+				</typer>
+		        <backend type="gaxml:object">
+		        	<Interpolation2DBackend />
+				</backend>
+	        </LibraryHandler>
+        </libraryHandler>
+    </BlockType>
+
+    <BlockType name="Merge" type="CombinatorialBlock" directFeedThrough="true" preprocessorPriority="0">
+        <parameterTypes type="gaxml:collection">
+        	<ParameterType name="InitialOutput" evaluateEML="true"/>
+        </parameterTypes>
+        <libraryHandler type="gaxml:object">
+	        <LibraryHandler>
+		        <typer type="gaxml:object">
+		        	<MergeTyper />
+				</typer>
+		        <backend type="gaxml:object">
+		        	<NullBackend />
+				</backend>
+	        </LibraryHandler>
+        </libraryHandler>
+    </BlockType>
+    
+    <BlockType name="MultiPortSwitch" type="CombinatorialBlock" directFeedThrough="true" preprocessorPriority="0">
+        <parameterTypes type="gaxml:collection">
+            <ParameterType name="zeroidx" evaluateEML="false"/>
+        </parameterTypes>
+        <libraryHandler type="gaxml:object">
+	        <LibraryHandler>
+		        <typer type="gaxml:object">
+		        	<MultiPortSwitchTyper />
+				</typer>
+		        <backend type="gaxml:object">
+		        	<MultiportSwitchBackend />
+				</backend>
+	        </LibraryHandler>
+        </libraryHandler>
+    </BlockType>
+    
+    <BlockType name="Sum" type="CombinatorialBlock" directFeedThrough="true" preprocessorPriority="0">
+        <parameterTypes type="gaxml:collection">
+            <ParameterType name="Inputs" evaluateEML="false"/>
+            <ParameterType name="OutDataTypeMode" evaluateEML="false">
+                <inputLanguageMappings type="gaxml:collection">
+                    <InputLanguageMapping language="Simulink" version="7.3" name="OutDataTypeStr" />
+                </inputLanguageMappings>
+            </ParameterType>
+            <ParameterType name="OutDataType" evaluateEML="false"/>
+                
+        </parameterTypes>
+        <libraryHandler type="gaxml:object">
+	        <LibraryHandler>
+		        <typer type="gaxml:object">
+		        	<SumTyper />
+				</typer>
+		        <backend type="gaxml:object">
+		        	<SumBackend />
+				</backend>
+	        </LibraryHandler>
+        </libraryHandler>
+    </BlockType>
+    
+    <BlockType name="RelationalOperator" type="CombinatorialBlock" directFeedThrough="true" preprocessorPriority="0">
+        <parameterTypes type="gaxml:collection">
+            <ParameterType name="Operator" evaluateEML="false"/>
+        </parameterTypes>
+        <libraryHandler type="gaxml:object">
+	        <LibraryHandler>
+		        <typer type="gaxml:object">
+		        	<RelationalOperatorTyper />
+				</typer>
+		        <backend type="gaxml:object">
+		        	<RelationalOperatorBackend />
+				</backend>
+	        </LibraryHandler>
+        </libraryHandler>
+    </BlockType>
+    
+    <BlockType name="Logic" type="CombinatorialBlock" directFeedThrough="true" preprocessorPriority="0">
+        <parameterTypes type="gaxml:collection">
+            <ParameterType name="Operator" evaluateEML="false"/>
+        </parameterTypes>
+        <libraryHandler type="gaxml:object">
+	        <LibraryHandler>
+		        <typer type="gaxml:object">
+		        	<LogicTyper />
+				</typer>
+		        <backend type="gaxml:object">
+		        	<LogicBackend />
+				</backend>
+	        </LibraryHandler>
+        </libraryHandler>
+    </BlockType>
+    
+    <BlockType name="Switch" type="CombinatorialBlock" directFeedThrough="true" preprocessorPriority="0">
+        <parameterTypes type="gaxml:collection">
+            <ParameterType name="Threshold" evaluateEML="true"/>
+            <ParameterType name="Criteria" evaluateEML="false"/>
+        </parameterTypes>
+        <libraryHandler type="gaxml:object">
+	        <LibraryHandler>
+		        <typer type="gaxml:object">
+		        	<SwitchTyper />
+				</typer>
+		        <backend type="gaxml:object">
+		        	<SwitchBackend />
+				</backend>
+	        </LibraryHandler>
+        </libraryHandler>
+    </BlockType>
+    
+    <BlockType name="Product" type="CombinatorialBlock" directFeedThrough="true" preprocessorPriority="0">
+        <parameterTypes type="gaxml:collection">
+            <ParameterType name="Multiplication" evaluateEML="false"/>
+            <ParameterType name="Inputs" evaluateEML="false"/>
+            <ParameterType name="OutDataTypeMode" evaluateEML="false"/>
+            <ParameterType name="OutDataType" evaluateEML="false"/>
+        </parameterTypes>
+        <libraryHandler type="gaxml:object">
+	        <LibraryHandler>
+		        <typer type="gaxml:object">
+		        	<ProductTyper />
+				</typer>
+		        <backend type="gaxml:object">
+		        	<ProductBackend />
+				</backend>
+	        </LibraryHandler>
+        </libraryHandler>
+    </BlockType>
+    
+    <BlockType name="Trigonometry" type="CombinatorialBlock" directFeedThrough="true" preprocessorPriority="0">
+        <parameterTypes type="gaxml:collection">
+            <ParameterType name="Operator" evaluateEML="false"/>
+        </parameterTypes>
+        <libraryHandler type="gaxml:object">
+	        <LibraryHandler>
+		        <typer type="gaxml:object">
+		        	<TrigonometryTyper/>
+				</typer>
+		        <backend type="gaxml:object">
+		        	<TrigonometryBackend/>
+				</backend>
+	        </LibraryHandler>
+        </libraryHandler>
+    </BlockType>
+
+    <BlockType name="ReadMapArray" type="CombinatorialBlock" directFeedThrough="true" preprocessorPriority="0">
+        <parameterTypes type="gaxml:collection"/>
+        <libraryHandler type="gaxml:object">
+	        <LibraryHandler>
+		        <typer type="gaxml:object">
+		        	<ReadMapArrayTyper/>
+				</typer>
+		        <backend type="gaxml:object">
+		        	<ReadMapArrayBackend/>
+				</backend>
+	        </LibraryHandler>
+        </libraryHandler>
+    </BlockType>
+
+    <BlockType name="WriteMapArray" type="CombinatorialBlock" directFeedThrough="true" preprocessorPriority="0">
+        <parameterTypes type="gaxml:collection"/>
+        <libraryHandler type="gaxml:object">
+	        <LibraryHandler>
+		        <typer type="gaxml:object">
+		        	<WriteMapArrayTyper/>
+				</typer>
+		        <backend type="gaxml:object">
+		        	<WriteMapArrayBackend/>
+				</backend>
+	        </LibraryHandler>
+        </libraryHandler>
+    </BlockType>
+
+    <BlockType name="SampleAndHold" type="CombinatorialBlock" directFeedThrough="true" preprocessorPriority="0">
+        <parameterTypes type="gaxml:collection"/>
+        <libraryHandler type="gaxml:object">
+	        <LibraryHandler>
+		        <typer type="gaxml:object">
+		        	<SampleAndHoldTyper/>
+				</typer>
+		        <backend type="gaxml:object">
+		        	<SampleAndHoldBackend/>
+				</backend>
+	        </LibraryHandler>
+        </libraryHandler>
+    </BlockType>
+    
+    <BlockType name="Math" type="CombinatorialBlock" directFeedThrough="true" preprocessorPriority="0">
+        <parameterTypes type="gaxml:collection">
+        	<ParameterType name="OutputSignalType" evaluateEML="false"/>
+            <ParameterType name="Function" evaluateEML="false"/>
+        </parameterTypes>
+        <libraryHandler type="gaxml:object">
+	        <LibraryHandler>
+		        <typer type="gaxml:object">
+		        	<MathTyper />
+				</typer>
+		        <backend type="gaxml:object">
+		        	<MathBackend />
+				</backend>
+	        </LibraryHandler>
+        </libraryHandler>
+    </BlockType>
+    
+    <BlockType name="Integrator" type="CombinatorialBlock" directFeedThrough="true" preprocessorPriority="0">
+        <parameterTypes type="gaxml:collection">
+            <ParameterType name="Value" evaluateEML="true"/>
+        </parameterTypes>
+        <libraryHandler type="gaxml:object">
+	        <LibraryHandler>
+		        <typer type="gaxml:object">
+		        	<NullTyper />
+				</typer>
+		        <backend type="gaxml:object">
+		        	<NullBackend />
+				</backend>
+	        </LibraryHandler>
+        </libraryHandler>
+    </BlockType>
+    
+    <BlockType name="Abs" type="CombinatorialBlock" directFeedThrough="true" preprocessorPriority="0">
+        <parameterTypes type="gaxml:collection">
+        	<ParameterType name="OutputDataType" evaluateEML="false"/>
+            <ParameterType name="Value" evaluateEML="true"/>
+        </parameterTypes>
+        <libraryHandler type="gaxml:object">
+	        <LibraryHandler>
+		        <typer type="gaxml:object">
+		        	<AbsTyper />
+				</typer>
+		        <backend type="gaxml:object">
+		        	<AbsBackend />
+				</backend>
+	        </LibraryHandler>
+        </libraryHandler>
+    </BlockType>
+
+    <BlockType name="BusCreator" type="CombinatorialBlock" directFeedThrough="true" preprocessorPriority="0">
+        <parameterTypes type="gaxml:collection">
+            <ParameterType name="Inputs" evaluateEML="false"/>
+        </parameterTypes>
+        <libraryHandler type="gaxml:object">
+	        <LibraryHandler>
+		        <typer type="gaxml:object">
+		        	<BusCreatorTyper />
+				</typer>
+		        <backend type="gaxml:object">
+		        	<BusCreatorBackend />
+				</backend>
+	        </LibraryHandler>
+        </libraryHandler>
+    </BlockType>
+
+    <BlockType name="BusSelector" type="CombinatorialBlock" directFeedThrough="true" preprocessorPriority="0">
+        <parameterTypes type="gaxml:collection">
+            <ParameterType name="MuxedOutput" evaluateEML="false"/>
+            <ParameterType name="OutputSignals" evaluateEML="false"/>
+            <ParameterType name="OutputAsBus" evaluateEML="false"/>
+        </parameterTypes>
+        <libraryHandler type="gaxml:object">
+	        <LibraryHandler>
+		        <typer type="gaxml:object">
+		        	<BusSelectorTyper />
+				</typer>
+		        <backend type="gaxml:object">
+		        	<BusSelectorBackend />
+				</backend>
+	        </LibraryHandler>
+        </libraryHandler>
+    </BlockType>
+
+    <BlockType name="DelayRE" type="CombinatorialBlock" directFeedThrough="true" preprocessorPriority="0">
+        <parameterTypes type="gaxml:collection"/>
+        <libraryHandler type="gaxml:object">
+	        <LibraryHandler>
+		        <typer type="gaxml:object">
+		        	<DelayRETyper />
+				</typer>
+		        <backend type="gaxml:object">
+		        	<DelayREBackend />
+				</backend>
+	        </LibraryHandler>
+        </libraryHandler>
+    </BlockType>
+
+    <BlockType name="DataTypeConversion" type="CombinatorialBlock" directFeedThrough="true" preprocessorPriority="0">
+        <parameterTypes type="gaxml:collection">
+            <ParameterType name="DataType" evaluateEML="false"/>
+            <ParameterType name="OutDataTypeMode" evaluateEML="false"/>
+        </parameterTypes>
+        <libraryHandler type="gaxml:object">
+	        <LibraryHandler>
+		        <typer type="gaxml:object">
+		        	<DataTypeConversionTyper />
+				</typer>
+		        <backend type="gaxml:object">
+		        	<DataTypeConversionBackend />
+				</backend>
+	        </LibraryHandler>
+        </libraryHandler>
+    </BlockType>
+    
+    <BlockType name="Neg" type="CombinatorialBlock" directFeedThrough="true" preprocessorPriority="0">
+        <parameterTypes type="gaxml:collection">
+            <ParameterType name="OutDataTypeMode" evaluateEML="false"/>
+        </parameterTypes>
+        <libraryHandler type="gaxml:object">
+	        <LibraryHandler>
+		        <typer type="gaxml:object">
+		        	<NegTyper />
+				</typer>
+		        <backend type="gaxml:object">
+		        	<NegBackend />
+				</backend>
+	        </LibraryHandler>
+        </libraryHandler>
+    </BlockType>
+    
+    <BlockType name="If" type="CombinatorialBlock" directFeedThrough="true" preprocessorPriority="0">
+        <parameterTypes type="gaxml:collection">
+            <ParameterType name="IfExpression" evaluateEML="true" supportSpecialReferences="true"/>
+            <ParameterType name="ShowElse" evaluateEML="false"/>
+            <ParameterType name="ElseIfExpressions" evaluateEML="true" supportSpecialReferences="true"/>
+        </parameterTypes>
+        <libraryHandler type="gaxml:object">
+	        <LibraryHandler>
+		        <typer type="gaxml:object">
+		        	<NullTyper />
+				</typer>
+		        <backend type="gaxml:object">
+		        	<IfBackend />
+				</backend>
+	        </LibraryHandler>
+        </libraryHandler>
+    </BlockType>
+	
+	<BlockType name="SwitchCase" type="CombinatorialBlock" directFeedThrough="true" preprocessorPriority="0">
+        <parameterTypes type="gaxml:collection">
+            <ParameterType name="CaseConditions" evaluateEML="true"/>
+            <ParameterType name="CaseShowDefault" evaluateEML="false"/>
+        </parameterTypes>
+        <libraryHandler type="gaxml:object">
+	        <LibraryHandler>
+		        <typer type="gaxml:object">
+		        	<SwitchCaseTyper />
+				</typer>
+		        <backend type="gaxml:object">
+		        	<SwitchCaseBackend />
+				</backend>
+	        </LibraryHandler>
+        </libraryHandler>
+    </BlockType>
+	
+    <BlockType name="Signum" type="CombinatorialBlock" directFeedThrough="true" preprocessorPriority="0">
+        <parameterTypes type="gaxml:collection">
+        	<ParameterType name="OutDataTypeMode" evaluateEML="false"/>
+        </parameterTypes>
+        <libraryHandler type="gaxml:object">
+	        <LibraryHandler>
+		        <typer type="gaxml:object">
+		        	<SignumTyper />
+				</typer>
+		        <backend type="gaxml:object">
+		        	<SignumBackend />
+				</backend>
+	        </LibraryHandler>
+        </libraryHandler>
+    </BlockType>
+
+     <BlockType name="DataStoreMemory" type="CombinatorialBlock" directFeedThrough="true" preprocessorPriority="2">
+        <parameterTypes type="gaxml:collection">
+            <ParameterType name="InitialValue" evaluateEML="true"/>
+            <ParameterType name="DataStoreName" evaluateEML="false"/>
+            <ParameterType name="DataType" evaluateEML="false"/>
+        </parameterTypes>
+        <libraryHandler type="gaxml:object">
+	        <LibraryHandler>
+		        <typer type="gaxml:object">
+		        	<NullTyper />
+				</typer>
+		        <backend type="gaxml:object">
+		        	<DataStoreMemoryBackend />
+				</backend>
+	        </LibraryHandler>
+        </libraryHandler>
+    </BlockType>
+    
+    <!-- SEQUENTIAL -->
+
+    <BlockType name="UnitDelay" type="SequentialBlock" directFeedThrough="false" preprocessorPriority="0">
+        <parameterTypes type="gaxml:collection">
+            <ParameterType name="OutDataTypeMode" evaluateEML="false"/>
+            <ParameterType name="InitialValue" evaluateEML="true" fullNormalization="true">
+                <inputLanguageMappings type="gaxml:collection">
+                    <InputLanguageMapping language="Simulink" version="7.3" name="X0"/>
+                </inputLanguageMappings>
+            </ParameterType>
+            <ParameterType name="SampleTime" evaluateEML="true"/>
+        </parameterTypes>
+        <libraryHandler type="gaxml:object">
+	        <LibraryHandler>
+		        <typer type="gaxml:object">
+		        	<UnitDelayTyper />
+				</typer>
+		        <backend type="gaxml:object">
+		        	<UnitDelayBackend />
+				</backend>
+	        </LibraryHandler>
+        </libraryHandler>
+    </BlockType>
+
+    <BlockType name="BASCR" type="SequentialBlock" directFeedThrough="true" preprocessorPriority="0">
+        <parameterTypes type="gaxml:collection">
+            <ParameterType name="PARH1" evaluateEML="false"/>
+            <ParameterType name="PARH2" evaluateEML="false"/>
+        </parameterTypes>
+        <libraryHandler type="gaxml:object">
+	        <LibraryHandler>
+		        <typer type="gaxml:object">
+		        	<BASCTyper />
+				</typer>
+		        <backend type="gaxml:object">
+		        	<BASCRBackend />
+				</backend>
+	        </LibraryHandler>
+        </libraryHandler>
+    </BlockType>
+
+    <BlockType name="BASCS" type="SequentialBlock" directFeedThrough="true" preprocessorPriority="0">
+        <parameterTypes type="gaxml:collection">
+            <ParameterType name="PARH1" evaluateEML="false"/>
+            <ParameterType name="PARH2" evaluateEML="false"/>
+        </parameterTypes>
+        <libraryHandler type="gaxml:object">
+	        <LibraryHandler>
+		        <typer type="gaxml:object">
+		        	<BASCTyper />
+				</typer>
+		        <backend type="gaxml:object">
+		        	<BASCSBackend />
+				</backend>
+	        </LibraryHandler>
+        </libraryHandler>
+    </BlockType>
+
+    <BlockType name="PULSE1" type="SequentialBlock" directFeedThrough="true" preprocessorPriority="0">
+        <parameterTypes type="gaxml:collection">
+            <ParameterType name="PARH1" evaluateEML="false"/>
+            <ParameterType name="PARH2" evaluateEML="false"/>
+        </parameterTypes>
+        <libraryHandler type="gaxml:object">
+	        <LibraryHandler>
+		        <typer type="gaxml:object">
+		        	<PulseTyper />
+				</typer>
+		        <backend type="gaxml:object">
+		        	<PulseOneBackend />
+				</backend>
+	        </LibraryHandler>
+        </libraryHandler>
+    </BlockType>
+
+    <BlockType name="PULSE2" type="SequentialBlock" directFeedThrough="true" preprocessorPriority="0">
+        <parameterTypes type="gaxml:collection">
+            <ParameterType name="PARH1" evaluateEML="false"/>
+            <ParameterType name="PARH2" evaluateEML="false"/>
+        </parameterTypes>
+        <libraryHandler type="gaxml:object">
+	        <LibraryHandler>
+		        <typer type="gaxml:object">
+		        	<PulseTyper />
+				</typer>
+		        <backend type="gaxml:object">
+		        	<PulseTwoBackend />
+				</backend>
+	        </LibraryHandler>
+        </libraryHandler>
+    </BlockType>
+
+	<!-- ROUTING -->
+
+    <BlockType name="Mux" type="CombinatorialBlock" directFeedThrough="true" preprocessorPriority="0">
+        <parameterTypes type="gaxml:collection"/>
+        <libraryHandler type="gaxml:object">
+	        <LibraryHandler>
+		        <typer type="gaxml:object">
+		        	<MuxTyper />
+				</typer>
+		        <backend type="gaxml:object">
+		        	<MuxBackend />
+				</backend>
+	        </LibraryHandler>
+        </libraryHandler>
+    </BlockType>
+
+    <BlockType name="Demux" type="CombinatorialBlock" directFeedThrough="true" preprocessorPriority="0">
+        <parameterTypes type="gaxml:collection">
+            <ParameterType name="Outputs" evaluateEML="true"/>
+        </parameterTypes>
+        <libraryHandler type="gaxml:object">
+	        <LibraryHandler>
+		        <typer type="gaxml:object">
+		        	<DemuxTyper />
+				</typer>
+		        <backend type="gaxml:object">
+		        	<DemuxBackend />
+				</backend>
+	        </LibraryHandler>
+        </libraryHandler>
+    </BlockType>
+
+    <BlockType name="From" type="CombinatorialBlock" directFeedThrough="true" preprocessorPriority="1">
+        <parameterTypes type="gaxml:collection">
+            <ParameterType name="GotoTag" evaluateEML="false"/>
+        </parameterTypes>
+        <libraryHandler type="gaxml:object">
+	        <LibraryHandler>
+		        <typer type="gaxml:object">
+		        	<NullTyper />
+				</typer>
+		        <backend type="gaxml:object">
+		        	<FromBackend />
+				</backend>
+	        </LibraryHandler>
+        </libraryHandler>
+    </BlockType>
+    
+    <BlockType name="Goto" type="CombinatorialBlock" directFeedThrough="true" preprocessorPriority="0">
+        <parameterTypes type="gaxml:collection">
+            <ParameterType name="GotoTag" evaluateEML="false"/>
+        </parameterTypes>
+        <libraryHandler type="gaxml:object">
+	        <LibraryHandler>
+		        <typer type="gaxml:object">
+		        	<NullTyper />
+				</typer>
+		        <backend type="gaxml:object">
+		        	<NullBackend />
+				</backend>
+	        </LibraryHandler>
+        </libraryHandler>
+    </BlockType>
+
+     <BlockType name="GotoTagVisibility" type="CombinatorialBlock" directFeedThrough="true" preprocessorPriority="0">
+        <parameterTypes type="gaxml:collection"/>
+        <libraryHandler type="gaxml:object">
+	        <LibraryHandler>
+		        <typer type="gaxml:object">
+		        	<NullTyper />
+				</typer>
+		        <backend type="gaxml:object">
+		        	<NullBackend />
+				</backend>
+	        </LibraryHandler>
+        </libraryHandler>
+    </BlockType>
+            
+    <!-- CONTROL -->
+
+    <BlockType name="ForIterator" type="ControlBlock" directFeedThrough="false" preprocessorPriority="0">
+        <parameterTypes type="gaxml:collection">
+            <ParameterType name="OutputDataType" evaluateEML="false"/>
+            <ParameterType name="NumIters" evaluateEML="true"/>
+            <ParameterType name="IterationLimit" evaluateEML="true"/>
+            <ParameterType name="IterationSource" evaluateEML="false"/>
+            <ParameterType name="ShowIterationPort" evaluateEML="false"/>
+            <ParameterType name="IterationVariableDataType" evaluateEML="false"/>
+            <ParameterType name="ExternalIncrement" evaluateEML="false"/>
+            <ParameterType name="IndexMode" evaluateEML="false"/>
+        </parameterTypes>
+        <libraryHandler type="gaxml:object">
+	        <LibraryHandler>
+		        <typer type="gaxml:object">
+		        	<ForIteratorTyper />
+				</typer>
+		        <backend type="gaxml:object">
+		        	<ForIteratorBackend />
+				</backend>
+	        </LibraryHandler>
+        </libraryHandler>
+    </BlockType>
+    
+    <!-- SYSTEM -->
+
+    <BlockType name="TriggerPort" type="ControlBlock" directFeedThrough="false" preprocessorPriority="0">
+        <parameterTypes type="gaxml:collection">
+            <ParameterType name="TriggerType" evaluateEML="false"/>
+            <ParameterType name="OutputDataType" evaluateEML="false"/>
+            <ParameterType name="ShowOutputPort" evaluateEML="false"/>
+        </parameterTypes>
+        <libraryHandler type="gaxml:object">
+	        <LibraryHandler>
+		        <typer type="gaxml:object">
+		        	<NullTyper />
+				</typer>
+		        <backend type="gaxml:object">
+		        	<NullBackend />
+				</backend>
+	        </LibraryHandler>
+        </libraryHandler>
+    </BlockType>
+    
+    <BlockType name="EnablePort" type="ControlBlock" directFeedThrough="true" preprocessorPriority="0">
+        <parameterTypes type="gaxml:collection">
+            <ParameterType name="StatesWhenEnabling" evaluateEML="false"/>
+            <ParameterType name="ShowOutputPort" evaluateEML="false"/>
+        </parameterTypes>
+        <libraryHandler type="gaxml:object">
+	        <LibraryHandler>
+		        <typer type="gaxml:object">
+		        	<ControlPortTyper />
+				</typer>
+		        <backend type="gaxml:object">
+		        	<NullBackend />
+				</backend>
+	        </LibraryHandler>
+        </libraryHandler>
+    </BlockType>
+
+    <BlockType name="ActionPort" type="ControlBlock" directFeedThrough="true" preprocessorPriority="0">
+        <parameterTypes type="gaxml:collection">
+            <ParameterType name="IfExpression" evaluateEML="true"/>
+            <ParameterType name="ElseIfExpressions" evaluateEML="true"/>
+          	<ParameterType name="InitializeStates" evaluateEML="false"/>
+        </parameterTypes>
+        <libraryHandler type="gaxml:object">
+	        <LibraryHandler>
+		        <typer type="gaxml:object">
+		        	<NullTyper />
+				</typer>
+		        <backend type="gaxml:object">
+		        	<NullBackend />
+				</backend>
+	        </LibraryHandler>
+        </libraryHandler>
+    </BlockType>
+
+    <BlockType name="SubSystem" type="SystemBlock" directFeedThrough="true" preprocessorPriority="0">
+        <parameterTypes type="gaxml:collection">
+            <ParameterType name="MaskVariables" evaluateEML="false"/>
+            <ParameterType name="MaskType" evaluateEML="false"/>
+            <ParameterType name="AtomicSubSystem" evaluateEML="false">
+                <inputLanguageMappings type="gaxml:collection">
+                    <InputLanguageMapping language="Simulink" version="7.3" name="TreatAsAtomicUnit"/>
+                </inputLanguageMappings>
+            </ParameterType>
+            <ParameterType name="RTWFileName" evaluateEML="false"/>
+            <ParameterType name="RTWFcnName" evaluateEML="false"/>
+            <ParameterType name="RTWSystemCode" evaluateEML="false"/>
+            <ParameterType name="SystemSampleTime" evaluateEML="false"/>
+        </parameterTypes>
+        <libraryHandler type="gaxml:object">
+	        <LibraryHandler>
+		        <typer type="gaxml:object">
+		        	<SystemTyper />
+				</typer>
+		        <backend type="gaxml:object">
+		        	<SubSystemImplBackend />
+				</backend>
+	        </LibraryHandler>
+        </libraryHandler>
+    </BlockType>
+
+	<!-- MASKED BLOCKS -->
+	
+	<BlockType name="Stateflow" type="ChartBlock" directFeedThrough="true" preprocessorPriority="0">
+        <parameterTypes type="gaxml:collection">
+            <ParameterType name="MaskVariables" evaluateEML="true"/>
+            <ParameterType name="MaskType" evaluateEML="true"/>
+            <ParameterType name="AtomicSubSystem" evaluateEML="true"/>
+            <ParameterType name="ChartFileNumber"/>
+        </parameterTypes>
+        <libraryHandler type="gaxml:object">
+	        <LibraryHandler>
+		        <typer type="gaxml:object">
+		        	<ChartTyper />
+				</typer>
+		        <backend type="gaxml:object">
+		        	<ChartBackend />
+				</backend>
+	        </LibraryHandler>
+        </libraryHandler>
+    </BlockType>
+	
+	<BlockType name="MaskedSubsystem" type="SystemBlock" directFeedThrough="true" preprocessorPriority="0">
+	    <parameterTypes type="gaxml:collection">
+            <ParameterType name="MaskVariables" evaluateEML="true"/>
+            <ParameterType name="MaskType" evaluateEML="true"/>
+            <ParameterType name="AtomicSubSystem" evaluateEML="true"/>
+        </parameterTypes>
+        <libraryHandler type="gaxml:object">
+	        <LibraryHandler>
+		        <typer type="gaxml:object">
+		        	<NullTyper />
+				</typer>
+		        <backend type="gaxml:object">
+		        	<NullBackend />
+				</backend>
+	        </LibraryHandler>
+        </libraryHandler>
+    </BlockType>
+    
+	<!-- USER DEFINED BLOCKS -->
+    
+    <BlockType name="Legacy Function" type="UserDefinedFunctionBlock" headerFileName="external.h" directFeedThrough="true" preprocessorPriority="0">
+        <parameterTypes type="gaxml:collection">
+            <ParameterType name="headerFileName"/>
+            <ParameterType name="functionSignature"/>
+        </parameterTypes>
+        <libraryHandler type="gaxml:object">
+	        <LibraryHandler>
+		        <typer type="gaxml:object">
+		        	<UserDefinedFunctionTyper />
+						</typer>
+		        <backend type="gaxml:object">
+		        	<UserDefinedFunctionBackend />
+						</backend>
+	        </LibraryHandler>
+        </libraryHandler>
+    </BlockType>
+
+    <BlockType name="MyMacro" type="UserDefinedFunctionBlock" headerFileName="external.h" functionSignature="double y1 = myFun(double u1, int16 p1)" directFeedThrough="true" preprocessorPriority="0">
+        <parameterTypes type="gaxml:collection">
+            <ParameterType name="headerFileName"/>
+            <ParameterType name="functionSignature"/>
+        </parameterTypes>
+        <libraryHandler type="gaxml:object">
+	        <LibraryHandler>
+		        <typer type="gaxml:object">
+		        	<UserDefinedFunctionTyper />
+						</typer>
+		        <backend type="gaxml:object">
+		        	<UserDefinedFunctionBackend />
+						</backend>
+	        </LibraryHandler>
+        </libraryHandler>
+    </BlockType>
+    
+    <!-- OTHER SPECIAL BLOCKS -->
+    
+    <BlockType name="MaskTypeValue" type="BlockClassName" directFeedThrough="true" preprocessorPriority="0">
+        <parameterTypes type="gaxml:collection">
+           <ParameterType name="par1"/>
+           <ParameterType name="par2"/>
+        </parameterTypes>
+        <libraryHandler type="gaxml:object">
+	        <LibraryHandler>
+		        <typer type="gaxml:object">
+		        	<NullTyper />
+						</typer>
+		        <backend type="gaxml:object">
+		        	<NullBackend />
+						</backend>
+	        </LibraryHandler>
+        </libraryHandler>
+    </BlockType>
+
+     <BlockType name="GenericBlock" type="GenericBlock" directFeedThrough="true" preprocessorPriority="0">
+        <parameterTypes type="gaxml:collection">
+            <ParameterType name="Tag"/>
+        </parameterTypes>
+        <libraryHandler type="gaxml:object">
+	        <LibraryHandler>
+		        <typer type="gaxml:object">
+		        	<NullTyper />
+				</typer>
+		        <backend type="gaxml:object">
+		        	<NullBackend />
+				</backend>
+	        </LibraryHandler>
+        </libraryHandler>
+    </BlockType>
+
+     <BlockType name="S-Function" type="GenericBlock" directFeedThrough="true" preprocessorPriority="0">
+        <parameterTypes type="gaxml:collection">
+            <ParameterType name="Tag"/>
+            <ParameterType name="MaskType" evaluateEML="false"/>
+            <ParameterType name="MaskVariables" evaluateEML="false"/>
+            <ParameterType name="MaskValueString" evaluateEML="false"/>
+        </parameterTypes>
+        <libraryHandler type="gaxml:object">
+	        <LibraryHandler>
+		        <typer type="gaxml:object">
+		        	<NullTyper />
+				</typer>
+		        <backend type="gaxml:object">
+		        	<NullBackend />
+				</backend>
+	        </LibraryHandler>
+        </libraryHandler>
+    </BlockType>
+    
+    <!-- SIMULATION-ONLY ORIENTED BLOCKS -->
+
+    <BlockType name="Scope" type="SinkBlock" directFeedThrough="true">
+        <parameterTypes type="gaxml:collection"/>
+        <libraryHandler type="gaxml:object">
+	        <LibraryHandler>
+		        <typer type="gaxml:object">
+		        	<SinkTyper />
+				</typer>
+		        <backend type="gaxml:object">
+		        	<ScopeBackend />
+				</backend>
+	        </LibraryHandler>
+        </libraryHandler>
+    </BlockType>
+    
+    <BlockType name="Display" type="SinkBlock" directFeedThrough="true">
+        <parameterTypes type="gaxml:collection"/>
+        <libraryHandler type="gaxml:object">
+	        <LibraryHandler>
+		        <typer type="gaxml:object">
+		        	<SinkTyper />
+				</typer>
+		        <backend type="gaxml:object">
+		        	<ScopeBackend />
+				</backend>
+	        </LibraryHandler>
+        </libraryHandler>
+    </BlockType>
+
+</GABlockLibrary>

@@ -91,7 +91,7 @@ public class XcostoGA {
 
         //write to console or file
         //StreamResult console = new StreamResult(System.out);
-        StreamResult file = new StreamResult(new File("C:\\Users\\ierturk\\Desktop\\GA.xml"));
+        StreamResult file = new StreamResult(new File("C:\\Users\\ierturk\\Desktop\\GeneAuto\\work\\GA.gsm.xml"));
 
         //write data
         //transformer.transform(source, console);

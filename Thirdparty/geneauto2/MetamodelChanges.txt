@@ -1,0 +1,267 @@
+------------------------------------------------
+Changes required for moving from 2.4.7 -> 2.4.8
+------------------------------------------------
+
+Date: 04.11.2010
+Module:
+    /geneauto.models/src/main/java/geneauto/models/
+Class:
+	/geneauto.models/src/main/java/geneauto/models/gasystemmodel/gafunctionalmodel/Signal.java
+Change:
+	Field "observabilityRequired" is replaced by the "observationPoints" collection
+Action:
+	In case there is any custom code referencing the "observabilityRequired" field, update it
+	to use the "observationPoints" collection instead
+
+------------------------------------------------
+Changes required for moving from 2.4.7 -> 2.4.6
+------------------------------------------------
+
+Date: 04.06.2010
+Module:
+	/geneauto.models/src/main/java/geneauto/models/gasystemmodel/gafunctionalmodel/blocks
+Class:
+	/geneauto.models/src/main/java/geneauto/models/gasystemmodel/gafunctionalmodel/blocks/Block
+Change:
+    Field "parameters" type changed: Set<Parameter> -> Set<BlockParameter>
+Action:
+    In case there is custom code that creates and adds parameters to blocks and these 
+    objects are from class Parameter, then change the constructors and/or respective 
+    variable types to BlockParameter (a subclass of Parameter). 
+    (The need to change the type is detected by the Java compiler.)  
+
+------------------------------------------------
+Changes required for moving from 2.4.5 -> 2.4.6
+------------------------------------------------
+
+Date: 17.03.2010
+Module:
+    /geneauto.models/src/main/java/geneauto/models/
+Class:
+    /geneauto.models/src/main/java/geneauto/models/genericmodel/GANamedReference.java
+Change:
+    All usages of this explicit named reference proxy class have been removed. Hence, 
+    this class has been removed also.
+Action:
+    In case there is any derived work that uses this class, then carry out similar 
+    changes, as described in the two next points below.
+---
+Module:
+    /geneauto.models/src/main/java/geneauto/models/
+Classes:
+    /geneauto.models/src/main/java/geneauto/models/gasystemmodel/gastatemodel/Transition.java
+    /geneauto.models/src/main/java/geneauto/models/gasystemmodel/gastatemodel/OnEventAction.java
+Change:
+    The explicit named reference proxy class has been removed. Instead, there is a direct
+    reference to the target object. The name resolving is done already in the TStateflowImporter.
+Action:
+    In case all usage of the above classes and related fields was done via the getter and setter 
+    methods, then there is no change. Otherwise, use the getter and setter methods instead.
+---
+Module:
+    /geneauto.models/src/main/java/geneauto/models/
+Classes:
+    /geneauto.models/src/main/java/geneauto/models/gacodemodel/statement/GotoStatement.java
+    /geneauto.models/src/main/java/geneauto/models/gacodemodel/statement/statemodel/broadcast/BroadcastStatement.java
+    /geneauto.models/src/main/java/geneauto/models/gacodemodel/statement/statemodel/broadcast/ExternalBroadcast.java
+Changes:
+    * The explicit named reference proxy class has been removed. Instead, there is a direct
+    reference to the target object. By name referencing is done through the Statements' 
+    "name" attribute. 
+    * The GotoStatement's getTargetLabel and setTargetLabel methods are now called getTarget 
+    and setTarget.
+    * The BroadcastStatement's and ExternalBroadcast's getEventExpression and setEventExpression 
+    methods are now called getEvent and setEvent and setTarget.
+Action:
+    * In case there is any derived work that uses these classes and referred fields/mehtods, 
+    then carry out the above renamings with Java refactoring before updating the models 
+    package or observe for such compilation errors after udating the models package and 
+    rename then.
+    * In case there exists direct usage of the above classes and related fields, then use 
+    the getter and setter methods instead.
+
+Date: 13.02.2010
+Module:
+    /geneauto.models/src/main/java/geneauto/models/
+Classes:
+    /geneauto.models/src/main/java/geneauto/models/genericmodel/GAModelReference.java
+    /geneauto.models/src/main/java/geneauto/models/genericmodel/GACurrentModelReference.java
+    /geneauto.models/src/main/java/geneauto/models/genericmodel/GADependentModelReference.java
+Change:
+    The explicit inter-model references between the GASystemModel and GACodeModel via these 
+    proxy classes have been replaced by direct references. Hence, these classes are obsolete 
+    and have been removed from the metamodel.
+Action:
+    In case there is any derived work that used these classes, then this extra layer 
+    can now be removed. References between two dependent models can be made directly. 
+    The new modelfactory handles this implicitly.
+---
+Module:
+    /geneauto.models/src/main/java/geneauto/models/
+Classes:
+    /geneauto.models/src/main/java/geneauto/models/gacodemodel/GACodeModelElement.java
+    /geneauto.models/src/main/java/geneauto/models/gacodemodel/expression/statemodel/IsEventExpression.java
+    /geneauto.models/src/main/java/geneauto/models/gacodemodel/expression/statemodel/IsOpenExpression.java
+    /geneauto.models/src/main/java/geneauto/models/gacodemodel/statement/Statement.java
+    /geneauto.models/src/main/java/geneauto/models/gacodemodel/statement/statemodel/CloseStatement.java
+    /geneauto.models/src/main/java/geneauto/models/gacodemodel/statement/statemodel/OpenStatement.java
+    /geneauto.models/src/main/java/geneauto/models/gasystemmodel/GASystemModelElement.java
+    /geneauto.models/src/main/java/geneauto/models/gasystemmodel/common/Function_SM.java
+    /geneauto.models/src/main/java/geneauto/models/gasystemmodel/common/Variable_SM.java
+    /geneauto.models/src/main/java/geneauto/models/gasystemmodel/gafunctionalmodel/blocks/ChartBlock.java
+    /geneauto.models/src/main/java/geneauto/models/gasystemmodel/gafunctionalmodel/ports/InControlPort.java
+    /geneauto.models/src/main/java/geneauto/models/gasystemmodel/gastatemodel/Event.java
+Change:
+    The explicit inter-model references between the GASystemModel and GACodeModel using 
+    the GAModelReference proxy class have been replaced by direct references. This does 
+    not cause any semantic structural changes in the metamodel.
+Action:
+    In case all usage of the above classes and inter-model references was done via the 
+    getter and setter methods, then there is no change. Otherwise, use the getter and 
+    setter methods instead.
+---
+Module:
+    /geneauto.models/src/main/java/geneauto/models/
+Classes:
+    geneauto.models.gablocklibrary.BlockClass
+    geneauto.models.gacodemodel.gaenumtypes.ArrayDefinitionStyle
+    geneauto.models.gacodemodel.gaenumtypes.DefinitionScope
+    geneauto.models.gacodemodel.gaenumtypes.FunctionStyle
+    geneauto.models.gacodemodel.operator.AssignOperator
+    geneauto.models.gacodemodel.operator.BinaryOperator
+    geneauto.models.gacodemodel.operator.TernaryOperator
+    geneauto.models.gacodemodel.operator.UnaryOperator
+    geneauto.models.gasystemmodel.common.FunctionScope
+    geneauto.models.gasystemmodel.common.VariableScope
+    geneauto.models.gasystemmodel.gastatemodel.EventScope
+    geneauto.models.gasystemmodel.gastatemodel.JunctionType
+    geneauto.models.gasystemmodel.gastatemodel.StateType
+    geneauto.models.gasystemmodel.gastatemodel.TransitionType
+Change:
+    All enum constants that were in lower case are changed to upper case, words
+    are separated by underscores (to comply with Java conventions). Examples:
+    	DivOperator    -> DIV_OPERATOR
+    	MulMatOperator -> MUL_MAT_OPERATOR
+Action:
+	Update the models package. Observe the Java compilation errors that match this 
+	pattern and are related to enums. Search and replace the relevant enums with a 
+	new name. 
+
+------------------------------------------------
+Changes required for moving from 2.4.1 -> 2.4.2
+------------------------------------------------
+
+Date: 25.01.2009
+Module:
+    /geneauto.models/src/main/java/geneauto/models
+New package:
+    /geneauto.models/src/main/java/geneauto/models/common
+Action:
+    Create mentioned package
+---
+Module:
+    /geneauto.models/src/main/java/geneauto/models/gasystemmodel/common
+Change:
+Classes:
+    /geneauto.models/src/main/java/geneauto/models/gasystemmodel/common/CustomType.java
+    /geneauto.models/src/main/java/geneauto/models/gasystemmodel/common/IsFunction.java
+    /geneauto.models/src/main/java/geneauto/models/gasystemmodel/common/IsNameSpaceElement.java
+    /geneauto.models/src/main/java/geneauto/models/gasystemmodel/common/IsVariable.java
+have been moved to
+    /geneauto.models/src/main/java/geneauto/models/common
+Action:
+    Move listed classes
+---
+Module:
+    /geneauto.models/src/main/java/geneauto/models/gacodemodel
+Change:
+Renamed class:
+    NameSpaceElement -> NameSpaceElement_CM
+Action:
+    Rename listed classes
+---
+Module:
+    /geneauto.models/src/main/java/geneauto/models/gasystemmodel/common
+Change:
+Renamed classes:
+    Function -> Function_SM
+    FunctionArgument -> FunctionArgument_SM
+    Variable -> Variable_SM
+    IsSystemFunction -> SystemFunction
+    IsSystemVariable -> SystemVariable
+Action:
+    Rename listed classes
+---
+Module:
+    /geneauto.models/src/main/java/geneauto/models/common
+Change:
+Renamed classes:
+    IsFunction -> Function
+    IsNameSpaceElement -> NameSpaceElement
+    IsVariable -> Variable
+Action:
+    Rename listed classes
+---
+Module:
+    /geneauto.models/src/main/java/geneauto/models/gacodemodel
+Change:
+Renamed classes:
+    isCodeFunction -> CodeModelFunction
+    isCodeVariable -> CodeModelVariable
+    HasStatements -> SequentialComposition
+    StructureMemberContent -> StructureContent
+Action:
+    Rename listed classes
+---
+Module:
+    /geneauto.models/src/main/java/geneauto/models/gacodemodel/expression
+Change:
+Renamed class:
+    HasVariables -> LValueExpression
+Action:
+    Rename class
+---
+Module:
+    /geneauto.models/src/main/java/geneauto/models/gacodemodel/statement
+Classes: 
+    IfStatement
+    ForStatement
+Renamed field:
+    conditionalExpression -> conditionExpression
+Action:
+    Rename mentioned fields in listed classes
+---
+Module:
+    geneauto.utilities
+Change:
+Renamed package:
+    geneauto.eventshandler -> geneauto.eventhandler
+Renamed class:
+    EventsHandler -> EventHandler
+Action:
+    Rename package and class
+---
+Module:
+    geneauto.models.gacodemodel
+Change:
+Removed class:
+    TraceLink
+Action:
+    No action required
+
+------------------------------------------------
+Changes required for moving from 2.2.0 -> 2.2.1
+------------------------------------------------
+
+Date: 06.11.2008
+Module: /geneauto.models/src/main/java/geneauto/models/gadatatypes/typedvalue
+Change: Modified following constructors:
+    BooleanValue(GADataType type, boolean value) -> BooleanValue(boolean value)
+    DoubleValue(GADataType type, double value) -> DoubleValue(double value)
+    SingleValue(GADataType type, float value) -> SingleValue(float value)
+Action: Refactor - "Change method signature". Remove type argument.
+
+Date: 30.10.2008
+Module: /geneauto.models/src/main/java/geneauto/models/gasystemmodel/common/Parameter.java
+Change: Parameter is now an abstract class. Use BlockParameter sub-class for instances of Parameter objects.
+Action: Rename class Parameter to BlockParameter and update imports (Ctrl+Shift+O).

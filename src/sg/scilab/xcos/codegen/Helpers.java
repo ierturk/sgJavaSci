@@ -91,7 +91,7 @@ public class Helpers {
 												.item(0).getAttributes().getNamedItem("id").getNodeValue();
 
 		elementOut.appendChild(docIn.importNode(ParseSuperBlock(parentID), true));
-		//elementOut.appendChild(docIn.importNode(ParseSignals(parentID), true));
+		elementOut.appendChild(docIn.importNode(ParseSignals(parentID), true));
 		
 		return elementOut;
 	}
@@ -106,6 +106,22 @@ public class Helpers {
 		
 		elementOut.appendChild(docIn.importNode(ParseBlocks(parentID), true));
 		elementOut.appendChild(docIn.importNode(ParseSignals(parentID), true));
+		
+		ArrayList<ArrayList<Object>> ParamArray = new ArrayList<ArrayList<Object>>();
+		ArrayList<Object> ParamList = new ArrayList<Object>();
+		
+		ParamList.add("RTWSystemCode");
+		ParamList.add("String");
+		ParamList.add("auto");
+		ParamArray.add(ParamList);
+		
+		ParamList = new ArrayList<Object>();
+		ParamList.add("AtomicSubSystem");
+		ParamList.add("String");
+		ParamList.add("off");
+		ParamArray.add(ParamList);		
+		elementOut.appendChild(docIn.importNode(ParseParameters(ParamArray), true));
+
 		return elementOut;
 	}
 	
@@ -196,7 +212,7 @@ public class Helpers {
 			elementTmp = (Element) Translator.invoke(TranClass, blockNL.item(i).getAttributes().getNamedItem("interfaceFunctionName").getNodeValue());
 			
 			//try {
-				elementOut.appendChild(elementTmp);
+				//elementOut.appendChild(elementTmp);
 
 				//} catch (NullPointerException e) {
 					// TODO Auto-generated catch block
@@ -358,11 +374,11 @@ public class Helpers {
 				elementTemp.setAttribute("id", Integer.toString(++idCnt));
 				elementTemp0 = docIn.createElement("dstPort");
 				elementTemp0.setAttribute("type", "gaxml:pointer");
-				elementTemp0.setTextContent(outpID);
+				elementTemp0.setTextContent(inpID);
 				elementTemp.appendChild(elementTemp0);
 				elementTemp0 = docIn.createElement("srcPort");
 				elementTemp0.setAttribute("type", "gaxml:pointer");
-				elementTemp0.setTextContent(inpID);			
+				elementTemp0.setTextContent(outpID);			
 				elementTemp.appendChild(elementTemp0);
 				elementOut.appendChild(elementTemp);
 			}
@@ -410,7 +426,7 @@ public class Helpers {
 								.evaluate(docIn, XPathConstants.NODESET)).item(0).getAttributes();
 
 		Element elementOut = docIn.createElement("diagramInfo");
-		elementOut.setAttribute("type", "gaxml:collection");
+		elementOut.setAttribute("type", "gaxml:object");
 		
 		Element elementTemp = docIn.createElement("DiagramInfo");
 		elementTemp.setAttribute("sizeX", geoNM.getNamedItem("width").getNodeValue());
@@ -448,7 +464,6 @@ public class Helpers {
 		return elementOut;
 	}
 	
-	@SuppressWarnings("unused")
 	protected Element ParseExpressionParam(ArrayList<Object> paramList) throws NoSuchMethodException, SecurityException, DOMException, IllegalAccessException, IllegalArgumentException, InvocationTargetException {
 		Helpers HelpClass = new Helpers(docIn);
 		Element elementOut = docIn.createElement("ExpressionValue");
@@ -466,7 +481,6 @@ public class Helpers {
 		return elementOut;
 	}
 	
-	@SuppressWarnings("unused")
 	protected Element ParseRealExpParam(String pvalue) {
 		
 		Double value = Double.parseDouble((String) pvalue);
@@ -490,7 +504,6 @@ public class Helpers {
 		return elementOut;
 	}
 	
-	@SuppressWarnings("unused")
 	protected Element ParseBinaryExpParam(String pvalue) {
 		
 		Element elementOut = docIn.createElement("BinaryExpression");
@@ -526,8 +539,7 @@ public class Helpers {
 	}
 
 	
-	@SuppressWarnings("unused")
-	private Element ParseStringParam(ArrayList<Object> paramList) {		
+	protected Element ParseStringParam(ArrayList<Object> paramList) {		
 		Element elementOut = docIn.createElement("StringValue");
 		elementOut.setAttribute("id", Integer.toString(++idCnt));
 		elementOut.setAttribute("value", (String) paramList.get(2));

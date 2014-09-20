@@ -110,6 +110,7 @@ public class XcosImporter extends ApplicationWindow {
 					FileDialog dialog = new FileDialog(getShell(), SWT.OPEN);
 					
 					try {
+					//Runtime.getRuntime().exec("C:\\Users\\ierturk\\Desktop\\GeneAuto\\gaLaunch.bat");
 					XcostoGA Converter = new XcostoGA(dialog.open());
 					Converter.XMLtoTree(treeIn, XcostoGA.docXcos);
 					Converter.ImportXcos();
