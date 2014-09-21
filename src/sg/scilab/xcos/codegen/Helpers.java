@@ -25,6 +25,7 @@ import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.Iterator;
 import java.util.Map;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
@@ -52,7 +53,8 @@ public class Helpers {
 	
 	protected static Document docIn;
 	protected static int idCnt;
-	protected static ArrayList<ArrayList<Object>> PortAsscs;
+	protected static ArrayList<ArrayList<Object>> PortAsscs = new ArrayList<ArrayList<Object>>();
+;
 	
 	public Helpers(Document In) {
 		// TODO Auto-generated constructor stub
@@ -89,9 +91,11 @@ public class Helpers {
 												.compile("/node()/mxCell[@as='defaultParent']")
 												.evaluate(docIn, XPathConstants.NODESET))
 												.item(0).getAttributes().getNamedItem("id").getNodeValue();
+		//System.out.println("Before" + PortAsscs.size());
 
 		elementOut.appendChild(docIn.importNode(ParseSuperBlock(parentID), true));
-		elementOut.appendChild(docIn.importNode(ParseSignals(parentID), true));
+		//elementOut.appendChild(docIn.importNode(ParseSignals(parentID), true));
+		System.out.println(PortAsscs.size());
 		
 		return elementOut;
 	}
@@ -106,62 +110,75 @@ public class Helpers {
 		
 		elementOut.appendChild(docIn.importNode(ParseBlocks(parentID), true));
 		elementOut.appendChild(docIn.importNode(ParseSignals(parentID), true));
-		
-		ArrayList<ArrayList<Object>> ParamArray = new ArrayList<ArrayList<Object>>();
-		ArrayList<Object> ParamList = new ArrayList<Object>();
-		
-		ParamList.add("RTWSystemCode");
-		ParamList.add("String");
-		ParamList.add("auto");
-		ParamArray.add(ParamList);
-		
-		ParamList = new ArrayList<Object>();
-		ParamList.add("AtomicSubSystem");
-		ParamList.add("String");
-		ParamList.add("off");
-		ParamArray.add(ParamList);		
-		elementOut.appendChild(docIn.importNode(ParseParameters(ParamArray), true));
-
 		return elementOut;
 	}
 	
 	private Element ParseBlocks(String parentID) throws XPathExpressionException, NoSuchMethodException, SecurityException, IllegalAccessException, IllegalArgumentException, InvocationTargetException, DOMException, ParserConfigurationException, InstantiationException, TransformerException{
-		PortAsscs = new ArrayList<ArrayList<Object>>();
 		NodeList blockNL = (NodeList) XPathFactory.newInstance().newXPath()
-												.compile("//*[@parent='" + parentID + "']"
-														+ "[string-length(@interfaceFunctionName)!=0 "
-														+ "or name()='SuperBlock']")
+												.compile("//*[@parent='" + parentID + "']")
 												.evaluate(docIn, XPathConstants.NODESET);
 
+		
 		Element elementOut = docIn.createElement("blocks");
 		elementOut.setAttribute("type", "gaxml:collection");
 		
 		Method Translator;
 		XcosBlockTran TranClass = new XcosBlockTran(docIn);
 		String blockID;
-		Element elementTmp;
+		Element elementTmp = null;
 		
 		for (int i = 0; i < blockNL.getLength(); i++) {
 			
 			blockID = blockNL.item(i).getAttributes().getNamedItem("id").getNodeValue();
 						
 			try {
-				if(blockNL.item(i).getNodeName().equals("SuperBlock")) {
-					String superblockID = ((NodeList) XPathFactory.newInstance().newXPath()
-														.compile("//SuperBlock[@id='"
-																	+ blockID 
-																	+ "']/SuperBlockDiagram"
-																	+ "/mxCell[@as='defaultParent']")
-														.evaluate(docIn, XPathConstants.NODESET))
-														.item(0).getAttributes().getNamedItem("id").getNodeValue();
-					
-					elementTmp = (Element) docIn.importNode(ParseSuperBlock(superblockID), true);		
 				
-				} else {
+				switch(blockNL.item(i).getNodeName()) {
+				case "SuperBlock":
+					elementTmp = (Element) docIn.importNode(ParseSuperBlock(((NodeList) XPathFactory.newInstance().newXPath()
+																									.compile("//SuperBlock[@id='"
+																												+ blockID 
+																												+ "']/SuperBlockDiagram"
+																												+ "/mxCell[@as='defaultParent']")
+																									.evaluate(docIn, XPathConstants.NODESET))
+																									.item(0).getAttributes().getNamedItem("id").getNodeValue()),
+																									true);
+					ArrayList<ArrayList<Object>> ParamArray = new ArrayList<ArrayList<Object>>();
+					ArrayList<Object> ParamList = new ArrayList<Object>();
+					
+					ParamList.add("RTWSystemCode");
+					ParamList.add("String");
+					ParamList.add("auto");
+					ParamArray.add(ParamList);
+					
+					ParamList = new ArrayList<Object>();
+					ParamList.add("AtomicSubSystem");
+					ParamList.add("String");
+					ParamList.add("off");
+					ParamArray.add(ParamList);		
+					elementTmp.appendChild(docIn.importNode(ParseParameters(ParamArray), true));
+					break;
+					
+				//case "EventInBlock":
+				case "ExplicitOutBlock":
+					Translator = TranClass.getClass().getDeclaredMethod("OutDataPort_tran", String.class);
+					Translator.setAccessible(true);
+					elementTmp = (Element) Translator.invoke(TranClass, blockID);
+					break;
+					
+				case "BasicBlock":
+				case "Summation":
 					Translator = TranClass.getClass().getDeclaredMethod(
 										blockNL.item(i).getAttributes().getNamedItem("interfaceFunctionName").getNodeValue() + "_tran", String.class);
 					Translator.setAccessible(true);
 					elementTmp = (Element) Translator.invoke(TranClass, blockID);
+					break;
+					
+				default:
+					Translator = TranClass.getClass().getDeclaredMethod("UnSupported", String.class);
+					Translator.setAccessible(true);
+					Translator.invoke(TranClass, blockNL.item(i).getAttributes().getNamedItem("interfaceFunctionName").getNodeValue());
+					continue;
 				}
 				
 				try {
@@ -179,7 +196,8 @@ public class Helpers {
 				}
 
 				try {
-					elementTmp.appendChild(docIn.importNode(ParseInControlPort(blockID), true));	
+					if(blockNL.item(i).getAttributes().getNamedItem("id").getNodeValue() == "SuperBlock")
+											elementTmp.appendChild(docIn.importNode(ParseInControlPort(blockID), true));
 				} catch (NullPointerException e) {
 					// TODO Auto-generated catch block
 					//e.printStackTrace();
@@ -206,18 +224,6 @@ public class Helpers {
 				// TODO Auto-generated catch block
 				//e.printStackTrace();
 			}
-
-			Translator = TranClass.getClass().getDeclaredMethod("UnSupported", String.class);
-			Translator.setAccessible(true);
-			elementTmp = (Element) Translator.invoke(TranClass, blockNL.item(i).getAttributes().getNamedItem("interfaceFunctionName").getNodeValue());
-			
-			//try {
-				//elementOut.appendChild(elementTmp);
-
-				//} catch (NullPointerException e) {
-					// TODO Auto-generated catch block
-					//e.printStackTrace();
-				//}
 		}
 		
 		return elementOut;
@@ -242,6 +248,7 @@ public class Helpers {
 			ArrayList<Object> PortAssc = new ArrayList<Object>(); 
 			PortAssc.add(PortNL.item(i).getAttributes().getNamedItem("id").getNodeValue());
 			PortAssc.add(idCnt);
+			PortAssc.add("InData");
 			PortAsscs.add(PortAssc);
 		}
 
@@ -267,6 +274,7 @@ public class Helpers {
 			ArrayList<Object> PortAssc = new ArrayList<Object>(); 
 			PortAssc.add(PortNL.item(i).getAttributes().getNamedItem("id").getNodeValue());
 			PortAssc.add(idCnt);
+			PortAssc.add("OutData");
 			PortAsscs.add(PortAssc);
 		}
 
@@ -295,6 +303,7 @@ public class Helpers {
 			ArrayList<Object> PortAssc = new ArrayList<Object>(); 
 			PortAssc.add(PortNL.item(i).getAttributes().getNamedItem("id").getNodeValue());
 			PortAssc.add(idCnt);
+			PortAssc.add("InControl");
 			PortAsscs.add(PortAssc);
 		}
 
@@ -320,6 +329,7 @@ public class Helpers {
 			ArrayList<Object> PortAssc = new ArrayList<Object>(); 
 			PortAssc.add(PortNL.item(i).getAttributes().getNamedItem("id").getNodeValue());
 			PortAssc.add(idCnt);
+			PortAssc.add("OutControl");
 			PortAsscs.add(PortAssc);
 		}
 
@@ -332,58 +342,32 @@ public class Helpers {
 		elementOut.setAttribute("type", "gaxml:collection");
 		Element elementTemp = null;
 		Element elementTemp0 = null;
-		NodeList inportNL = null;
-		String outportID = null;
-		String outpID = null;
-		String inportID = null;
-		String inpID = null;
+		
+		for(ArrayList<Object> portIn : PortAsscs){
+			if("InData".equals(portIn.get(2))) {
 
-		NodeList blockNL = (NodeList) XPathFactory.newInstance().newXPath()
-										.compile("//*[@parent='" + parentID + "']"
-													+ "[string-length(@interfaceFunctionName)!=0 "
-													+ "or name()='SuperBlock']")
-										.evaluate(docIn, XPathConstants.NODESET);
-				
-		for (int i = 0; i < blockNL.getLength(); i++) {
-			inportNL = (NodeList) XPathFactory.newInstance().newXPath()
-									.compile("//*[@parent='" + blockNL.item(i).getAttributes().getNamedItem("id").getNodeValue() + "']"
-												+ "[local-name()='ExplicitInputPort' or local-name()='ControlPort']")
-									.evaluate(docIn, XPathConstants.NODESET);
-			
-			if(inportNL.getLength() == 0) {continue;}
-
-			for (int ii = 0; ii < inportNL.getLength(); ii++) {
-				inportID = inportNL.item(ii).getAttributes().getNamedItem("id").getNodeValue();
-				outportID = ParseSignal(inportID);
-				
-				outpID = null;
-				inpID = null;
-				for(ArrayList<Object> portPortAssc : PortAsscs){					
-					if(portPortAssc.get(0).equals(outportID)) {
-						outpID = Integer.toString((int) portPortAssc.get(1));
-					}
-
-					if(portPortAssc.get(0).equals(inportID)) {
-						inpID = Integer.toString((int) portPortAssc.get(1));
+				String outportID = ParseSignal((String) portIn.get(0));
+				for(ArrayList<Object> portOut : PortAsscs){
+					if(outportID.equals((String) portOut.get(0))) {
+						elementTemp = docIn.createElement("Signal");
+						elementTemp.setAttribute("id", Integer.toString(++idCnt));
+						elementTemp0 = docIn.createElement("dstPort");
+						elementTemp0.setAttribute("type", "gaxml:pointer");
+						elementTemp0.setTextContent(Integer.toString((int) portIn.get(1)));
+						elementTemp.appendChild(elementTemp0);
+						elementTemp0 = docIn.createElement("srcPort");
+						elementTemp0.setAttribute("type", "gaxml:pointer");
+						elementTemp0.setTextContent(Integer.toString((int) portOut.get(1)));			
+						elementTemp.appendChild(elementTemp0);
+						elementOut.appendChild(elementTemp);
 					}
 				}
-				
-				if((outpID == null) | (inpID == null)) {continue;}
-
-				elementTemp = docIn.createElement("Signal");
-				elementTemp.setAttribute("id", Integer.toString(++idCnt));
-				elementTemp0 = docIn.createElement("dstPort");
-				elementTemp0.setAttribute("type", "gaxml:pointer");
-				elementTemp0.setTextContent(inpID);
-				elementTemp.appendChild(elementTemp0);
-				elementTemp0 = docIn.createElement("srcPort");
-				elementTemp0.setAttribute("type", "gaxml:pointer");
-				elementTemp0.setTextContent(outpID);			
-				elementTemp.appendChild(elementTemp0);
-				elementOut.appendChild(elementTemp);
 			}
 		}
-
+		
+		while(PortAsscs.size() != 0) {
+			PortAsscs.clear();
+		}
 		return elementOut;
 	}
 	
@@ -499,6 +483,35 @@ public class Helpers {
 		
 		elementTemp = docIn.createElement("TRealDouble");
 		elementTemp.setAttribute("id", Integer.toString(++idCnt));
+		elementOut.getFirstChild().appendChild(elementTemp);
+
+		return elementOut;
+	}
+	
+	protected Element ParseIntegerExpParam(String pvalue) {
+		
+		Pattern pattern = Pattern.compile(">");
+		String[] split = pattern.split(pvalue);
+		
+		Integer value = Integer.parseInt(split[0]);
+		
+		Element elementOut = docIn.createElement("IntegerExpression");
+		elementOut.setAttribute("id", Integer.toString(++idCnt));	
+
+		elementOut.setAttribute("litValue", split[0]);
+		elementOut.setAttribute("integerPart", Integer.toString(Math.abs(value)));
+		if(value>=0) elementOut.setAttribute("isNegative", "false");
+		else elementOut.setAttribute("isNegative", "true");
+		elementOut.setAttribute("hexValue", "false");
+		
+		Element elementTemp = docIn.createElement("dataType");
+		elementTemp.setAttribute("type", "gaxml:object");
+		elementOut.appendChild(elementTemp);
+		
+		elementTemp = docIn.createElement("TRealInteger");
+		elementTemp.setAttribute("id", Integer.toString(++idCnt));
+		elementTemp.setAttribute("signed", "true");
+		elementTemp.setAttribute("nBits", split[1]);
 		elementOut.getFirstChild().appendChild(elementTemp);
 
 		return elementOut;

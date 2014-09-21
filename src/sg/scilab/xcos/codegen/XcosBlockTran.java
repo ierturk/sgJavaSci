@@ -267,6 +267,61 @@ public class XcosBlockTran extends Helpers {
 		
 		return elementOut;
 	}
+	
+	@SuppressWarnings("unused")
+	private Element OutDataPort_tran(String blockID) throws ParserConfigurationException, DOMException, XPathExpressionException, NoSuchMethodException, SecurityException, IllegalAccessException, IllegalArgumentException, InvocationTargetException, InstantiationException {		
+		Element elementOut = docIn.createElement("SinkBlock");
+		elementOut.setAttribute("type", "Outport");
+		elementOut.setAttribute("name", "NoName");
+		elementOut.setAttribute("isVirtual", "false");
+		elementOut.setAttribute("id", Integer.toString(++idCnt));
+		elementOut.setAttribute("directFeedThrough", "true");
+		elementOut.setAttribute("sampletime", "-1");
+		
+		ArrayList<ArrayList<Object>> ParamArray = new ArrayList<ArrayList<Object>>();
+		ArrayList<Object> ParamList = new ArrayList<Object>();
+		
+		ParamList.add("DataType");
+		ParamList.add("String");
+		ParamList.add("auto");
+		ParamArray.add(ParamList);
+		
+		ParamList = new ArrayList<Object>();
+		ParamList.add("InitialOutput");
+		ParamList.add("Expression");
+		ParamList.add("RealExp");
+		ParamList.add("0");
+		ParamArray.add(ParamList);
+		
+		ParamList = new ArrayList<Object>();
+		ParamList.add("PortDimensions");
+		ParamList.add("Expression");
+		ParamList.add("IntegerExp");
+		ParamList.add("-1>8");
+		ParamArray.add(ParamList);
+		
+		ParamList = new ArrayList<Object>();
+		ParamList.add("OutputWhenDisabled");
+		ParamList.add("String");
+		ParamList.add("held");
+		ParamArray.add(ParamList);
+		
+		ParamList = new ArrayList<Object>();
+		ParamList.add("Port");
+		ParamList.add("String");
+
+		Double pvalue = Double.parseDouble(((NodeList) XPathFactory.newInstance().newXPath()
+																		.compile("//*[@id='" + blockID + "']"
+																					+ "/ScilabDouble[@as='integerParameters']/data")
+																		.evaluate(docIn, XPathConstants.NODESET)).item(0)
+																		.getAttributes().getNamedItem("realPart").getNodeValue());
+		ParamList.add(Integer.toString(pvalue.intValue()));
+		ParamArray.add(ParamList);
+		
+		elementOut.appendChild(docIn.importNode(ParseParameters(ParamArray), true));
+		
+		return elementOut;
+	}
 }
 
 /*** COPYRIGHT 2014 StarGate Inc <http://www.stargate-tr.com> *****END OF FILE****/
