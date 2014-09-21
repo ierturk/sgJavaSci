@@ -158,8 +158,15 @@ public class Helpers {
 					ParamArray.add(ParamList);		
 					elementTmp.appendChild(docIn.importNode(ParseParameters(ParamArray), true));
 					break;
-					
-				//case "EventInBlock":
+
+				case "EventInBlock":
+					Translator = TranClass.getClass().getDeclaredMethod("ActionPort_tran", String.class);
+					Translator.setAccessible(true);
+					elementTmp = (Element) Translator.invoke(TranClass, blockID);
+					elementTmp.appendChild(docIn.importNode(ParseGeometry(blockID), true));
+					elementOut.appendChild(elementTmp);
+					continue;
+	
 				case "ExplicitOutBlock":
 					Translator = TranClass.getClass().getDeclaredMethod("OutDataPort_tran", String.class);
 					Translator.setAccessible(true);
@@ -196,21 +203,21 @@ public class Helpers {
 				}
 
 				try {
-					if(blockNL.item(i).getAttributes().getNamedItem("id").getNodeValue() == "SuperBlock")
-											elementTmp.appendChild(docIn.importNode(ParseInControlPort(blockID), true));
+					if(blockNL.item(i).getNodeName() == "SuperBlock")
+						elementTmp.appendChild(docIn.importNode(ParseInControlPort(blockID), true));
 				} catch (NullPointerException e) {
 					// TODO Auto-generated catch block
 					//e.printStackTrace();
 				}
-				
+
 				try {
-					elementTmp.appendChild(docIn.importNode(ParseOutControlPort(blockID), true));
+					//if(blockNL.item(i).getAttributes().getNamedItem("interfaceFunctionName").getNodeValue() == "IFTHEL_f")
+						elementTmp.appendChild(docIn.importNode(ParseOutControlPort(blockID), true));
 				} catch (NullPointerException e) {
 					// TODO Auto-generated catch block
 					//e.printStackTrace();
 				}
-				
-				
+							
 				try {
 					elementTmp.appendChild(docIn.importNode(ParseGeometry(blockID), true));
 				} catch (NullPointerException e) {
@@ -242,6 +249,7 @@ public class Helpers {
 		for (int i = 0; i < PortNL.getLength(); i++) {			
 			Element elementTemp = docIn.createElement("InDataPort");
 			elementTemp.setAttribute("id", Integer.toString(++idCnt));
+			elementTemp.setAttribute("relatedToInportBlock", "true");
 			elementTemp.setAttribute("portNumber", PortNL.item(i).getAttributes().getNamedItem("ordering").getNodeValue());
 			elementOut.appendChild(elementTemp);
 			
@@ -344,7 +352,7 @@ public class Helpers {
 		Element elementTemp0 = null;
 		
 		for(ArrayList<Object> portIn : PortAsscs){
-			if("InData".equals(portIn.get(2))) {
+			if(("InData".equals(portIn.get(2))) | ("InControl".equals(portIn.get(2)))) {
 
 				String outportID = ParseSignal((String) portIn.get(0));
 				for(ArrayList<Object> portOut : PortAsscs){
@@ -406,7 +414,7 @@ public class Helpers {
 	private Element ParseGeometry(String blockID) throws ParserConfigurationException, DOMException, XPathExpressionException {
 		
 		NamedNodeMap geoNM = ((NodeList) XPathFactory.newInstance().newXPath()
-								.compile("//*[local-name()='BasicBlock']" + "[@id='" + blockID + "']/mxGeometry")
+								.compile("//*[@id='" + blockID + "']/mxGeometry")
 								.evaluate(docIn, XPathConstants.NODESET)).item(0).getAttributes();
 
 		Element elementOut = docIn.createElement("diagramInfo");
@@ -471,10 +479,10 @@ public class Helpers {
 		Element elementOut = docIn.createElement("RealExpression");
 		elementOut.setAttribute("id", Integer.toString(++idCnt));	
 
-		elementOut.setAttribute("litValue", Double.toString(value.floatValue()));
+		elementOut.setAttribute("litValue", Integer.toString(value.intValue()));
 		elementOut.setAttribute("integerPart", Integer.toString(value.intValue()));
 		elementOut.setAttribute("scientificValue", "false");
-		elementOut.setAttribute("fractionalPart", Double.toString((Math.abs(value - value.intValue()))));
+		elementOut.setAttribute("fractionalPart", Integer.toString((int) (Math.abs(value - value.intValue()))));
 		elementOut.setAttribute("exponent", Integer.toString(0));	
 		
 		Element elementTemp = docIn.createElement("dataType");

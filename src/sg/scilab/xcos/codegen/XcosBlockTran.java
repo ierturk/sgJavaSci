@@ -322,6 +322,29 @@ public class XcosBlockTran extends Helpers {
 		
 		return elementOut;
 	}
+
+	@SuppressWarnings("unused")
+	private Element ActionPort_tran(String blockID) throws ParserConfigurationException, DOMException, XPathExpressionException, NoSuchMethodException, SecurityException, IllegalAccessException, IllegalArgumentException, InvocationTargetException, InstantiationException {		
+		Element elementOut = docIn.createElement("ControlBlock");
+		elementOut.setAttribute("type", "ActionPort");
+		elementOut.setAttribute("name", "NoName");
+		elementOut.setAttribute("isVirtual", "false");
+		elementOut.setAttribute("id", Integer.toString(++idCnt));
+		elementOut.setAttribute("directFeedThrough", "true");
+		elementOut.setAttribute("sampletime", "-1");
+		
+		ArrayList<ArrayList<Object>> ParamArray = new ArrayList<ArrayList<Object>>();
+		ArrayList<Object> ParamList = new ArrayList<Object>();
+		
+		ParamList.add("InitializeStates");
+		ParamList.add("String");
+		ParamList.add("held");
+		ParamArray.add(ParamList);
+		
+		elementOut.appendChild(docIn.importNode(ParseParameters(ParamArray), true));
+		
+		return elementOut;
+	}	
 }
 
 /*** COPYRIGHT 2014 StarGate Inc <http://www.stargate-tr.com> *****END OF FILE****/
