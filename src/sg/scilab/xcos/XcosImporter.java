@@ -36,8 +36,10 @@ import org.eclipse.swt.SWT;
 import org.eclipse.swt.graphics.Point;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Control;
+import org.eclipse.swt.widgets.DirectoryDialog;
 import org.eclipse.swt.widgets.Display;
 import org.eclipse.swt.widgets.FileDialog;
+import org.eclipse.swt.widgets.MessageBox;
 import org.eclipse.swt.widgets.Shell;
 import org.eclipse.jface.action.Action;
 import org.w3c.dom.DOMException;
@@ -51,7 +53,14 @@ public class XcosImporter extends ApplicationWindow {
 	private Action actionExit;
 	private static Tree treeIn;
 	private static Tree treeOut;
-
+	private Action actionOutputFolder;
+	private Action actionImport;
+	private Action actionConvert;
+	private Action actionGenerate;
+	private Action actionSelectInput;
+	private static String InDiagram;
+	private static String OutFolder;
+	XcostoGA Converter;
 	/**
 	 * Create the application window,
 	 */
@@ -61,6 +70,8 @@ public class XcosImporter extends ApplicationWindow {
 		addCoolBar(SWT.FLAT);
 		addMenuBar();
 		addStatusLine();
+		InDiagram = null;
+		OutFolder = null;
 	}
 
 	/**
@@ -107,22 +118,6 @@ public class XcosImporter extends ApplicationWindow {
 			actionOpenFile = new Action("Open") {
 				@Override 			
 				public void run() {
-					FileDialog dialog = new FileDialog(getShell(), SWT.OPEN);
-					
-					try {
-					//Runtime.getRuntime().exec("C:\\Users\\ierturk\\Desktop\\GeneAuto\\gaLaunch.bat");
-					XcostoGA Converter = new XcostoGA(dialog.open());
-					Converter.XMLtoTree(treeIn, XcostoGA.docXcos);
-					Converter.ImportXcos();
-					Converter.XMLtoTree(treeOut, XcostoGA.docGA);
-
-					} catch (SAXException | IOException
-							| ParserConfigurationException | XPathExpressionException | TransformerException | DOMException | SecurityException | IllegalArgumentException | NoSuchMethodException | IllegalAccessException | InvocationTargetException | InstantiationException e) {
-						// TODO Auto-generated catch block
-						e.printStackTrace();
-					}
-
-					setStatus("Diagram Imported");
 				} 
 			};
 		}
@@ -131,6 +126,98 @@ public class XcosImporter extends ApplicationWindow {
 				@Override 			
 				public void run() { 				
 					close(); 			
+				}
+
+			};
+		}
+		{
+			actionSelectInput = new Action("Select Input Diagram ...") {
+				@Override 			
+				public void run() {
+					FileDialog dialog = new FileDialog(getShell(), SWT.OPEN);
+					InDiagram = dialog.open();
+				}
+
+			};
+		}
+		{
+			actionOutputFolder = new Action("Select Output Folder ...") {
+				@Override 			
+				public void run() {
+					DirectoryDialog dialog = new DirectoryDialog(getShell());
+					OutFolder = dialog.open();
+					//System.out.println(OutFolder);
+				}
+			};
+		}
+		{
+			actionImport = new Action("Import Xcos Diagram") {
+				@Override 			
+				public void run() {
+					if(InDiagram == null) {
+					       MessageBox mb = new MessageBox(getShell(), SWT.ICON_ERROR);
+					       mb.setText("sgJavaSci");
+					       mb.setMessage("Please select input diagram...");
+					       mb.open();
+					} else { 
+						try {
+							Converter = new XcostoGA(InDiagram);
+							Converter.XMLtoTree(treeIn, XcostoGA.docXcos);
+							setStatus("Diagram Imported");
+						} catch (SAXException | IOException
+								| ParserConfigurationException
+								| TransformerException e) {
+							// TODO Auto-generated catch block
+							e.printStackTrace();
+						}
+
+					}
+				}
+			};
+		}
+		{
+			actionConvert = new Action("Convert to GA") {				@Override 			
+				public void run() {
+					if(InDiagram == null) {
+					       MessageBox mb = new MessageBox(getShell(), SWT.ICON_ERROR);
+					       mb.setText("sgJavaSci");
+					       mb.setMessage("Please select output folder...");
+					       mb.open();
+					} else {
+						try {
+							Converter.ImportXcos();
+							Converter.XMLtoTree(treeOut, XcostoGA.docGA);
+							Converter.PrintXML(OutFolder + "\\tmpGA.gsm.xml");
+							setStatus("Diagram converted");
+						} catch (XPathExpressionException | NoSuchMethodException
+								| SecurityException | IllegalAccessException
+								| IllegalArgumentException
+								| InvocationTargetException | DOMException
+								| InstantiationException
+								| ParserConfigurationException
+								| TransformerException e) {
+							// TODO Auto-generated catch block
+							e.printStackTrace();
+						}				
+					}
+				}
+			};
+		}
+		{
+			actionGenerate = new Action("Generate C Code") {
+				@Override 			
+				public void run() {					try {
+						Runtime.getRuntime().exec("cmd.exe /c set GENEAUTO_HOME=C:\\Users\\ierturk\\Desktop\\GeneAuto\\geneauto2 && "
+								+ "C:\\works\\tools\\eclipseDevelopmentPackage\\ibm_sdk70\\bin\\java "
+								+ "-classpath \"c:\\Users\\ierturk\\Desktop\\GeneAuto\\geneauto2\\geneauto.galauncher-2.4.10.jar;"
+								+ "c:\\Users\\ierturk\\Desktop\\GeneAuto\\geneautoLib\\geneauto.pl_blocklibrary.jar\" geneauto.launcher.GALauncherSCICOSOpt "
+								+ OutFolder + "\\tmpGA.gsm.xml"
+								+ " -b c:\\Users\\ierturk\\Desktop\\GeneAuto\\geneautoLib\\pl_blocklibrary.gbl.xml 2>geneauto.err");
+					} catch (IOException e) {
+						// TODO Auto-generated catch block
+						e.printStackTrace();
+					}
+					
 				}
 
 			};
@@ -149,6 +236,19 @@ public class XcosImporter extends ApplicationWindow {
 			menuManager.add(FileMenu);
 			FileMenu.add(actionOpenFile);
 			FileMenu.add(actionExit);
+		}
+		{
+			MenuManager optionsMenu = new MenuManager("Options");
+			menuManager.add(optionsMenu);
+			optionsMenu.add(actionSelectInput);
+			optionsMenu.add(actionOutputFolder);
+		}
+		{
+			MenuManager toolsMenu = new MenuManager("Tools");
+			menuManager.add(toolsMenu);
+			toolsMenu.add(actionImport);
+			toolsMenu.add(actionConvert);
+			toolsMenu.add(actionGenerate);
 		}
 		return menuManager;
 	}

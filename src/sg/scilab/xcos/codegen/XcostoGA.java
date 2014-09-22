@@ -70,18 +70,9 @@ public class XcostoGA {
 		
 		// Initialize input file
 		docGA = docBuilder.newDocument();
-
-		// Initialize output file
-		//docGA.appendChild(docGA.createElement("SystemBlock"));
-		//docGA.getFirstChild().appendChild(docGA.createElement("blocks"));
-		//docGA.setXmlVersion("1.0");
-
-		// Initialize library file
-		//docLib = docBuilder.parse(new File("Resource/BlockLibrary.xml"));
 	}
 	
-	@SuppressWarnings("unused")
-	private void PrintXML(Document docIn) throws TransformerException {
+	public void PrintXML(String OutFile) throws TransformerException {
         //for output to file, console
         TransformerFactory transformerFactory = TransformerFactory.newInstance();
         Transformer transformer = transformerFactory.newTransformer();
@@ -91,7 +82,8 @@ public class XcostoGA {
 
         //write to console or file
         //StreamResult console = new StreamResult(System.out);
-        StreamResult file = new StreamResult(new File("C:\\Users\\ierturk\\Desktop\\GeneAuto\\work\\GA.gsm.xml"));
+        //StreamResult file = new StreamResult(new File("C:\\Users\\ierturk\\Desktop\\GeneAuto\\work\\GA.gsm.xml"));
+        StreamResult file = new StreamResult(new File(OutFile));
 
         //write data
         //transformer.transform(source, console);
@@ -136,7 +128,6 @@ public class XcostoGA {
 		XcosBlockTran Xcos2GA = new XcosBlockTran(docXcos);
 		
 		docGA.appendChild(docGA.importNode(Xcos2GA.ParseXcosDiagram(), true));
-		PrintXML(docGA);
 	}
 }
 

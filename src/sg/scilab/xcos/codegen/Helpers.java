@@ -91,8 +91,6 @@ public class Helpers {
 												.compile("/node()/mxCell[@as='defaultParent']")
 												.evaluate(docIn, XPathConstants.NODESET))
 												.item(0).getAttributes().getNamedItem("id").getNodeValue();
-		//System.out.println("Before" + PortAsscs.size());
-
 		elementOut.appendChild(docIn.importNode(ParseSuperBlock(parentID), true));
 		//elementOut.appendChild(docIn.importNode(ParseSignals(parentID), true));
 		System.out.println(PortAsscs.size());
@@ -117,7 +115,6 @@ public class Helpers {
 		NodeList blockNL = (NodeList) XPathFactory.newInstance().newXPath()
 												.compile("//*[@parent='" + parentID + "']")
 												.evaluate(docIn, XPathConstants.NODESET);
-
 		
 		Element elementOut = docIn.createElement("blocks");
 		elementOut.setAttribute("type", "gaxml:collection");
@@ -163,7 +160,7 @@ public class Helpers {
 					Translator = TranClass.getClass().getDeclaredMethod("ActionPort_tran", String.class);
 					Translator.setAccessible(true);
 					elementTmp = (Element) Translator.invoke(TranClass, blockID);
-					elementTmp.appendChild(docIn.importNode(ParseGeometry(blockID), true));
+					//elementTmp.appendChild(docIn.importNode(ParseGeometry(blockID), true));
 					elementOut.appendChild(elementTmp);
 					continue;
 	
@@ -205,14 +202,15 @@ public class Helpers {
 				try {
 					if(blockNL.item(i).getNodeName() == "SuperBlock")
 						elementTmp.appendChild(docIn.importNode(ParseInControlPort(blockID), true));
+					System.out.println("\t" + blockNL.item(i).getNodeName());
 				} catch (NullPointerException e) {
 					// TODO Auto-generated catch block
 					//e.printStackTrace();
 				}
 
 				try {
-					//if(blockNL.item(i).getAttributes().getNamedItem("interfaceFunctionName").getNodeValue() == "IFTHEL_f")
 						elementTmp.appendChild(docIn.importNode(ParseOutControlPort(blockID), true));
+						System.out.println("\t" + blockNL.item(i).getAttributes().getNamedItem("interfaceFunctionName").getNodeValue());
 				} catch (NullPointerException e) {
 					// TODO Auto-generated catch block
 					//e.printStackTrace();
@@ -253,10 +251,14 @@ public class Helpers {
 			elementTemp.setAttribute("portNumber", PortNL.item(i).getAttributes().getNamedItem("ordering").getNodeValue());
 			elementOut.appendChild(elementTemp);
 			
-			ArrayList<Object> PortAssc = new ArrayList<Object>(); 
+			ArrayList<Object> PortAssc = new ArrayList<Object>();
 			PortAssc.add(PortNL.item(i).getAttributes().getNamedItem("id").getNodeValue());
 			PortAssc.add(idCnt);
 			PortAssc.add("InData");
+			PortAssc.add(((NodeList) XPathFactory.newInstance().newXPath()
+													.compile("//*[@id='" + blockID + "']")
+													.evaluate(docIn, XPathConstants.NODESET))
+													.item(0).getAttributes().getNamedItem("parent").getNodeValue());		
 			PortAsscs.add(PortAssc);
 		}
 
@@ -283,6 +285,10 @@ public class Helpers {
 			PortAssc.add(PortNL.item(i).getAttributes().getNamedItem("id").getNodeValue());
 			PortAssc.add(idCnt);
 			PortAssc.add("OutData");
+			PortAssc.add(((NodeList) XPathFactory.newInstance().newXPath()
+					.compile("//*[@id='" + blockID + "']")
+					.evaluate(docIn, XPathConstants.NODESET))
+					.item(0).getAttributes().getNamedItem("parent").getNodeValue());
 			PortAsscs.add(PortAssc);
 		}
 
@@ -312,6 +318,10 @@ public class Helpers {
 			PortAssc.add(PortNL.item(i).getAttributes().getNamedItem("id").getNodeValue());
 			PortAssc.add(idCnt);
 			PortAssc.add("InControl");
+			PortAssc.add(((NodeList) XPathFactory.newInstance().newXPath()
+					.compile("//*[@id='" + blockID + "']")
+					.evaluate(docIn, XPathConstants.NODESET))
+					.item(0).getAttributes().getNamedItem("parent").getNodeValue());
 			PortAsscs.add(PortAssc);
 		}
 
@@ -338,6 +348,10 @@ public class Helpers {
 			PortAssc.add(PortNL.item(i).getAttributes().getNamedItem("id").getNodeValue());
 			PortAssc.add(idCnt);
 			PortAssc.add("OutControl");
+			PortAssc.add(((NodeList) XPathFactory.newInstance().newXPath()
+					.compile("//*[@id='" + blockID + "']")
+					.evaluate(docIn, XPathConstants.NODESET))
+					.item(0).getAttributes().getNamedItem("parent").getNodeValue());
 			PortAsscs.add(PortAssc);
 		}
 
@@ -352,7 +366,8 @@ public class Helpers {
 		Element elementTemp0 = null;
 		
 		for(ArrayList<Object> portIn : PortAsscs){
-			if(("InData".equals(portIn.get(2))) | ("InControl".equals(portIn.get(2)))) {
+			if((("InData".equals(portIn.get(2))) | ("InControl".equals(portIn.get(2))))
+					& parentID.equals(portIn.get(3))) {
 
 				String outportID = ParseSignal((String) portIn.get(0));
 				for(ArrayList<Object> portOut : PortAsscs){
@@ -371,10 +386,6 @@ public class Helpers {
 					}
 				}
 			}
-		}
-		
-		while(PortAsscs.size() != 0) {
-			PortAsscs.clear();
 		}
 		return elementOut;
 	}
