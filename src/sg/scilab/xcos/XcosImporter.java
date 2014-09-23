@@ -21,8 +21,10 @@
 
 package sg.scilab.xcos;
 
+import java.io.File;
 import java.io.IOException;
 import java.lang.reflect.InvocationTargetException;
+
 import javax.xml.parsers.ParserConfigurationException;
 import javax.xml.transform.TransformerException;
 import javax.xml.xpath.XPathExpressionException;
@@ -60,6 +62,7 @@ public class XcosImporter extends ApplicationWindow {
 	private static String InDiagram;
 	private static String OutFolder;
 	XcostoGA Converter;
+	private static File sgWorkFolder;
 	/**
 	 * Create the application window,
 	 */
@@ -72,8 +75,8 @@ public class XcosImporter extends ApplicationWindow {
 		InDiagram = null;
 		OutFolder = null;
 		
-	       System.out.println("Working Directory = " +
-	               System.getProperty("user.dir"));
+	    /*   System.out.println("Working Directory = " +
+	               System.getProperty("user.dir")); */
 	}
 
 	/**
@@ -132,9 +135,17 @@ public class XcosImporter extends ApplicationWindow {
 				@Override 			
 				public void run() {
 					DirectoryDialog dialog = new DirectoryDialog(getShell());
+					if(InDiagram != null){
+						File file = new File(InDiagram);
+						if(file.exists()){
+							dialog.setFilterPath(file.getParentFile().getPath());
+						}
+					} else {
+						dialog.setFilterPath(System.getProperty("user.home") + "\\Desktop");
+					}
 					OutFolder = dialog.open();
-					//System.out.println(OutFolder);
 				}
+
 			};
 		}
 		{
@@ -163,7 +174,8 @@ public class XcosImporter extends ApplicationWindow {
 			};
 		}
 		{
-			actionConvert = new Action("Convert to GA") {				@Override 			
+			actionConvert = new Action("Convert to GA") {
+				@Override 			
 				public void run() {
 					if(InDiagram == null) {
 					       MessageBox mb = new MessageBox(getShell(), SWT.ICON_ERROR);
@@ -171,10 +183,26 @@ public class XcosImporter extends ApplicationWindow {
 					       mb.setMessage("Please select output folder...");
 					       mb.open();
 					} else {
+						sgWorkFolder = new File(OutFolder + "\\sgJavaSciWork\\"
+													+ XcostoGA.docXcos.getFirstChild().getAttributes()
+														.getNamedItem("title").getNodeValue().replace(" ", "_"));
+						if (!sgWorkFolder.exists()) {
+							System.out.println("creating directory: " + sgWorkFolder.getPath());
+
+							try{
+								sgWorkFolder.mkdirs();
+								new File(sgWorkFolder.getAbsolutePath() + "\\cfiles").mkdirs();
+								new File(sgWorkFolder.getAbsolutePath() + "\\XML").mkdirs();
+							} catch (SecurityException e){
+								// TODO Auto-generated catch block
+								//e.printStackTrace();							
+							}        
+						}
+						
 						try {
 							Converter.ImportXcos();
 							Converter.XMLtoTree(treeOut, XcostoGA.docGA);
-							Converter.PrintXML(OutFolder + "\\tmpGA.gsm.xml");
+							Converter.PrintXML(sgWorkFolder.getAbsolutePath() + "\\XML\\tmpGA.gsm.xml");
 							setStatus("Diagram converted");
 						} catch (XPathExpressionException | NoSuchMethodException
 								| SecurityException | IllegalAccessException
@@ -185,7 +213,7 @@ public class XcosImporter extends ApplicationWindow {
 								| TransformerException e) {
 							// TODO Auto-generated catch block
 							e.printStackTrace();
-						}				
+						}
 					}
 				}
 			};
@@ -196,8 +224,9 @@ public class XcosImporter extends ApplicationWindow {
 				public void run() {
 					String cmd = "C:\\works\\tools\\eclipseDevelopmentPackage\\ibm_sdk70\\bin\\java "
 							+ "-classpath \"" + System.getProperty("user.dir") + "\\Thirdparty\\geneauto2" + "\\geneauto.galauncher-2.4.10.jar\" "
-							+ "geneauto.launcher.GALauncherSCICOSOpt " + OutFolder + "\\tmpGA.gsm.xml " + "2>geneauto.err";
-					
+							+ "geneauto.launcher.GALauncherSCICOSOpt " + sgWorkFolder.getAbsolutePath() + "\\XML\\tmpGA.gsm.xml "
+							+ "-O " + sgWorkFolder.getAbsolutePath() + "\\cfiles 2>geneauto.err";
+
 				    ProcessBuilder pb = new ProcessBuilder("cmd", "/c", cmd);
 				    pb.environment().put("GENEAUTO_HOME", System.getProperty("user.dir") + "\\Thirdparty\\geneauto2");
 				    pb.inheritIO();
@@ -223,7 +252,6 @@ public class XcosImporter extends ApplicationWindow {
 		{
 			MenuManager FileMenu = new MenuManager("File");
 			menuManager.add(FileMenu);
-			FileMenu.add(actionOpenFile);
 			FileMenu.add(actionExit);
 		}
 		{
