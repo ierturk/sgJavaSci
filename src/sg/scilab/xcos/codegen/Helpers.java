@@ -64,12 +64,11 @@ public class Helpers {
 	public Element ParseXcosDiagram() throws XPathExpressionException, NoSuchMethodException, SecurityException, IllegalAccessException, IllegalArgumentException, InvocationTargetException, InstantiationException, ParserConfigurationException, TransformerException {
 		
 		String timestamp = new java.text.SimpleDateFormat("yyyy-MM-dd HH:mm:ss.S").format(new Date());
-		
 		Element elementOut = docIn.createElement("GASystemModel");
 		elementOut.setAttribute("type", "gaxml:model");
 		elementOut.setAttribute("modelVersion", "6.3");
 		elementOut.setAttribute("modelType", "GASystemModel");
-		elementOut.setAttribute("modelName", "NoName");
+		elementOut.setAttribute("modelName", docIn.getFirstChild().getAttributes().getNamedItem("title").getNodeValue());
 		elementOut.setAttribute("lastSavedOn", timestamp);
 		elementOut.setAttribute("lastSavedBy", "sgJavaSci-0.1");
 		elementOut.setAttribute("lastSavedBy", "sgJavaSci-0.1");
@@ -92,8 +91,6 @@ public class Helpers {
 												.evaluate(docIn, XPathConstants.NODESET))
 												.item(0).getAttributes().getNamedItem("id").getNodeValue();
 		elementOut.appendChild(docIn.importNode(ParseSuperBlock(parentID), true));
-		//elementOut.appendChild(docIn.importNode(ParseSignals(parentID), true));
-		System.out.println(PortAsscs.size());
 		
 		return elementOut;
 	}
@@ -101,9 +98,25 @@ public class Helpers {
 	private Element ParseSuperBlock(String parentID) throws XPathExpressionException, ParserConfigurationException, TransformerException, NoSuchMethodException, SecurityException, IllegalAccessException, IllegalArgumentException, InvocationTargetException, InstantiationException {		
 		Element elementOut = docIn.createElement("SystemBlock");
 		elementOut.setAttribute("type", "SubSystem");
-		elementOut.setAttribute("name", "NoName");
-		elementOut.setAttribute("isVirtual", "false");
 		elementOut.setAttribute("id", Integer.toString(++idCnt));
+		
+		try {
+			NodeList parentNL = (NodeList) XPathFactory.newInstance().newXPath()
+																.compile("//*[./mxCell[@as='defaultParent' and @id='"+ parentID + "']]")
+																.evaluate(docIn, XPathConstants.NODESET);
+			System.out.println("\tParent type: "+ parentNL.item(0).getNodeName());
+
+			if("XcosDiagram".equals(parentNL.item(0).getNodeName()))
+				elementOut.setAttribute("name", docIn.getFirstChild().getAttributes().getNamedItem("title").getNodeValue());
+			else
+				elementOut.setAttribute("name", getBlockName(parentNL.item(0).getParentNode().getAttributes().getNamedItem("id").getNodeValue()));
+		} catch (NullPointerException e) {
+			// TODO Auto-generated catch block
+			//e.printStackTrace();
+			elementOut.setAttribute("name", "UnTitled");
+		}
+		
+		elementOut.setAttribute("isVirtual", "false");
 		elementOut.setAttribute("directFeedThrough", "true");
 		
 		elementOut.appendChild(docIn.importNode(ParseBlocks(parentID), true));
@@ -439,6 +452,21 @@ public class Helpers {
 		elementOut.appendChild(elementTemp);		
 
 		return elementOut;
+	}
+	
+	protected String getBlockName(String blockID) throws XPathExpressionException {
+		try {
+			String returnLabel = ((NodeList) XPathFactory.newInstance().newXPath()
+																.compile("//*[@id='" + blockID + "#identifier']")
+																.evaluate(docIn, XPathConstants.NODESET)).item(0)
+																.getAttributes().getNamedItem("value").getNodeValue();
+			if(returnLabel.equals("")) return "Block" + Integer.toString(idCnt);
+			return returnLabel;
+		} catch (NullPointerException e) {
+			// TODO Auto-generated catch block
+			//e.printStackTrace();
+			return "Block" + Integer.toString(idCnt);
+		}
 	}
 	
 	protected Element ParseParameters(ArrayList<ArrayList<Object>> paramArray) throws NoSuchMethodException, SecurityException, DOMException, IllegalAccessException, IllegalArgumentException, InvocationTargetException, InstantiationException {

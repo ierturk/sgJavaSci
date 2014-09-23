@@ -67,7 +67,8 @@ public class XcosBlockTran extends Helpers {
 	private Element CONST_m_tran(String blockID) throws ParserConfigurationException, DOMException, XPathExpressionException, NoSuchMethodException, SecurityException, IllegalAccessException, IllegalArgumentException, InvocationTargetException, InstantiationException {		
 		Element elementOut = docIn.createElement("SourceBlock");
 		elementOut.setAttribute("type", "Constant");
-		elementOut.setAttribute("name", "NoName");
+		elementOut.setAttribute("id", Integer.toString(++idCnt));
+		elementOut.setAttribute("name", getBlockName(blockID));
 		elementOut.setAttribute("isVirtual", "false");
 		elementOut.setAttribute("id", Integer.toString(++idCnt));
 		elementOut.setAttribute("directFeedThrough", "true");
@@ -118,9 +119,9 @@ public class XcosBlockTran extends Helpers {
 	private Element DOLLAR_m_tran(String blockID) throws ParserConfigurationException, DOMException, XPathExpressionException, NoSuchMethodException, SecurityException, IllegalAccessException, IllegalArgumentException, InvocationTargetException, InstantiationException {		
 		Element elementOut = docIn.createElement("SequentialBlock");
 		elementOut.setAttribute("type", "UnitDelay");
-		elementOut.setAttribute("name", "NoName");
-		elementOut.setAttribute("isVirtual", "false");
 		elementOut.setAttribute("id", Integer.toString(++idCnt));
+		elementOut.setAttribute("name", getBlockName(blockID));
+		elementOut.setAttribute("isVirtual", "false");
 		elementOut.setAttribute("directFeedThrough", "true");
 		elementOut.setAttribute("sampletime", "-1");
 		
@@ -156,7 +157,8 @@ public class XcosBlockTran extends Helpers {
 	private Element IFTHEL_f_tran(String blockID) throws ParserConfigurationException, DOMException, XPathExpressionException, NoSuchMethodException, SecurityException, IllegalAccessException, IllegalArgumentException, InvocationTargetException, InstantiationException {		
 		Element elementOut = docIn.createElement("CombinatorialBlock");
 		elementOut.setAttribute("type", "If");
-		elementOut.setAttribute("name", "NoName");
+		elementOut.setAttribute("id", Integer.toString(++idCnt));
+		elementOut.setAttribute("name", getBlockName(blockID));
 		elementOut.setAttribute("isVirtual", "false");
 		elementOut.setAttribute("id", Integer.toString(++idCnt));
 		elementOut.setAttribute("directFeedThrough", "true");
@@ -190,9 +192,9 @@ public class XcosBlockTran extends Helpers {
 	private Element SUMMATION_tran(String blockID) throws ParserConfigurationException, DOMException, XPathExpressionException, NoSuchMethodException, SecurityException, IllegalAccessException, IllegalArgumentException, InvocationTargetException, InstantiationException {		
 		Element elementOut = docIn.createElement("CombinatorialBlock");
 		elementOut.setAttribute("type", "Sum");
-		elementOut.setAttribute("name", "NoName");
-		elementOut.setAttribute("isVirtual", "false");
 		elementOut.setAttribute("id", Integer.toString(++idCnt));
+		elementOut.setAttribute("name", getBlockName(blockID));
+		elementOut.setAttribute("isVirtual", "false");
 		elementOut.setAttribute("directFeedThrough", "true");
 		elementOut.setAttribute("sampletime", "-1");
 		
@@ -228,9 +230,9 @@ public class XcosBlockTran extends Helpers {
 	private Element SWITCH2_m_tran(String blockID) throws ParserConfigurationException, DOMException, XPathExpressionException, NoSuchMethodException, SecurityException, IllegalAccessException, IllegalArgumentException, InvocationTargetException, InstantiationException {		
 		Element elementOut = docIn.createElement("CombinatorialBlock");
 		elementOut.setAttribute("type", "Switch");
-		elementOut.setAttribute("name", "NoName");
-		elementOut.setAttribute("isVirtual", "false");
 		elementOut.setAttribute("id", Integer.toString(++idCnt));
+		elementOut.setAttribute("name", getBlockName(blockID));
+		elementOut.setAttribute("isVirtual", "false");
 		elementOut.setAttribute("directFeedThrough", "true");
 		elementOut.setAttribute("sampletime", "-1");
 		
@@ -272,9 +274,9 @@ public class XcosBlockTran extends Helpers {
 	private Element OutDataPort_tran(String blockID) throws ParserConfigurationException, DOMException, XPathExpressionException, NoSuchMethodException, SecurityException, IllegalAccessException, IllegalArgumentException, InvocationTargetException, InstantiationException {		
 		Element elementOut = docIn.createElement("SinkBlock");
 		elementOut.setAttribute("type", "Outport");
-		elementOut.setAttribute("name", "NoName");
-		elementOut.setAttribute("isVirtual", "false");
 		elementOut.setAttribute("id", Integer.toString(++idCnt));
+		elementOut.setAttribute("name", getBlockName(blockID));
+		elementOut.setAttribute("isVirtual", "false");
 		elementOut.setAttribute("directFeedThrough", "true");
 		elementOut.setAttribute("sampletime", "-1");
 		
@@ -327,9 +329,9 @@ public class XcosBlockTran extends Helpers {
 	private Element ActionPort_tran(String blockID) throws ParserConfigurationException, DOMException, XPathExpressionException, NoSuchMethodException, SecurityException, IllegalAccessException, IllegalArgumentException, InvocationTargetException, InstantiationException {		
 		Element elementOut = docIn.createElement("ControlBlock");
 		elementOut.setAttribute("type", "ActionPort");
-		elementOut.setAttribute("name", "NoName");
-		elementOut.setAttribute("isVirtual", "false");
 		elementOut.setAttribute("id", Integer.toString(++idCnt));
+		elementOut.setAttribute("name", "ActionPort" + Integer.toString(idCnt));
+		elementOut.setAttribute("isVirtual", "false");
 		elementOut.setAttribute("directFeedThrough", "true");
 		elementOut.setAttribute("sampletime", "-1");
 		

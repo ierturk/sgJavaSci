@@ -23,7 +23,6 @@ package sg.scilab.xcos;
 
 import java.io.IOException;
 import java.lang.reflect.InvocationTargetException;
-
 import javax.xml.parsers.ParserConfigurationException;
 import javax.xml.transform.TransformerException;
 import javax.xml.xpath.XPathExpressionException;
@@ -72,6 +71,9 @@ public class XcosImporter extends ApplicationWindow {
 		addStatusLine();
 		InDiagram = null;
 		OutFolder = null;
+		
+	       System.out.println("Working Directory = " +
+	               System.getProperty("user.dir"));
 	}
 
 	/**
@@ -90,21 +92,6 @@ public class XcosImporter extends ApplicationWindow {
 			treeOut = new Tree(container, SWT.BORDER);
 			treeOut.setBounds(310, 0, 322, 450);
 		}
-		
-		/*
-	    for (int loopIndex1 = 0; loopIndex1 < 5; loopIndex1++) {
-	        TreeItem item0 = new TreeItem(tree, 0);
-	        item0.setText("Level 0 Item " + loopIndex1);
-	        for (int loopIndex2 = 0; loopIndex2 < 5; loopIndex2++) {
-	          TreeItem item1 = new TreeItem(item0, 0);
-	          item1.setText("Level 1 Item " + loopIndex2);
-	          for (int loopIndex3 = 0; loopIndex3 < 5; loopIndex3++) {
-	            TreeItem item2 = new TreeItem(item1, 0);
-	            item2.setText("Level 2 Item " + loopIndex3);
-	          }
-	        }
-	      }
-	      */
 
 		return container;
 	}
@@ -206,18 +193,20 @@ public class XcosImporter extends ApplicationWindow {
 		{
 			actionGenerate = new Action("Generate C Code") {
 				@Override 			
-				public void run() {					try {
-						Runtime.getRuntime().exec("cmd.exe /c set GENEAUTO_HOME=C:\\Users\\ierturk\\Desktop\\GeneAuto\\geneauto2 && "
-								+ "C:\\works\\tools\\eclipseDevelopmentPackage\\ibm_sdk70\\bin\\java "
-								+ "-classpath \"c:\\Users\\ierturk\\Desktop\\GeneAuto\\geneauto2\\geneauto.galauncher-2.4.10.jar;"
-								+ "c:\\Users\\ierturk\\Desktop\\GeneAuto\\geneautoLib\\geneauto.pl_blocklibrary.jar\" geneauto.launcher.GALauncherSCICOSOpt "
-								+ OutFolder + "\\tmpGA.gsm.xml"
-								+ " -b c:\\Users\\ierturk\\Desktop\\GeneAuto\\geneautoLib\\pl_blocklibrary.gbl.xml 2>geneauto.err");
+				public void run() {
+					String cmd = "C:\\works\\tools\\eclipseDevelopmentPackage\\ibm_sdk70\\bin\\java "
+							+ "-classpath \"" + System.getProperty("user.dir") + "\\Thirdparty\\geneauto2" + "\\geneauto.galauncher-2.4.10.jar\" "
+							+ "geneauto.launcher.GALauncherSCICOSOpt " + OutFolder + "\\tmpGA.gsm.xml " + "2>geneauto.err";
+					
+				    ProcessBuilder pb = new ProcessBuilder("cmd", "/c", cmd);
+				    pb.environment().put("GENEAUTO_HOME", System.getProperty("user.dir") + "\\Thirdparty\\geneauto2");
+				    pb.inheritIO();
+				    try {
+						pb.start();
 					} catch (IOException e) {
 						// TODO Auto-generated catch block
 						e.printStackTrace();
 					}
-					
 				}
 
 			};
