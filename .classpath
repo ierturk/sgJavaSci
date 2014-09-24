@@ -16,6 +16,6 @@
 	<classpathentry kind="lib" path="C:/works/tools/eclipse/plugins/org.eclipse.ui.forms_3.6.100.v20140422-1825.jar" sourcepath="C:/works/tools/eclipse/plugins/org.eclipse.ui.forms_3.6.100.v20140422-1825.jar"/>
 	<classpathentry kind="lib" path="C:/Program Files/scilab-5.5.0/modules/javasci/jar/org.scilab.modules.javasci.jar"/>
 	<classpathentry kind="lib" path="C:/Program Files/scilab-5.5.0/modules/types/jar/org.scilab.modules.types.jar"/>
-	<classpathentry kind="lib" path="Thirdparty/geneauto2"/>
+	<classpathentry kind="lib" path="Thirdparty/geneauto2/geneauto.galauncher-2.4.10.jar"/>
 	<classpathentry kind="output" path="bin"/>
 </classpath>

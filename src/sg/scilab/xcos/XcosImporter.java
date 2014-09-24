@@ -48,9 +48,9 @@ import org.xml.sax.SAXException;
 import org.eclipse.swt.widgets.Tree;
 
 import sg.scilab.xcos.codegen.XcostoGA;
+import geneauto.launcher.GALauncherSCICOSOptImpl;
 
 public class XcosImporter extends ApplicationWindow {
-	private Action actionOpenFile;
 	private Action actionExit;
 	private static Tree treeIn;
 	private static Tree treeOut;
@@ -105,7 +105,7 @@ public class XcosImporter extends ApplicationWindow {
 	private void createActions() {
 		// Create the actions
 		{
-			actionOpenFile = new Action("Open") {
+			new Action("Open") {
 				@Override 			
 				public void run() {
 				} 
@@ -187,7 +187,7 @@ public class XcosImporter extends ApplicationWindow {
 													+ XcostoGA.docXcos.getFirstChild().getAttributes()
 														.getNamedItem("title").getNodeValue().replace(" ", "_"));
 						if (!sgWorkFolder.exists()) {
-							System.out.println("creating directory: " + sgWorkFolder.getPath());
+							//System.out.println("creating directory: " + sgWorkFolder.getPath());
 
 							try{
 								sgWorkFolder.mkdirs();
@@ -222,25 +222,53 @@ public class XcosImporter extends ApplicationWindow {
 			actionGenerate = new Action("Generate C Code") {
 				@Override 			
 				public void run() {
+				    /*
 					String cmd = "C:\\works\\tools\\eclipseDevelopmentPackage\\ibm_sdk70\\bin\\java "
 							+ "-classpath \"" + System.getProperty("user.dir") + "\\Thirdparty\\geneauto2" + "\\geneauto.galauncher-2.4.10.jar\" "
 							+ "geneauto.launcher.GALauncherSCICOSOpt " + sgWorkFolder.getAbsolutePath() + "\\XML\\tmpGA.gsm.xml "
 							+ "-O " + sgWorkFolder.getAbsolutePath() + "\\cfiles 2>geneauto.err";
-
+					
+					System.out.println(cmd);
 				    ProcessBuilder pb = new ProcessBuilder("cmd", "/c", cmd);
 				    pb.environment().put("GENEAUTO_HOME", System.getProperty("user.dir") + "\\Thirdparty\\geneauto2");
 				    pb.inheritIO();
+
 				    try {
-						pb.start();
-					} catch (IOException e) {
+				        Process p = pb.start();
+				        String output = loadStream(p.getInputStream());
+				        String error  = loadStream(p.getErrorStream());
+				        int rc = p.waitFor();
+				        System.out.println("Process ended with rc=" + rc);
+				        System.out.println("\nStandard Output:\n");
+				        System.out.println(output);
+				        System.out.println("\nStandard Error:\n");
+				        System.out.println(error);
+					} catch (Exception e) {
 						// TODO Auto-generated catch block
 						e.printStackTrace();
 					}
+					*/
+				    
+				    //geneauto.launcher.GALauncherSCICOSOpt.class.newInstance();
+				    GALauncherSCICOSOptImpl launcher = new GALauncherSCICOSOptImpl();
+				    String[] args = {sgWorkFolder.getAbsolutePath() + "\\XML\\tmpGA.gsm.xml", "-O", sgWorkFolder.getAbsolutePath() + "\\cfiles"};
+				    launcher.gaMain(args, "GALauncherSCICOSOpt");
 				}
 
 			};
 		}
 	}
+/*	
+    private static String loadStream(InputStream s) throws Exception
+    {
+        BufferedReader br = new BufferedReader(new InputStreamReader(s));
+        StringBuilder sb = new StringBuilder();
+        String line;
+        while((line=br.readLine()) != null)
+            sb.append(line).append("\n");
+        return sb.toString();
+    }
+*/
 
 	/**
 	 * Create the menu manager.

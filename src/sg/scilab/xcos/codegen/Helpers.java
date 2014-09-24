@@ -104,7 +104,7 @@ public class Helpers {
 			NodeList parentNL = (NodeList) XPathFactory.newInstance().newXPath()
 																.compile("//*[./mxCell[@as='defaultParent' and @id='"+ parentID + "']]")
 																.evaluate(docIn, XPathConstants.NODESET);
-			System.out.println("\tParent type: "+ parentNL.item(0).getNodeName());
+			//System.out.println("\tParent type: "+ parentNL.item(0).getNodeName());
 
 			if("XcosDiagram".equals(parentNL.item(0).getNodeName()))
 				elementOut.setAttribute("name", docIn.getFirstChild().getAttributes().getNamedItem("title").getNodeValue());
@@ -215,7 +215,7 @@ public class Helpers {
 				try {
 					if(blockNL.item(i).getNodeName() == "SuperBlock")
 						elementTmp.appendChild(docIn.importNode(ParseInControlPort(blockID), true));
-					System.out.println("\t" + blockNL.item(i).getNodeName());
+					//System.out.println("\t" + blockNL.item(i).getNodeName());
 				} catch (NullPointerException e) {
 					// TODO Auto-generated catch block
 					//e.printStackTrace();
@@ -223,7 +223,7 @@ public class Helpers {
 
 				try {
 						elementTmp.appendChild(docIn.importNode(ParseOutControlPort(blockID), true));
-						System.out.println("\t" + blockNL.item(i).getAttributes().getNamedItem("interfaceFunctionName").getNodeValue());
+						//System.out.println("\t" + blockNL.item(i).getAttributes().getNamedItem("interfaceFunctionName").getNodeValue());
 				} catch (NullPointerException e) {
 					// TODO Auto-generated catch block
 					//e.printStackTrace();
@@ -476,7 +476,7 @@ public class Helpers {
 		
 		Helpers HelpClass = new Helpers(docIn);
 	    for(ArrayList<Object> pList : paramArray){
-	    	System.out.println((String) pList.get(0));
+	    	//System.out.println((String) pList.get(0));
 	    	
 			elementTmp = docIn.createElement("BlockParameter");
 			elementTmp.setAttribute("name", (String) pList.get(0));
@@ -504,7 +504,7 @@ public class Helpers {
 		elementTemp.setAttribute("type", "gaxml:object");
 		elementOut.appendChild(elementTemp);
 		
-    	System.out.println((String) paramList.get(2));
+    	//System.out.println((String) paramList.get(2));
 		Method paramParser = HelpClass.getClass().getDeclaredMethod( "Parse" + ((String) paramList.get(2)) + "Param", String.class);
 		paramParser.setAccessible(true);
 		elementOut.getFirstChild().appendChild(docIn.importNode((Element) paramParser.invoke(HelpClass, paramList.get(3)), true));
