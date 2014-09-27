@@ -30,8 +30,10 @@ import javax.xml.transform.TransformerException;
 import javax.xml.xpath.XPathExpressionException;
 
 import org.eclipse.jface.action.CoolBarManager;
+import org.eclipse.jface.action.IToolBarManager;
 import org.eclipse.jface.action.MenuManager;
 import org.eclipse.jface.action.StatusLineManager;
+import org.eclipse.jface.action.ToolBarManager;
 import org.eclipse.jface.window.ApplicationWindow;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.graphics.Point;
@@ -49,6 +51,8 @@ import org.eclipse.swt.widgets.Tree;
 
 import sg.scilab.xcos.codegen.XcostoGA;
 import geneauto.launcher.GALauncherSCICOSOptImpl;
+import org.eclipse.swt.widgets.ToolBar;
+import org.eclipse.swt.widgets.ToolItem;
 
 public class XcosImporter extends ApplicationWindow {
 	private Action actionExit;
@@ -63,6 +67,7 @@ public class XcosImporter extends ApplicationWindow {
 	private static String OutFolder;
 	XcostoGA Converter;
 	private static File sgWorkFolder;
+	private Action actionNew;
 	/**
 	 * Create the application window,
 	 */
@@ -105,10 +110,12 @@ public class XcosImporter extends ApplicationWindow {
 	private void createActions() {
 		// Create the actions
 		{
-			new Action("Open") {
+			actionNew = new Action("New") {
 				@Override 			
 				public void run() {
-				} 
+					FileDialog dialog = new FileDialog(getShell(), SWT.OPEN);
+					InDiagram = dialog.open();
+				}
 			};
 		}
 		{
@@ -253,6 +260,7 @@ public class XcosImporter extends ApplicationWindow {
 				    GALauncherSCICOSOptImpl launcher = new GALauncherSCICOSOptImpl();
 				    String[] args = {sgWorkFolder.getAbsolutePath() + "\\XML\\tmpGA.gsm.xml", "-O", sgWorkFolder.getAbsolutePath() + "\\cfiles"};
 				    launcher.gaMain(args, "GALauncherSCICOSOpt");
+					setStatus("C Code generation has been completed");
 				}
 
 			};
@@ -280,6 +288,7 @@ public class XcosImporter extends ApplicationWindow {
 		{
 			MenuManager FileMenu = new MenuManager("File");
 			menuManager.add(FileMenu);
+			FileMenu.add(actionNew);
 			FileMenu.add(actionExit);
 		}
 		{
@@ -305,7 +314,20 @@ public class XcosImporter extends ApplicationWindow {
 	@Override
 	protected CoolBarManager createCoolBarManager(int style) {
 		CoolBarManager coolBarManager = new CoolBarManager(style);
-		return coolBarManager;
+		{
+			ToolBarManager toolBarManager = new ToolBarManager();
+			coolBarManager.add(toolBarManager);
+			toolBarManager.add(actionSelectInput);
+			toolBarManager.add(actionOutputFolder);
+		}
+		{		
+			ToolBarManager toolBarManager = new ToolBarManager();
+			coolBarManager.add(toolBarManager);
+			toolBarManager.add(actionImport);
+			toolBarManager.add(actionConvert);
+			toolBarManager.add(actionGenerate);
+			return coolBarManager;
+		}
 	}
 
 	/**
@@ -348,7 +370,7 @@ public class XcosImporter extends ApplicationWindow {
 	 */
 	@Override
 	protected Point getInitialSize() {
-		return new Point(650, 500);
+		return new Point(650, 562);
 	}
 	
 	protected Tree getTreeIn() {

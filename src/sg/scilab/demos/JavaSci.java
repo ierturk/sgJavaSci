@@ -41,7 +41,7 @@ public class JavaSci {
 	/**
 	 * @param args
 	 */
-	public static void main(String[] args) {
+	public void demoJavaSci() {
 		// TODO Auto-generated method stub
         try {
 

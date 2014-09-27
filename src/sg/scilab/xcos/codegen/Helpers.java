@@ -104,8 +104,7 @@ public class Helpers {
 			NodeList parentNL = (NodeList) XPathFactory.newInstance().newXPath()
 																.compile("//*[./mxCell[@as='defaultParent' and @id='"+ parentID + "']]")
 																.evaluate(docIn, XPathConstants.NODESET);
-			//System.out.println("\tParent type: "+ parentNL.item(0).getNodeName());
-
+			
 			if("XcosDiagram".equals(parentNL.item(0).getNodeName()))
 				elementOut.setAttribute("name", docIn.getFirstChild().getAttributes().getNamedItem("title").getNodeValue());
 			else
